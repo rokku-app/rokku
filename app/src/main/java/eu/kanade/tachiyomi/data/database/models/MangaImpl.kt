@@ -1,5 +1,6 @@
 package eu.kanade.tachiyomi.data.database.models
 
+import kotlinx.serialization.json.JsonObject
 import eu.kanade.tachiyomi.data.download.DownloadManager
 import eu.kanade.tachiyomi.data.download.DownloadProvider
 import eu.kanade.tachiyomi.data.library.CustomMangaManager
@@ -69,6 +70,8 @@ open class MangaImpl(
     override var date_added: Long = 0
 
     override var update_strategy: UpdateStrategy = UpdateStrategy.ALWAYS_UPDATE
+
+    override var memo: JsonObject = JsonObject(emptyMap())
 
     // TODO: It's probably fine to set this to non-null string in the future
     override var filtered_scanlators: String? = ""

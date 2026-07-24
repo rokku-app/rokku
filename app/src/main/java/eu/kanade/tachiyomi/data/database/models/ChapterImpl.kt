@@ -1,5 +1,6 @@
 package eu.kanade.tachiyomi.data.database.models
 
+import kotlinx.serialization.json.JsonObject
 import eu.kanade.tachiyomi.source.model.SChapter
 
 fun SChapter.toChapter(): ChapterImpl {
@@ -41,6 +42,8 @@ class ChapterImpl : Chapter {
 
     override var source_order: Int = 0
 
+    override var memo: JsonObject = JsonObject(emptyMap())
+    
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (other == null || javaClass != other.javaClass) return false
