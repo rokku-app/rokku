@@ -114,7 +114,7 @@ aboutlibraries = { id = "com.mikepenz.aboutlibraries.plugin", version.ref = "abo
 aboutlibraries-android = { id = "com.mikepenz.aboutlibraries.plugin.android", version.ref = "aboutlibraries" }
 firebase-crashlytics = { id = "com.google.firebase.crashlytics", version = "3.0.3" }
 google-services = { id = "com.google.gms.google-services", version = "4.5.0" }
-gradle-versions = { id = "com.github.ben-manes.versions", version = "0.52.0" }
+gradle-versions = { id = "com.github.ben-manes.versions", version = "0.61.0" }
 kotlinter = { id = "org.jmailen.kotlinter", version = "5.7.0" }
 moko = { id = "dev.icerock.mobile.multiplatform-resources", version.ref = "moko" }
 sqldelight = { id = "app.cash.sqldelight", version.ref = "sqldelight" }
