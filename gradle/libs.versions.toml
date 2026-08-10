@@ -1,6 +1,6 @@
 [versions]
 aboutlibraries = "15.0.4"
-chucker = "3.5.2"
+chucker = "4.3.1"
 flexible-adapter = "c8013533"
 fast_adapter = "5.7.0"
 moko = "0.26.4"
