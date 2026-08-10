@@ -1,7 +1,7 @@
 [versions]
 kotlin = "2.4.10"
 serialization = "1.11.0"
-xml_serialization = "0.91.1"
+xml_serialization = "0.91.3"
 
 [libraries]
 gradle = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
