@@ -28,7 +28,7 @@ coil3-svg = { module = "io.coil-kt.coil3:coil-svg" }
 coil3-gif = { module = "io.coil-kt.coil3:coil-gif" }
 coil3-okhttp = { module = "io.coil-kt.coil3:coil-network-okhttp" }
 compose-theme-adapter3 = { module = "com.google.accompanist:accompanist-themeadapter-material3", version = "0.36.0" }
-conductor = { module = "com.bluelinelabs:conductor", version = "4.0.0-preview-4" }
+conductor = { module = "com.bluelinelabs:conductor", version = "4.0.0-preview5" }
 conductor-support-preference = { module = "com.github.tachiyomiorg:conductor-support-preference", version = "3.0.0" }
 conscrypt = { module = "org.conscrypt:conscrypt-android", version = "2.6.1" }
 desugar = { module = "com.android.tools:desugar_jdk_libs", version = "2.1.5" }
