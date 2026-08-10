@@ -35,8 +35,7 @@ import coil3.request.allowHardware
 import coil3.request.allowRgb565
 import coil3.request.crossfade
 import coil3.util.DebugLogger
-import com.google.firebase.crashlytics.ktx.crashlytics
-import com.google.firebase.ktx.Firebase
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.hippo.unifile.UniFile
 import eu.kanade.tachiyomi.appwidget.TachiyomiWidgetManager
 import eu.kanade.tachiyomi.core.preference.Preference
@@ -129,7 +128,7 @@ open class App : Application(), DefaultLifecycleObserver, SingletonImageLoader.F
         basePreferences.crashReport().changes()
             .onEach {
                 try {
-                    Firebase.crashlytics.setCrashlyticsCollectionEnabled(it)
+                    FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(it)
                 } catch (e: Exception) {
                     // Probably already enabled/disabled
                 }
