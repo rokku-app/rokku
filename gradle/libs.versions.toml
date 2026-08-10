@@ -50,7 +50,7 @@ koin-bom = { module = "io.insert-koin:koin-bom", version.ref = "koin" }
 koin-core = { module = "io.insert-koin:koin-core" }
 koin-injekt = { module = "com.github.null2264:injekt-koin", version = "aad18b6148" }
 
-kotest-assertions = { module = "io.kotest:kotest-assertions-core", version = "5.9.1" }
+kotest-assertions = { module = "io.kotest:kotest-assertions-core", version = "6.2.3" }
 
 leakcanary-android = { module = "com.squareup.leakcanary:leakcanary-android", version.ref = "leakcanary" }
 leakcanary-plumber = { module = "com.squareup.leakcanary:plumber-android", version.ref = "leakcanary" }
