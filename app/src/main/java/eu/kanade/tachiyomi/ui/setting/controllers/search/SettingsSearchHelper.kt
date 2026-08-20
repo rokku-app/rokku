@@ -16,10 +16,10 @@ import eu.kanade.tachiyomi.ui.setting.controllers.SettingsDownloadController
 import eu.kanade.tachiyomi.ui.setting.controllers.SettingsGeneralController
 import eu.kanade.tachiyomi.ui.setting.controllers.SettingsLibraryController
 import eu.kanade.tachiyomi.ui.setting.controllers.SettingsReaderController
-import eu.kanade.tachiyomi.ui.setting.controllers.SettingsSecurityController
 import eu.kanade.tachiyomi.ui.setting.controllers.SettingsTrackingController
 import eu.kanade.tachiyomi.ui.setting.controllers.legacy.SettingsAdvancedLegacyController
 import eu.kanade.tachiyomi.ui.setting.controllers.legacy.SettingsDataLegacyController
+import eu.kanade.tachiyomi.ui.setting.controllers.legacy.SettingsSecurityLegacyController
 import eu.kanade.tachiyomi.util.system.isLTR
 import eu.kanade.tachiyomi.util.system.launchNow
 import kotlin.reflect.KClass
@@ -39,7 +39,8 @@ object SettingsSearchHelper {
         SettingsDownloadController::class,
         SettingsGeneralController::class,
         SettingsAppearanceController::class,
-        SettingsSecurityController::class,
+        SettingsSecurityLegacyController::class,
+        // SettingsSecurityController::class,  // compose
         SettingsLibraryController::class,
         SettingsReaderController::class,
         SettingsTrackingController::class,

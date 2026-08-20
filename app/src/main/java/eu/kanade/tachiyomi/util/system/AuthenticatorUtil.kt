@@ -6,7 +6,9 @@ import androidx.biometric.BiometricManager
 import androidx.biometric.BiometricPrompt
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentActivity
+import kotlinx.coroutines.suspendCancellableCoroutine
 import java.util.concurrent.Executor
+import kotlin.coroutines.resume
 
 object AuthenticatorUtil {
 
@@ -48,6 +50,40 @@ object AuthenticatorUtil {
             .build()
 
         biometricPrompt.authenticate(promptInfo)
+    }
+
+    /**
+     * Suspending variant of [startAuthentication]. Resolves to `true` immediately if
+     * authentication isn't supported/set up on the device, otherwise resolves once the
+     * biometric prompt succeeds or errors out.
+     */
+    suspend fun FragmentActivity.authenticate(
+        title: String,
+        subtitle: String? = null,
+        confirmationRequired: Boolean = true,
+    ): Boolean = suspendCancellableCoroutine { cont ->
+        if (!isAuthenticationSupported()) {
+            cont.resume(true)
+            return@suspendCancellableCoroutine
+        }
+
+        startAuthentication(
+            title,
+            subtitle,
+            confirmationRequired,
+            callback = object : AuthenticationCallback() {
+                override fun onAuthenticationSucceeded(result: BiometricPrompt.AuthenticationResult) {
+                    super.onAuthenticationSucceeded(result)
+                    cont.resume(true)
+                }
+
+                override fun onAuthenticationError(errorCode: Int, errString: CharSequence) {
+                    super.onAuthenticationError(errorCode, errString)
+                    toast(errString.toString())
+                    cont.resume(false)
+                }
+            },
+        )
     }
 
     /**
