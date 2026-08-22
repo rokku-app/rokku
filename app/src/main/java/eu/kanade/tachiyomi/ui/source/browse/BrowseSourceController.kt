@@ -189,6 +189,16 @@ open class BrowseSourceController(bundle: Bundle) :
     override fun onViewCreated(view: View) {
         super.onViewCreated(view)
 
+        if (!presenter.sourceIsInitialized) {
+            activity?.toast(MR.strings.source_not_installed)
+            if (activity is SearchActivity) {
+                activity?.finish()
+            } else {
+                router.popCurrentController()
+            }
+            return
+        }
+
         adapter = FlexibleAdapter(null, this, false)
         setupRecycler(view)
 
@@ -222,15 +232,6 @@ open class BrowseSourceController(bundle: Bundle) :
         activityBinding?.appBar?.y = 0f
         activityBinding?.appBar?.updateAppBarAfterY(recycler)
         activityBinding?.appBar?.lockYPos = true
-        if (!presenter.sourceIsInitialized) {
-            activity?.toast(MR.strings.source_not_installed)
-            if (activity is SearchActivity) {
-                activity?.finish()
-            } else {
-                router.popCurrentController()
-            }
-            return
-        }
 
         binding.progress.isVisible = true
 
