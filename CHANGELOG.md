@@ -39,6 +39,7 @@ The format is simplified version of [Keep a Changelog](https://keepachangelog.co
 - Fixed a recycled source filter spinner briefly showing the wrong item checked, left over from what it was previously bound to
 - Fixed an empty notification staying in the shade after chapter downloads finished
 - Fixed the "open log" action on the library update skipped notification opening the "Learn why" help page instead of the log, due to colliding notification actions
+- Fixed a crash opening a source's browse page (e.g. from a home screen shortcut) when its extension was no longer installed
 
 ### Other
 - Bumped Voyager to 2.2.21-1.10.3
