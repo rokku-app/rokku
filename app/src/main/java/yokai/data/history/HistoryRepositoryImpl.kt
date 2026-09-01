@@ -1,5 +1,6 @@
 package yokai.data.history
 
+import co.touchlab.kermit.Logger
 import eu.kanade.tachiyomi.data.database.models.History
 import eu.kanade.tachiyomi.data.database.models.MangaChapterHistory
 import eu.kanade.tachiyomi.util.system.toInt
@@ -8,19 +9,28 @@ import yokai.domain.history.HistoryRepository
 
 class HistoryRepositoryImpl(private val handler: DatabaseHandler) : HistoryRepository {
     override suspend fun upsert(chapterId: Long, lastRead: Long, timeRead: Long) =
-        handler.awaitOneOrNullExecutable(true) {
-            historyQueries.upsert(chapterId, lastRead, timeRead)
-            historyQueries.selectLastInsertedRowId()
+        try {
+            handler.awaitOneOrNullExecutable(true) {
+                historyQueries.upsert(chapterId, lastRead, timeRead)
+                historyQueries.selectLastInsertedRowId()
+            }
+        } catch (e: Exception) {
+            Logger.e(e) { "Failed to upsert history for chapter with id '$chapterId'" }
+            null
         }
 
     override suspend fun bulkUpsert(histories: List<History>) =
         handler.await(true) {
             histories.forEach { history ->
-                historyQueries.upsert(
-                    history.chapter_id,
-                    history.last_read,
-                    history.time_read,
-                )
+                try {
+                    historyQueries.upsert(
+                        history.chapter_id,
+                        history.last_read,
+                        history.time_read,
+                    )
+                } catch (e: Exception) {
+                    Logger.e(e) { "Failed to upsert history for chapter with id '${history.chapter_id}'" }
+                }
             }
         }
 
