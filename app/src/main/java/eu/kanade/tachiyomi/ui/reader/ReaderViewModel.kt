@@ -983,8 +983,12 @@ class ReaderViewModel(
         val destDir = UniFile.fromFile(context.cacheDir)!!.createDirectory("shared_image")!!
 
         viewModelScope.launchNonCancellableIO {
-            val file = saveImage(page, destDir, manga)
-            eventChannel.send(Event.ShareImage(file, page))
+            try {
+                val file = saveImage(page, destDir, manga)
+                eventChannel.send(Event.ShareImage(file, page))
+            } catch (e: Exception) {
+                eventChannel.send(Event.SavedImage(SaveImageResult.Error(e)))
+            }
         }
     }
 
