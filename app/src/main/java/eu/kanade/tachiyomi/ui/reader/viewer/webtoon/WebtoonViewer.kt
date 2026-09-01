@@ -241,7 +241,8 @@ class WebtoonViewer(val activity: ReaderActivity, val hasMargins: Boolean = fals
         if (recycler.isGone) {
             Logger.d { "Recycler first layout" }
             val pages = chapters.currChapter.pages ?: return
-            moveToPage(pages[min(chapters.currChapter.requestedPage, pages.lastIndex)])
+            if (pages.isEmpty()) return
+            moveToPage(pages[chapters.currChapter.requestedPage.coerceIn(0, pages.lastIndex)])
             recycler.isVisible = true
         }
     }
