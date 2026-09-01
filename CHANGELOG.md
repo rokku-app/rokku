@@ -18,6 +18,7 @@ The format is simplified version of [Keep a Changelog](https://keepachangelog.co
 - Fixed a crash opening a chapter in the webtoon reader when its saved resume position was out of range
 - Fixed a crash sharing a reader page when its cached image had already been evicted from disk
 - Fixed a crash when saving reading history for a chapter that was removed from the library in the meantime (chapter list refreshed, manga removed)
+- Fixed an extension install wrongly reporting a failure (and never installing) when Android's DownloadManager returned no content URI for a download that actually completed
 
 ### Other
 - Reduced Crashlytics noise by no longer reporting a dead or misconfigured extension repo (HTTP 404 on its `repo.json` or index) as a non-fatal error
