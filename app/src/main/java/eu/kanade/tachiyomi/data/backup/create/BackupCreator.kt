@@ -29,6 +29,7 @@ import yokai.domain.manga.interactor.GetManga
 import yokai.i18n.MR
 import yokai.util.lang.getString
 import java.io.FileOutputStream
+import java.io.IOException
 import java.time.Instant
 
 class BackupCreator(
@@ -69,10 +70,10 @@ class BackupCreator(
                 dir?.createFile(Backup.getBackupFilename())
             } else {
                 UniFile.fromUri(context, uri)
-            } ?: throw IllegalStateException("Unable to retrieve backup destination")
+            } ?: throw BackupCreateException(context.getString(MR.strings.backup_location_unavailable))
 
             if (!file.isFile) {
-                throw IllegalStateException("Invalid backup destination")
+                throw BackupCreateException(context.getString(MR.strings.backup_location_unavailable))
             }
 
             val readNotFavorites = if (options.readManga) getManga.awaitReadNotFavorites() else emptyList()
@@ -91,10 +92,14 @@ class BackupCreator(
                 throw IllegalStateException(context.getString(MR.strings.empty_backup_error))
             }
 
-            file.openOutputStream().also {
-                // Force overwrite old file
-                (it as? FileOutputStream)?.channel?.truncate(0)
-            }.sink().gzip().buffer().use { it.write(byteArray) }
+            try {
+                file.openOutputStream().also {
+                    // Force overwrite old file
+                    (it as? FileOutputStream)?.channel?.truncate(0)
+                }.sink().gzip().buffer().use { it.write(byteArray) }
+            } catch (e: IOException) {
+                throw BackupCreateException(context.getString(MR.strings.backup_location_unavailable), e)
+            }
             val fileUri = file.uri
 
             // Make sure it's a valid backup file

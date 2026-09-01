@@ -818,6 +818,7 @@
     <string name="invalid_backup_file_type">Invalid backup file type: %1$s\nIt should end with ".proto.gz" or ".json".</string>
     <string name="backup_has_no_manga">Backup does not contain any entries.</string>
     <string name="backup_failed">Backup failed</string>
+    <string name="backup_location_unavailable">Backup location is no longer accessible. Pick a new one in Settings &gt; Data and storage.</string>
     <string name="empty_backup_error">No library entries to back up</string>
     <string name="backup_created">Backup created</string>
     <string name="restore_completed">Restore completed</string>
