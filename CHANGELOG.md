@@ -18,6 +18,10 @@ The format is simplified version of [Keep a Changelog](https://keepachangelog.co
 - Fixed a crash opening a chapter in the webtoon reader when its saved resume position was out of range
 - Fixed a crash when saving reading history for a chapter that was removed from the library in the meantime (chapter list refreshed, manga removed)
 
+### Other
+- Reduced Crashlytics noise by no longer reporting a dead or misconfigured extension repo (HTTP 404 on its `repo.json` or index) as a non-fatal error
+- Reduced Crashlytics noise by no longer reporting cover-loading, reader, browse, and backup failures that only reflect a source, the network, or the device misbehaving rather than a Rokku bug
+
 ## [1.7.1]
 
 ### Fixes

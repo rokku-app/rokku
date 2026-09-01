@@ -362,7 +362,7 @@ class Downloader(
                 val pages = download.source.getPageList(download.chapter)
 
                 if (pages.isEmpty()) {
-                    throw Exception(context.getString(MR.strings.no_pages_found))
+                    throw NoPagesException(context)
                 }
                 // Don't trust index from source
                 val reIndexedPages = pages.mapIndexed { index, page ->

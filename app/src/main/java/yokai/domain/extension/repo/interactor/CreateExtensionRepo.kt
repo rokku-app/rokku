@@ -72,8 +72,7 @@ class CreateExtensionRepo(
             )
             Result.Success
         } catch (e: SaveExtensionRepoException) {
-            Logger.e(e) { "SQL Conflict attempting to add new repository ${repo.baseUrl}" }
-            return handleInsertionError(repo)
+            return handleInsertionError(repo, e)
         }
     }
 
@@ -83,12 +82,14 @@ class CreateExtensionRepo(
      * SaveExtensionRepoException doesn't provide constraint info in exceptions.
      * First check if the conflict was on primary key. if so return RepoAlreadyExists
      * Then check if the conflict was on fingerprint. if so Return DuplicateFingerprint
-     * If neither are found, there was some other Error, and return Result.Error
+     * If neither are found, there was some other Error, and return Result.Error - only
+     * that last, genuinely unexplained case is reported to Crashlytics; a plain "repo
+     * already added" or matching-fingerprint conflict is expected user input.
      *
      * @param repo Extension Repo holder for passing to DB/Error Dialog
      */
     @Suppress("ReturnCount")
-    private suspend fun handleInsertionError(repo: ExtensionRepo): Result {
+    private suspend fun handleInsertionError(repo: ExtensionRepo, cause: SaveExtensionRepoException): Result {
         val repoExists = extensionRepoRepository.getRepository(repo.baseUrl)
         if (repoExists != null) {
             return Result.RepoAlreadyExists
@@ -98,6 +99,7 @@ class CreateExtensionRepo(
         if (matchingFingerprintRepo != null) {
             return Result.DuplicateFingerprint(matchingFingerprintRepo, repo)
         }
+        Logger.e(cause) { "Failed to add extension repository ${repo.baseUrl}" }
         return Result.Error
     }
 

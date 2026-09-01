@@ -4,6 +4,7 @@ import android.content.Context
 import co.touchlab.kermit.Logger
 import eu.kanade.tachiyomi.data.download.DownloadManager
 import eu.kanade.tachiyomi.data.download.DownloadProvider
+import eu.kanade.tachiyomi.data.download.NoPagesException
 import eu.kanade.tachiyomi.domain.manga.models.Manga
 import eu.kanade.tachiyomi.source.LocalSource
 import eu.kanade.tachiyomi.source.Source
@@ -46,7 +47,7 @@ class ChapterLoader(
                     .onEach { it.chapter = chapter }
 
                 if (pages.isEmpty()) {
-                    throw Exception(context.getString(MR.strings.no_pages_found))
+                    throw NoPagesException(context)
                 }
 
                 // If the chapter is partially read, set the starting page to the last the user read
