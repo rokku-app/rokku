@@ -66,7 +66,7 @@ jobs:
           distro: temurin
 
       - name: Setup CHANGELOG parser
-        uses: taiki-e/install-action@73bac5e125e37a3224d25cb3852ace65586531ef # parse-changelog
+        uses: taiki-e/install-action@7a9ab3073514d404e6d1d8ec3d87d7b0d4dd1c2d # parse-changelog
 
       - name: Copy CI gradle.properties
         run: |
@@ -239,7 +239,7 @@ jobs:
 
       - name: Create Release
         if: startsWith(env.VERSION_TAG, 'v')
-        uses: softprops/action-gh-release@3d0d9888cb7fd7b750713d6e236d1fcb99157228 # v3
+        uses: softprops/action-gh-release@efb35369e0ad2afab669f228072c1b0d510eae64 # v3
         with:
           tag_name: ${{ env.VERSION_TAG }}
           name: Rokku ${{ env.VERSION_TAG }}
@@ -302,7 +302,7 @@ jobs:
 
       - name: Create Nightly
         if: startsWith(env.VERSION_TAG, 'r')
-        uses: softprops/action-gh-release@3d0d9888cb7fd7b750713d6e236d1fcb99157228 # v3
+        uses: softprops/action-gh-release@efb35369e0ad2afab669f228072c1b0d510eae64 # v3
         with:
           token: ${{ secrets.NIGHTLY_PAT }}
           repository: rokku-app/rokku-nightly
