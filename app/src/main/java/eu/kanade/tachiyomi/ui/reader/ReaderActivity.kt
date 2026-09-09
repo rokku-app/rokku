@@ -1199,6 +1199,7 @@ class ReaderActivity : BaseActivity<ReaderActivityBinding>() {
             val hideCutout = when (currentOrientation) {
                 Configuration.ORIENTATION_LANDSCAPE ->
                     readerPreferences.landscapeCutoutBehavior().get() == LandscapeCutoutBehaviour.HIDE
+
                 else -> !readerPreferences.cutoutShort().get()
             }
             val fullscreenCutoutInsets = if (noInsetForFullScreen && hideCutout) {
