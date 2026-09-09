@@ -346,7 +346,10 @@ fun buildLogWritersToAdd(
 ) = buildList {
     if (!BuildConfig.DEBUG) add(CrashlyticsLogWriter())
 
-    if (logPath != null && !BuildConfig.DEBUG) add(RollingUniFileLogWriter(logPath = logPath, isVerbose = isVerbose))
+    // Disabled: RollingUniFileLogWriter writes to the user's SAF storage tree and keeps the
+    // ExternalStorageProvider OutputStream open indefinitely, which makes ActivityManager kill
+    // the app in the background whenever it reaps com.android.externalstorage (see #138).
+    // if (logPath != null && !BuildConfig.DEBUG) add(RollingUniFileLogWriter(logPath = logPath, isVerbose = isVerbose))
 }
 
 private const val ACTION_DISABLE_INCOGNITO_MODE = "tachi.action.DISABLE_INCOGNITO_MODE"
