@@ -5,7 +5,7 @@ compose = "2026.09.00"
 bom = { module = "androidx.compose:compose-bom", version.ref = "compose" }
 animation = { module = "androidx.compose.animation:animation" }
 foundation = { module = "androidx.compose.foundation:foundation" }
-material3 = { module = "androidx.compose.material3:material3", version = "1.5.0-alpha27" }
+material3 = { module = "androidx.compose.material3:material3", version = "1.5.0-alpha28" }
 material-motion = { module = "io.github.fornewid:material-motion-compose-core", version = "2.0.1" }
 ui-tooling = { module = "androidx.compose.ui:ui-tooling" }
 ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview" }
