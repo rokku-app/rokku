@@ -45,6 +45,7 @@ import androidx.activity.viewModels
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.ColorUtils
+import androidx.core.graphics.Insets
 import androidx.core.net.toFile
 import androidx.core.net.toUri
 import androidx.core.text.buildSpannedString
@@ -1192,11 +1193,25 @@ class ReaderActivity : BaseActivity<ReaderActivityBinding>() {
                 peek + insets.getBottomGestureInsets()
             binding.chaptersSheet.chapterRecycler.updatePaddingRelative(bottom = systemInsets.bottom)
             val noInsetForFullScreen = fullscreen && !isSplitScreen
+            // Since targetSdk 35+ the window always draws into the display cutout regardless of
+            // LAYOUT_IN_DISPLAY_CUTOUT_MODE_NEVER, so the cutout has to be avoided via padding when
+            // the user opted out of showing content there.
+            val hideCutout = when (currentOrientation) {
+                Configuration.ORIENTATION_LANDSCAPE ->
+                    readerPreferences.landscapeCutoutBehavior().get() == LandscapeCutoutBehaviour.HIDE
+
+                else -> !readerPreferences.cutoutShort().get()
+            }
+            val fullscreenCutoutInsets = if (noInsetForFullScreen && hideCutout) {
+                insets.getInsets(WindowInsetsCompat.Type.displayCutout())
+            } else {
+                Insets.NONE
+            }
             binding.viewerContainer.updatePadding(
-                left = if (noInsetForFullScreen) 0 else systemInsets.left,
-                top = if (noInsetForFullScreen) 0 else systemInsets.top,
-                right = if (noInsetForFullScreen) 0 else systemInsets.right,
-                bottom = if (noInsetForFullScreen) 0 else systemInsets.bottom,
+                left = if (noInsetForFullScreen) fullscreenCutoutInsets.left else systemInsets.left,
+                top = if (noInsetForFullScreen) fullscreenCutoutInsets.top else systemInsets.top,
+                right = if (noInsetForFullScreen) fullscreenCutoutInsets.right else systemInsets.right,
+                bottom = if (noInsetForFullScreen) fullscreenCutoutInsets.bottom else systemInsets.bottom,
             )
             binding.pageNumber.updateLayoutParams<CoordinatorLayout.LayoutParams> {
                 bottomMargin = if (noInsetForFullScreen) 0 else systemInsets.bottom
@@ -2229,11 +2244,17 @@ class ReaderActivity : BaseActivity<ReaderActivityBinding>() {
 
             preferences.showPageNumber().changesIn(scope) { setPageNumberVisibility(it) }
 
-            readerPreferences.cutoutShort().changesIn(scope) { setCutoutMode() }
+            readerPreferences.cutoutShort().changesIn(scope) {
+                setCutoutMode()
+                binding.readerLayout.requestApplyInsets()
+            }
 
             readerPreferences.landscapeCutoutBehavior().changes()
                 .drop(1)
-                .onEach { setCutoutMode() }
+                .onEach {
+                    setCutoutMode()
+                    binding.readerLayout.requestApplyInsets()
+                }
                 .launchIn(scope)
 
             basePreferences.displayProfile().changesIn(scope) { setDisplayProfile(it) }

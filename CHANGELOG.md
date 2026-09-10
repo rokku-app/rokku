@@ -14,6 +14,7 @@ The format is simplified version of [Keep a Changelog](https://keepachangelog.co
 - An automatic backup that fails because its saved location is no longer accessible (folder deleted, permission revoked, storage removed) now shows a notification telling you to pick a new one, instead of failing silently
 
 ### Fixes
+- Fixed "Show content in cutout area" doing nothing on Android 15+ (content still drew into the camera cutout/notch when the option was turned off)
 - Fixed a crash when updating all extensions with many updates pending (the work request's input data exceeded its size limit)
 - Fixed a rare crash in Recents ("Two different ViewHolders have the same stable ID") caused by a section header's id colliding with a chapter row's
 - Fixed a page failing to render in the paged reader when a double-page spread couldn't be decoded for merging
@@ -22,6 +23,7 @@ The format is simplified version of [Keep a Changelog](https://keepachangelog.co
 - Fixed a crash sharing a reader page when its cached image had already been evicted from disk
 - Fixed a crash when saving reading history for a chapter that was removed from the library in the meantime (chapter list refreshed, manga removed)
 - Fixed an extension install wrongly reporting a failure (and never installing) when Android's DownloadManager returned no content URI for a download that actually completed
+- Fixed the app being killed while in the background after a while on newer Android versions (the file logger kept an open handle to the storage provider, so the app died whenever the system reclaimed it)
 
 ### Other
 - Reduced Crashlytics noise by no longer reporting a dead or misconfigured extension repo (HTTP 404 on its `repo.json` or index) as a non-fatal error
