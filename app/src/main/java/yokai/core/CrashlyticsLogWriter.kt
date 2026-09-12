@@ -75,7 +75,8 @@ class CrashlyticsLogWriter : LogWriter() {
      * Also skips Hikka/MangaBaka trying to JSON-decode their saved OAuth token preference
      * on first use when the user never logged in (empty preference, decoding fails as EOF) -
      * Hikka.loadOAuth and MangaBaka.restoreToken already catch this and return null, so the
-     * tracker just starts logged out.
+     * tracker just starts logged out. Also skips a JSON parse failing because the source
+     * answered with an HTML page (Cloudflare interstitial / error page) instead of JSON.
      *
      * Also skips AniList's tracker refresh not finding the manga in the user's list anymore
      * (e.g. removed/unlinked directly on AniList's site) - not a Rokku bug.
@@ -164,7 +165,14 @@ class CrashlyticsLogWriter : LogWriter() {
                     return true
                 }
 
-                is SerializationException -> if (current.message?.contains("had 'EOF' instead") == true) return true
+                is SerializationException -> if (
+                    current.message?.contains("had 'EOF' instead") == true ||
+                    // A source returned an HTML page (Cloudflare / error page) where JSON was expected.
+                    current.message?.contains("<!DOCTYPE") == true ||
+                    current.message?.contains("<html") == true
+                ) {
+                    return true
+                }
 
                 is ClassNotFoundException -> if (current.message?.contains("DexPathList[[]") == true) return true
 

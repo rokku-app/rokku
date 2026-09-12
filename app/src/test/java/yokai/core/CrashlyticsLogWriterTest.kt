@@ -5,6 +5,7 @@ import eu.kanade.tachiyomi.network.HttpException
 import eu.kanade.tachiyomi.source.SourceNotFoundException
 import eu.kanade.tachiyomi.ui.source.browse.NoResultsException
 import io.kotest.matchers.shouldBe
+import kotlinx.serialization.SerializationException
 import org.junit.jupiter.api.Test
 import java.io.FileNotFoundException
 import java.io.IOException
@@ -74,6 +75,16 @@ class CrashlyticsLogWriterTest {
         ignored(Exception("Timed out waiting for WebView after 30s")) shouldBe true
         ignored(Exception("The Amazing Spider-Man (1962 - 1995) is not a valid directory")) shouldBe true
         ignored(Exception("Unrecognized archive format")) shouldBe true
+    }
+
+    @Test
+    fun `a source returning HTML where JSON was expected is ignored`() {
+        ignored(
+            SerializationException(
+                "Unexpected JSON token at offset 11: Expected EOF after parsing, but had h instead\n" +
+                    "JSON input: <!DOCTYPE html><html lang=\"en\"><head>....",
+            ),
+        ) shouldBe true
     }
 
     @Test
