@@ -458,7 +458,11 @@ internal class ExtensionInstaller(private val context: Context) {
             if (!isRegistered) return
             isRegistered = false
 
-            context.unregisterReceiver(this)
+            try {
+                context.unregisterReceiver(this)
+            } catch (_: IllegalArgumentException) {
+                // Already gone (e.g. the context was recreated since register()) - nothing to do.
+            }
         }
 
         /**

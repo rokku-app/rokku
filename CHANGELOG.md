@@ -26,6 +26,7 @@ The format is simplified version of [Keep a Changelog](https://keepachangelog.co
 - Fixed the app being killed while in the background after a while on newer Android versions (the file logger kept an open handle to the storage provider, so the app died whenever the system reclaimed it)
 - Fixed a crash when range-selecting chapters to download/read/mark on the manga details screen (the selection could run past the end of the chapter list)
 - Fixed a crash while browsing a source whose filter list threw an error as it loaded in the background
+- Fixed a rare non-fatal error when cancelling an extension download after the app's process had been recreated
 
 ### Other
 - Reduced Crashlytics noise by no longer reporting a dead or misconfigured extension repo (HTTP 404 on its `repo.json` or index) as a non-fatal error
