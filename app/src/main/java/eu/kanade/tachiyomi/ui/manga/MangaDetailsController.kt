@@ -1082,14 +1082,13 @@ class MangaDetailsController :
             } else {
                 val rangeMode = rangeMode ?: return false
                 val startingPosition = startingRangeChapterPos ?: return false
-                var chapterList = listOf<ChapterItem>()
-                when {
-                    startingPosition > position ->
-                        chapterList = presenter.chapters.subList(position - 1, startingPosition)
-
-                    startingPosition <= position ->
-                        chapterList = presenter.chapters.subList(startingPosition - 1, position)
-                }
+                // Adapter positions include the details header, so shift by one to index into
+                // presenter.chapters; clamp both ends since the adapter and the chapter list can
+                // briefly disagree (e.g. a fetch landing mid-selection).
+                val chapters = presenter.chapters
+                val from = (minOf(startingPosition, position) - 1).coerceIn(0, chapters.size)
+                val to = maxOf(startingPosition, position).coerceIn(from, chapters.size)
+                val chapterList = chapters.subList(from, to).toList()
                 when (rangeMode) {
                     RangeMode.Download -> downloadChapters(chapterList)
 
