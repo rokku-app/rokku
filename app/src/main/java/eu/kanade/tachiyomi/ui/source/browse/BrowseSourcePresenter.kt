@@ -172,7 +172,14 @@ open class BrowseSourcePresenter(
             repeat(6) {
                 delay(3000)
                 if (filtersChanged || !sourceIsInitialized) return@launchIO
-                val newFilters = source.getFilterList()
+                // A misbehaving extension can throw here (e.g. NPE building its filter list);
+                // it must not crash the app - just stop polling.
+                val newFilters = try {
+                    source.getFilterList()
+                } catch (e: Exception) {
+                    Logger.e(e) { "Failed to poll filter updates for ${source.name}" }
+                    return@launchIO
+                }
                 val newSnapshot = newFilters.map { it.snapshotState() }
                 if (newSnapshot != lastSnapshot) {
                     lastSnapshot = newSnapshot
