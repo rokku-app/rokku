@@ -54,7 +54,7 @@ kotest-assertions = { module = "io.kotest:kotest-assertions-core", version = "6.
 leakcanary-android = { module = "com.squareup.leakcanary:leakcanary-android", version.ref = "leakcanary" }
 leakcanary-plumber = { module = "com.squareup.leakcanary:plumber-android", version.ref = "leakcanary" }
 
-libarchive = { module = "me.zhanghai.android.libarchive:library", version = "1.1.6" }
+libarchive = { module = "me.zhanghai.android.libarchive:library", version = "1.1.7" }
 
 material = { module = "com.google.android.material:material", version = "1.14.0" }
 materialkolor = { module = "com.materialkolor:material-kolor", version = "5.0.1" }
