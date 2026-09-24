@@ -13,7 +13,7 @@ appcompat = { module = "androidx.appcompat:appcompat", version = "1.8.0" }
 browser = { module = "androidx.browser:browser", version = "1.10.0" }
 biometric = { module = "androidx.biometric:biometric", version = "1.1.0" }
 cardview = { module = "androidx.cardview:cardview", version = "1.0.0" }
-core = { module = "androidx.core:core-ktx", version = "1.19.0" }
+core = { module = "androidx.core:core-ktx", version = "1.19.1" }
 core-splashscreen = { module = "androidx.core:core-splashscreen", version = "1.2.0" }
 glance-appwidget = { module = "androidx.glance:glance-appwidget", version = "1.2.0" }
 layout-constraint = { module = "androidx.constraintlayout:constraintlayout", version = "2.2.2" }
@@ -29,7 +29,7 @@ palette = { module = "androidx.palette:palette", version = "1.0.0" }
 preference = { module = "androidx.preference:preference-ktx", version = "1.2.1" }
 recyclerview = { module = "androidx.recyclerview:recyclerview", version = "1.4.0" }
 sqlite = { module = "androidx.sqlite:sqlite", version = "2.7.1" }
-webkit = { module = "androidx.webkit:webkit", version = "1.17.0" }
+webkit = { module = "androidx.webkit:webkit", version = "1.17.1" }
 work = { module = "androidx.work:work-runtime-ktx", version = "2.12.0" }
 window = { module = "androidx.window:window", version = "1.5.1" }
 
