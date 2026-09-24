@@ -158,6 +158,7 @@ open class BrowseSourceController(bundle: Bundle) :
                 val bar = binding.floatingBrowseBar
                 if (bar.isVisible) bar.height else 0
             },
+            currentSourceId = { getIncognitoSourceId() },
         )
 
     /**

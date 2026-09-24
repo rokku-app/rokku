@@ -15,6 +15,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
+import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.flow.onEach
 import uy.kohesive.injekt.Injekt
@@ -60,19 +61,20 @@ class TachiyomiTextInputEditText @JvmOverloads constructor(
         ) {
             try {
                 val preferences = Injekt.get<PreferencesHelper>()
-                
+
                 fun applyIncognito(incognito: Boolean) {
                     imeOptions =
-                    if (incognito) {
-                        imeOptions or EditorInfoCompat.IME_FLAG_NO_PERSONALIZED_LEARNING
-                    } else {
-                        imeOptions and EditorInfoCompat.IME_FLAG_NO_PERSONALIZED_LEARNING.inv()
-                    }
+                        if (incognito) {
+                            imeOptions or EditorInfoCompat.IME_FLAG_NO_PERSONALIZED_LEARNING
+                        } else {
+                            imeOptions and EditorInfoCompat.IME_FLAG_NO_PERSONALIZED_LEARNING.inv()
+                        }
                 }
-                
+
                 applyIncognito(isIncognitoModeForSource(sourceId(), preferences))
                 merge(preferences.incognitoMode().changes(), preferences.incognitoExtensions().changes())
                     .onEach { applyIncognito(isIncognitoModeForSource(sourceId(), preferences)) }
+                    .launchIn(viewScope)
             } catch (_: Exception) {
             }
         }
