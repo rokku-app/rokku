@@ -142,33 +142,33 @@ class SettingsBrowseController : SettingsLegacyController() {
         }
 
         preferenceCategory {
-                titleRes = MR.strings.search_history
-                switchPreference {
-                    bindTo(preferences.showBrowseSearchHistory())
-                    titleRes = MR.strings.show_recent_searches
-                }
-                preference {
-                    key = "pref_clear_search_history"
-                    titleRes = MR.strings.clear_history
+            titleRes = MR.strings.search_history
+            switchPreference {
+                bindTo(preferences.showBrowseSearchHistory())
+                titleRes = MR.strings.show_recent_searches
+            }
+            preference {
+                key = "pref_clear_search_history"
+                titleRes = MR.strings.clear_history
 
-                    preferences
-                        .browseSearchHistory()
-                        .changesIn(viewScope) { history ->
-                            isVisible = history.isNotEmpty()
-                        }
-
-                    onClick {
-                        val oldHistory = preferences.browseSearchHistory().get()
-                        preferences.clearSearchHistory()
-                        (activity as? MainActivity)?.setUndoSnackBar(
-                            view?.snack(MR.strings.search_history_cleared) {
-                                setAction(MR.strings.undo) {
-                                    preferences.browseSearchHistory().set(oldHistory)
-                                }
-                            },
-                        )
+                preferences
+                    .browseSearchHistory()
+                    .changesIn(viewScope) { history ->
+                        isVisible = history.isNotEmpty()
                     }
+
+                onClick {
+                    val oldHistory = preferences.browseSearchHistory().get()
+                    preferences.clearSearchHistory()
+                    (activity as? MainActivity)?.setUndoSnackBar(
+                        view?.snack(MR.strings.search_history_cleared) {
+                            setAction(MR.strings.undo) {
+                                preferences.browseSearchHistory().set(oldHistory)
+                            }
+                        },
+                    )
                 }
+            }
         }
 
         preferenceCategory {

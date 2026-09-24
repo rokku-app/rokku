@@ -74,8 +74,9 @@
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/show_on_all_btn"
                 style="@style/Widget.Tachiyomi.Button.OutlinedButton.Icon"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:text="@string/all_sources"
                 app:toggleCheckedStateOnClick="true" />
         </com.google.android.material.button.MaterialButtonToggleGroup>
