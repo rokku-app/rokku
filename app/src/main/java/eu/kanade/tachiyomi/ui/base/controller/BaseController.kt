@@ -1,6 +1,8 @@
 package eu.kanade.tachiyomi.ui.base.controller
 
 import android.app.Activity
+import android.content.Context
+import android.content.ContextWrapper
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -13,7 +15,9 @@ import co.touchlab.kermit.Logger
 import com.bluelinelabs.conductor.Controller
 import com.bluelinelabs.conductor.ControllerChangeHandler
 import com.bluelinelabs.conductor.ControllerChangeType
+import com.bluelinelabs.conductor.Router
 import eu.kanade.tachiyomi.R
+import eu.kanade.tachiyomi.ui.main.MainActivity
 import eu.kanade.tachiyomi.util.view.BackHandlerControllerInterface
 import eu.kanade.tachiyomi.util.view.activityBinding
 import eu.kanade.tachiyomi.util.view.isControllerVisible
@@ -128,10 +132,6 @@ abstract class BaseController(bundle: Bundle? = null) :
         }
     }
 
-    fun MenuItem.fixExpandInvalidate() {
-        fixExpand { invalidateMenuOnExpand() }
-    }
-
     /**
      * Workaround for menu items not disappearing when expanding an expandable item like a SearchView.
      * [expandActionViewFromInteraction] should be set to true in [onOptionsItemSelected] when the expandable item is selected
@@ -153,6 +153,25 @@ abstract class BaseController(bundle: Bundle? = null) :
     fun showLegacyAppBar() {
         (activity as? AppCompatActivity)?.findViewById<View>(R.id.app_bar)?.isVisible = true
     }
+}
+
+/** Source id of the topmost controller, if it's showing content tied to one. */
+fun Router.currentIncognitoSourceId(): Long? = (backstack.lastOrNull()?.controller as? BaseLegacyController<*>)?.getIncognitoSourceId()
+
+/**
+* Resolves the hosting [MainActivity] from a widget's [Context] (unwrapping any
+* [ContextWrapper]s, e.g. a themed context) and returns its [MainActivity.currentIncognitoSourceId] -
+* for widgets like [eu.kanade.tachiyomi.ui.base.MiniSearchView] or
+* [eu.kanade.tachiyomi.widget.TachiyomiTextInputEditText] that need to know whether the screen
+* they're on is showing per-source incognito content.
+*/
+fun Context.currentIncognitoSourceId(): Long? {
+    var ctx: Context = this
+    while (ctx is ContextWrapper) {
+        if (ctx is MainActivity) return ctx.currentIncognitoSourceId()
+        ctx = ctx.baseContext
+    }
+    return null
 }
 
 interface BaseControllerPreferenceControllerCommonInterface {

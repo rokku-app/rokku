@@ -55,10 +55,12 @@ open class GlobalSearchPresenter(
     private val insertManga: InsertManga by injectLazy()
     private val updateManga: UpdateManga by injectLazy()
 
-    /**
-     * Enabled sources.
-     */
-    val sources by lazy { getSourcesToQuery() }
+    /** Enabled sources. */
+    lateinit var sources: List<CatalogueSource>
+        private set
+
+    /** false for migration searches & extension intent searches */
+    val sourceFilterEnabled: Boolean = sourcesToUse == null && initialExtensionFilter.isNullOrEmpty()
 
     private var fetchSourcesJob: Job? = null
 
@@ -88,6 +90,7 @@ open class GlobalSearchPresenter(
         super.onCreate()
 
         extensionFilter = initialExtensionFilter
+        sources = getSourcesToQuery()
 
         if (items.isEmpty()) {
             // Perform a search with previous or initial state, unless the query is a manga URL
@@ -100,6 +103,12 @@ open class GlobalSearchPresenter(
         presenterScope.launchUI {
             view?.setItems(items)
         }
+    }
+
+    fun refreshSourceFilter() {
+        if (!sourceFilterEnabled) return
+        sources = getSourcesToQuery()
+        search(query, force = true)
     }
 
     /**
@@ -117,7 +126,7 @@ open class GlobalSearchPresenter(
             .filterNot { it.id.toString() in hiddenCatalogues }
             .sortedBy { "(${it.lang}) ${it.name}" }
 
-        return if (preferences.onlySearchPinned().get()) {
+        return if (sourceFilterEnabled && preferences.onlySearchPinned().get()) {
             list.filter { it.id.toString() in pinnedCatalogues }
         } else {
             list.sortedBy { it.id.toString() !in pinnedCatalogues }
@@ -177,10 +186,15 @@ open class GlobalSearchPresenter(
      * Initiates a search for manga per catalogue.
      *
      * @param query query on which to search.
+     * @param force if true, re-runs the search even if [query] hasn't changed - used when the
+     * set of [sources] to query changes instead, e.g. toggling the pinned/all sources filter.
      */
-    fun search(query: String) {
+    fun search(
+        query: String,
+        force: Boolean = false,
+    ) {
         // Return if there's nothing to do
-        if (this.query == query) return
+        if (this.query == query && !force) return
 
         // Update query
         this.query = query
@@ -196,7 +210,7 @@ open class GlobalSearchPresenter(
 
         fetchSourcesJob?.cancel()
         fetchSourcesJob = presenterScope.launch {
-            sources.map { source ->
+            sources.forEach { source ->
                 launch mainLaunch@{
                     semaphore.withPermit {
                         if (this@GlobalSearchPresenter.items.find { it.source == source }?.results != null) {

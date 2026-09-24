@@ -314,7 +314,7 @@ class ExtensionDetailsController(bundle: Bundle? = null) :
                 // Apply incognito IME for EditTextPreference
                 if (pref is EditTextPreference) {
                     pref.setOnBindEditTextListener {
-                        it.setIncognito(viewScope)
+                        it.setIncognito(viewScope) { source.id }
                     }
                 }
 

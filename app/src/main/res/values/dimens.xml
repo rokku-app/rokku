@@ -5,6 +5,13 @@
 
     <dimen name="fab_size">56dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
+    <dimen name="reader_settings_spacing">2dp</dimen>
+    <dimen name="reader_title_settings_spacing">12dp</dimen>
+    <dimen name="cover_max_width">100dp</dimen>
+    <dimen name="cover_max_height">300dp</dimen>
+    <dimen name="container_main_corner">12dp</dimen>
+    <dimen name="container_sub_corner">3dp</dimen>
+    <dimen name="nav_expand_min_width">@dimen/m3_comp_nav_rail_expanded_container_width_minimum</dimen>
 
     <!--Nav header-->
 

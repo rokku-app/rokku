@@ -87,6 +87,7 @@ import eu.kanade.tachiyomi.ui.base.SmallToolbarInterface
 import eu.kanade.tachiyomi.ui.base.activity.BaseActivity
 import eu.kanade.tachiyomi.ui.base.controller.BaseLegacyController
 import eu.kanade.tachiyomi.ui.base.controller.DialogController
+import eu.kanade.tachiyomi.ui.base.controller.currentIncognitoSourceId
 import eu.kanade.tachiyomi.ui.library.LibraryController
 import eu.kanade.tachiyomi.ui.library.compose.LibraryComposeController
 import eu.kanade.tachiyomi.ui.manga.MangaDetailsController
@@ -1503,13 +1504,20 @@ open class MainActivity : BaseActivity<MainActivityBinding>() {
     }
 
     /**
+     * Source id the topmost controller is showing content for, if any. Used to combine the
+     * global incognito toggle with per-extension incognito state - e.g. by [MiniSearchView]
+     * to put the keyboard into incognito mode while searching on such a screen.
+     */
+    fun currentIncognitoSourceId(): Long? = if (this::router.isInitialized) router.currentIncognitoSourceId() else null
+
+    /**
      * Updates the toolbar incognito badge and secure screen state, taking into account both the
      * global incognito toggle and any per-extension incognito state for the source [controller]
      * is currently browsing.
      */
     private fun updateIncognitoBadge(controller: Controller? = if (this::router.isInitialized) router.backstack.lastOrNull()?.controller else null) {
         if (!isBindingInitialized) return
-        val sourceId = (controller as? BaseLegacyController<*>)?.getIncognitoSourceId()
+        val sourceId = currentIncognitoSourceId()
         val incognito = isIncognitoModeForSource(sourceId, preferences)
         binding.toolbar.setIncognitoMode(incognito)
         binding.searchToolbar.setIncognitoMode(incognito)

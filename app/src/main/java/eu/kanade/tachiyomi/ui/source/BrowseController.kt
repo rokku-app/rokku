@@ -43,6 +43,8 @@ import eu.kanade.tachiyomi.ui.setting.controllers.SettingsBrowseController
 import eu.kanade.tachiyomi.ui.setting.controllers.SettingsSourcesController
 import eu.kanade.tachiyomi.ui.source.browse.BrowseSourceController
 import eu.kanade.tachiyomi.ui.source.globalsearch.GlobalSearchController
+import eu.kanade.tachiyomi.ui.source.searchhistory.SearchHistoryDelegate
+import eu.kanade.tachiyomi.ui.source.searchhistory.addToSearchHistory
 import eu.kanade.tachiyomi.util.system.dpToPx
 import eu.kanade.tachiyomi.util.system.getBottomGestureInsets
 import eu.kanade.tachiyomi.util.system.getResourceColor
@@ -103,6 +105,14 @@ class BrowseController :
      */
     private var adapter: SourceAdapter? = null
 
+    private val searchHistory =
+        SearchHistoryDelegate(
+            controller = this,
+            container = { binding.browseFrameLayout },
+            recycler = { binding.sourceRecycler },
+            extraShouldShow = { !showingExtensions },
+        )
+
     var extQuery = ""
         private set
 
@@ -147,6 +157,7 @@ class BrowseController :
         }
         adapter?.isSwipeEnabled = true
         adapter?.stateRestorationPolicy = RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY
+        searchHistory.setUp()
         scrollViewWith(
             binding.sourceRecycler,
             afterInsets = {
@@ -154,6 +165,7 @@ class BrowseController :
                 binding.sourceRecycler.updatePaddingRelative(
                     bottom = (activityBinding?.bottomNav?.height ?: it.getBottomGestureInsets()) + 58.spToPx,
                 )
+                searchHistory.updatePadding()
                 if (activityBinding?.bottomNav == null) {
                     setBottomPadding()
                 }
@@ -532,6 +544,7 @@ class BrowseController :
 
     override fun onDestroyView(view: View) {
         adapter = null
+        searchHistory.onDestroyView()
         binding.bottomSheet.root.onDestroy()
         super.onDestroyView(view)
     }
@@ -689,15 +702,27 @@ class BrowseController :
         activityBinding?.searchToolbar?.searchQueryHint = view?.context?.getString(MR.strings.global_search)
 
         // Create query listener which opens the global search view.
-        setOnQueryTextChangeListener(searchView, true) {
+        setOnQueryTextChangeListener(
+            searchView,
+            true,
+            onTextChange = { searchHistory.setVisible(it.isNullOrBlank()) },
+        ) {
             if (!it.isNullOrBlank()) performGlobalSearch(it)
             true
         }
     }
 
     private fun performGlobalSearch(query: String) {
+        if (!searchHistory.consumeSuppressSave()) {
+            preferences.addToSearchHistory(query)
+        }
+        searchHistory.setVisible(false)
         router.pushController(GlobalSearchController(query).withFadeTransaction())
     }
+
+    override fun onActionViewExpand(item: MenuItem?) = searchHistory.onActionViewExpand(item)
+
+    override fun onActionViewCollapse(item: MenuItem?) = searchHistory.onActionViewCollapse(item)
 
     /**
      * Called when an option menu item has been selected by the user.

@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingTop="16dp"
+    android:paddingBottom="16dp"
+    android:orientation="vertical">
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/name_text_layout"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:hint="@string/name"
+        app:boxStrokeColor="@color/text_box_stroke_selector"
+        app:endIconMode="clear_text"
+        app:hintEnabled="false"
+        app:hintTextColor="?attr/colorPrimary">
+
+        <eu.kanade.tachiyomi.widget.TachiyomiTextInputEditText
+            android:id="@+id/name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/name"
+            android:inputType="textCapSentences" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/show_on_row"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="6dp">
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/show_on_label"
+            style="?textAppearanceBodyMedium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/show_on"
+            app:layout_constraintBottom_toBottomOf="@id/show_on_group"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/show_on_group" />
+
+        <com.google.android.material.button.MaterialButtonToggleGroup
+            android:id="@+id/show_on_group"
+            style="@style/Widget.Tachiyomi.MaterialButtonGroup.Connected"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            app:layout_constrainedWidth="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toEndOf="@id/show_on_label"
+            app:layout_constraintTop_toTopOf="parent"
+            app:selectionRequired="true"
+            app:singleSelection="true">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/show_on_source_btn"
+                style="@style/Widget.Tachiyomi.Button.OutlinedButton.Icon"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                app:toggleCheckedStateOnClick="true"
+                tools:text="Only Source" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/show_on_all_btn"
+                style="@style/Widget.Tachiyomi.Button.OutlinedButton.Icon"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/all_sources"
+                app:toggleCheckedStateOnClick="true" />
+        </com.google.android.material.button.MaterialButtonToggleGroup>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

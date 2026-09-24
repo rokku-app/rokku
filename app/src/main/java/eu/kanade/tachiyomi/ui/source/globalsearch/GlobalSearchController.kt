@@ -7,9 +7,12 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.SearchOff
 import androidx.core.view.WindowInsetsCompat.Type.systemBars
 import androidx.core.view.isVisible
 import androidx.core.view.updatePaddingRelative
+import androidx.recyclerview.widget.RecyclerView
 import com.bluelinelabs.conductor.ControllerChangeHandler
 import com.bluelinelabs.conductor.ControllerChangeType
 import com.google.android.material.snackbar.Snackbar
@@ -24,6 +27,8 @@ import eu.kanade.tachiyomi.ui.main.SearchActivity
 import eu.kanade.tachiyomi.ui.main.SearchControllerInterface
 import eu.kanade.tachiyomi.ui.manga.MangaDetailsController
 import eu.kanade.tachiyomi.ui.source.browse.BrowseSourceController
+import eu.kanade.tachiyomi.ui.source.searchhistory.SearchHistoryDelegate
+import eu.kanade.tachiyomi.ui.source.searchhistory.addToSearchHistory
 import eu.kanade.tachiyomi.util.addOrRemoveToFavorites
 import eu.kanade.tachiyomi.util.system.extensionIntentForText
 import eu.kanade.tachiyomi.util.system.launchIO
@@ -88,6 +93,23 @@ open class GlobalSearchController(
     private var snack: Snackbar? = null
     private var lastPosition: Int = -1
 
+    protected open val supportsSearchHistory: Boolean = true
+
+    private val searchHistory =
+        SearchHistoryDelegate(
+            controller = this,
+            container = { binding.root },
+            recycler = { binding.recycler },
+            isEnabled = { supportsSearchHistory },
+            requireSearchExpanded = false,
+        )
+
+    override val mainRecycler: RecyclerView
+        get() = binding.recycler
+
+    private var showOnlyResults = false
+    private var lastSearchResult: List<GlobalSearchItem> = emptyList()
+
     // Called when controller is initialized.
     init {
         setHasOptionsMenu(true)
@@ -102,7 +124,7 @@ open class GlobalSearchController(
     override val presenter = GlobalSearchPresenter(initialQuery, extensionFilter)
 
     override fun onTitleClick(position: Int) {
-        val source = adapter?.getItem(position)?.source ?: return
+        val source = (adapter?.getItem(position) as? GlobalSearchItem)?.source ?: return
         preferences.lastUsedCatalogueSource().set(source.id)
         router.pushController(BrowseSourceController(source, presenter.query).withFadeTransaction())
         lastPosition = position
@@ -115,7 +137,8 @@ open class GlobalSearchController(
      */
     override fun onMangaClick(manga: Manga) {
         // Open MangaController.
-        lastPosition = adapter?.currentItems?.indexOfFirst { it.source.id == manga.source } ?: -1
+        lastPosition =
+            adapter?.currentItems?.indexOfFirst { (it as? GlobalSearchItem)?.source?.id == manga.source } ?: -1
         router.pushController(
             MangaDetailsController(manga, true, shouldLockIfNeeded = activity is SearchActivity)
                 .withFadeTransaction(),
@@ -143,8 +166,9 @@ open class GlobalSearchController(
                 onMangaAdded = { migrationInfo ->
                     migrationInfo?.let { (source, stillFaved) ->
                         val index = this@GlobalSearchController.adapter
-                            ?.currentItems?.indexOfFirst { it.source.id == source } ?: return@let
-                        val item = this@GlobalSearchController.adapter?.getItem(index) ?: return@let
+                            ?.currentItems
+                            ?.indexOfFirst { (it as? GlobalSearchItem)?.source?.id == source } ?: return@let
+                        val item = this@GlobalSearchController.adapter?.getItem(index) as? GlobalSearchItem ?: return@let
                         val oldMangaIndex = item.results?.indexOfFirst {
                             it.manga.title.lowercase() == manga.title.lowercase()
                         } ?: return@let
@@ -196,7 +220,12 @@ open class GlobalSearchController(
             activityBinding?.searchToolbar?.searchView,
             onlyOnSubmit = true,
             hideKbOnSubmit = true,
+            onTextChange = { searchHistory.setVisible(it.isNullOrBlank()) },
         ) {
+            if (!searchHistory.consumeSuppressSave()) {
+                preferences.addToSearchHistory(it ?: "")
+            }
+            searchHistory.setVisible(false)
             val query = it ?: ""
             // If the query is a manga URL from an already-installed source, open it directly
             // instead of running a full search across every enabled source.
@@ -230,9 +259,11 @@ open class GlobalSearchController(
         }
     }
 
+    // search is always expanded here, so this only kicks in once the query is cleared
     override fun onActionViewExpand(item: MenuItem?) {
         val searchView = activityBinding?.searchToolbar?.searchView ?: return
         searchView.setQuery(presenter.query, false)
+        searchHistory.setVisible(presenter.query.isBlank())
     }
 
     override fun onActionViewCollapse(item: MenuItem?) {
@@ -257,10 +288,17 @@ open class GlobalSearchController(
                 (activityBinding?.root?.rootWindowInsetsCompat?.getInsets(systemBars())?.top ?: 0),
         )
 
+        setupFilterHeader()
+
         // Create recycler and set adapter.
         binding.recycler.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(view.context)
         binding.recycler.adapter = adapter
-        scrollViewWith(binding.recycler, padBottom = true)
+        searchHistory.setUp()
+        scrollViewWith(
+            binding.recycler,
+            padBottom = true,
+            afterInsets = { searchHistory.updatePadding() },
+        )
         if (extensionFilter != null) {
             customTitle = view.context?.getString(MR.strings.loading)
             setTitle()
@@ -277,6 +315,7 @@ open class GlobalSearchController(
 
     override fun onDestroyView(view: View) {
         adapter = null
+        searchHistory.onDestroyView()
         super.onDestroyView(view)
     }
 
@@ -300,7 +339,7 @@ open class GlobalSearchController(
         val adapter = adapter ?: return null
 
         adapter.allBoundViewHolders.forEach { holder ->
-            val item = adapter.getItem(holder.flexibleAdapterPosition)
+            val item = adapter.getItem(holder.flexibleAdapterPosition) as? GlobalSearchItem
             if (item != null && source.id == item.source.id) {
                 return holder as GlobalSearchHolder
             }
@@ -332,7 +371,9 @@ open class GlobalSearchController(
                 activityBinding?.appBar?.updateAppBarAfterY(binding.recycler)
             }
         }
-        adapter?.updateDataSet(searchResult)
+        lastSearchResult = searchResult
+        adapter?.updateDataSet(applyResultsFilter(searchResult))
+        updateFooterAndEmptyState(searchResult)
     }
 
     /**
@@ -342,6 +383,65 @@ open class GlobalSearchController(
      */
     fun onMangaInitialized(source: CatalogueSource, manga: Manga) {
         getHolder(source)?.setImage(manga)
+    }
+
+    private fun applyResultsFilter(searchResult: List<GlobalSearchItem>): List<GlobalSearchItem> =
+        if (showOnlyResults) searchResult.filter { !it.results.isNullOrEmpty() } else searchResult
+
+    private fun updateFooterAndEmptyState(searchResult: List<GlobalSearchItem>) {
+        val loadingCount = searchResult.count { it.results == null }
+        // only touch the footer on an actual show/hide transition - removing and re-adding it on
+        // every source that finishes (even though its content never changes) makes RecyclerView's
+        // item animator fade it out and back in each time
+        val shouldShowFooter = showOnlyResults && loadingCount > 0
+        val footerShown = adapter?.scrollableFooters?.isNotEmpty() == true
+        if (shouldShowFooter && !footerShown) {
+            adapter?.addScrollableFooter(GlobalSearchLoadingFooterItem())
+        } else if (!shouldShowFooter && footerShown) {
+            adapter?.removeAllScrollableFooters()
+        }
+
+        val showEmpty =
+            showOnlyResults &&
+                loadingCount == 0 &&
+                searchResult.isNotEmpty() &&
+                applyResultsFilter(searchResult).isEmpty()
+        binding.emptyView.isVisible = showEmpty
+        if (showEmpty) {
+            binding.emptyView.show(Icons.Outlined.SearchOff, MR.strings.no_results_found)
+        }
+    }
+
+    private fun setHasResultsFilter(enabled: Boolean) {
+        showOnlyResults = enabled
+        preferences.onlySearchWithResults().set(enabled)
+        adapter?.updateDataSet(applyResultsFilter(lastSearchResult))
+        updateFooterAndEmptyState(lastSearchResult)
+    }
+
+    private fun setPinnedOnlyFilter(enabled: Boolean) {
+        preferences.onlySearchPinned().set(enabled)
+        presenter.refreshSourceFilter()
+    }
+
+    private fun setupFilterHeader() {
+        // no header needed for extension intent search, since they shouldn't apply
+        if (extensionFilter.isNullOrEmpty()) {
+            showOnlyResults = preferences.onlySearchWithResults().get()
+            adapter?.addScrollableHeader(
+                GlobalSearchFilterHeaderItem(
+                    // sourcesToUse (e.g. migration search) bypasses the pinned/all filter entirely
+                    showPinnedButton = { presenter.sourceFilterEnabled },
+                    isPinnedOnly = { preferences.onlySearchPinned().get() },
+                    isHasResults = { showOnlyResults },
+                    onPinnedClick = ::setPinnedOnlyFilter,
+                    onHasResultsClick = ::setHasResultsFilter,
+                ),
+            )
+        }
+        // in case items were already pushed by the presenter before this ran
+        adapter?.updateDataSet(applyResultsFilter(lastSearchResult))
+        updateFooterAndEmptyState(lastSearchResult)
     }
 
     /**

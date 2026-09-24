@@ -4,16 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="?background"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:clipToPadding="false"
-        android:paddingTop="4dp"
-        android:paddingBottom="4dp"
-        tools:listitem="@layout/source_global_search_controller_card" />
+    android:layout_height="match_parent">
 
     <com.google.android.material.loadingindicator.LoadingIndicator
         android:id="@+id/progress"
@@ -24,5 +15,22 @@
         android:visibility="gone"
         tools:visibility="visible"
         app:indicatorSize="100dp"/>
+
+    <eu.kanade.tachiyomi.widget.EmptyView
+        android:id="@+id/empty_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        android:gravity="center"
+        tools:visibility="visible" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clipToPadding="false"
+        android:paddingTop="4dp"
+        android:paddingBottom="4dp"
+        tools:listitem="@layout/source_global_search_controller_card" />
 
 </FrameLayout>

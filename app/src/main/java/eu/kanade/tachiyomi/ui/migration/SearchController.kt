@@ -51,6 +51,9 @@ class SearchController(
 
     override val presenter = SearchPresenter(initialQuery, manga!!, sources = sources)
 
+    // picking a migration target isnt a browse search, keep it out of the history
+    override val supportsSearchHistory: Boolean = false
+
     override fun onMangaClick(manga: Manga) {
         if (targetController is MigrationListController) {
             val migrationListController = targetController as? MigrationListController

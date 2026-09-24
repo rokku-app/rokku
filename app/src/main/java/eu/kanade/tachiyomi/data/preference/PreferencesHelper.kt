@@ -19,12 +19,14 @@ import eu.kanade.tachiyomi.ui.reader.settings.ReaderBottomButton
 import eu.kanade.tachiyomi.ui.reader.settings.ReadingModeType
 import eu.kanade.tachiyomi.ui.reader.viewer.ViewerNavigation
 import eu.kanade.tachiyomi.ui.recents.RecentsPresenter
+import eu.kanade.tachiyomi.ui.source.searchhistory.SearchHistoryEntry
 import eu.kanade.tachiyomi.util.system.Themes
 import eu.kanade.tachiyomi.util.system.coverThemeOptions
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.serialization.json.Json
 import java.text.DateFormat
 import java.util.Locale
 import eu.kanade.tachiyomi.data.preference.PreferenceKeys as Keys
@@ -283,6 +285,38 @@ class PreferencesHelper(val context: Context, val preferenceStore: PreferenceSto
         InstalledExtensionsOrder.Name.value,
     )
 
+    fun showBrowseSearchHistory() = preferenceStore.getBoolean(Keys.showBrowseSearchHistory, true)
+
+    /** Recent browse queries, newest first. Global search and per source search share the one list. */
+    fun browseSearchHistory() =
+        preferenceStore.getObject(
+            key = Keys.browseSearchHistory,
+            defaultValue = emptyList(),
+            serializer = { Json.encodeToString(it) },
+            deserializer = {
+                try {
+                    Json.decodeFromString<List<SearchHistoryEntry>>(it)
+                } catch (e: Exception) {
+                    emptyList()
+                }
+            },
+        )
+
+    /** User-named, permanently saved query/filter presets - unlike [browseSearchHistory], never auto-trimmed. */
+    fun savedSearches() =
+        preferenceStore.getObject(
+            key = Keys.savedSearches,
+            defaultValue = emptyList(),
+            serializer = { Json.encodeToString(it) },
+            deserializer = {
+                try {
+                    Json.decodeFromString<List<SearchHistoryEntry>>(it)
+                } catch (e: Exception) {
+                    emptyList()
+                }
+            },
+        )
+
     // TODO: SourcePref
     fun migrationSourceOrder() = preferenceStore.getInt(
         "migration_source_order",
@@ -403,6 +437,8 @@ class PreferencesHelper(val context: Context, val preferenceStore: PreferenceSto
     fun showCategoryInTitle() = preferenceStore.getBoolean("category_in_title", false)
 
     fun onlySearchPinned() = preferenceStore.getBoolean(Keys.onlySearchPinned, false)
+
+    fun onlySearchWithResults() = preferenceStore.getBoolean(Keys.onlySearchWithResults, false)
 
     fun hideInLibraryItems() = preferenceStore.getBoolean("browse_hide_in_library_items", false)
 

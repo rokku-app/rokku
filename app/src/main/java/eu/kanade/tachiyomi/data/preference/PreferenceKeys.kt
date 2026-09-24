@@ -151,6 +151,14 @@ object PreferenceKeys {
 
     const val onlySearchPinned = "only_search_pinned"
 
+    const val onlySearchWithResults = "only_search_with_results"
+
+    const val showBrowseSearchHistory = "show_browse_search_history"
+
+    const val browseSearchHistory = "browse_search_history"
+
+    const val savedSearches = "saved_searches"
+
     const val downloadNew = "download_new"
 
     const val libraryLayout = "pref_display_library_layout"

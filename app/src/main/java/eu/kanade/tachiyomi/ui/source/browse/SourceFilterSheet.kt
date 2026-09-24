@@ -17,6 +17,7 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import eu.davidea.flexibleadapter.FlexibleAdapter
 import eu.davidea.flexibleadapter.items.IFlexible
 import eu.kanade.tachiyomi.databinding.SourceFilterSheetBinding
+import eu.kanade.tachiyomi.ui.source.filter.SavedSearchesHeaderItem
 import eu.kanade.tachiyomi.util.system.dpToPx
 import eu.kanade.tachiyomi.util.system.rootWindowInsetsCompat
 import eu.kanade.tachiyomi.util.view.checkHeightThen
@@ -35,7 +36,11 @@ class SourceFilterSheet(
     val onSaveClicked: () -> Unit,
     val onSavedSearchClicked: (Long) -> Unit,
     val onDeleteSavedSearchClicked: (Long) -> Unit,
+    val onSavedSearchesClicked: () -> Unit,
 ) : E2EBottomSheetDialog<SourceFilterSheetBinding>(activity) {
+
+    /** Set by the controller whenever it applies a filter change, so [dismiss] knows whether a re-search is due. */
+    var filterChanged = true
 
     val adapter: FlexibleAdapter<IFlexible<*>> = FlexibleAdapter<IFlexible<*>>(null)
         .setDisplayHeadersAtStartUp(true)
@@ -199,13 +204,35 @@ class SourceFilterSheet(
         binding.titleLayout.translationY = bottomSheetVisibleHeight.toFloat()
     }
 
-    override fun dismiss() {
+    override fun dismiss() = dismiss(triggerSearch = true)
+
+    private fun dismiss(triggerSearch: Boolean) {
         super.dismiss()
-        onSearchClicked()
+        if (triggerSearch && filterChanged) {
+            onSearchClicked()
+        }
+    }
+
+    /** Set once before showing the sheet - a row offering the recent/saved search history is pinned atop [setFilters] while true. */
+    private var hasSearchHistory = false
+
+    fun setSavedSearchesVisible(visible: Boolean) {
+        hasSearchHistory = visible
     }
 
     fun setFilters(items: List<IFlexible<*>>) {
-        adapter.updateDataSet(items)
+        val prefix: List<IFlexible<*>> =
+            if (hasSearchHistory) {
+                listOf(
+                    SavedSearchesHeaderItem {
+                        dismiss(triggerSearch = false)
+                        onSavedSearchesClicked()
+                    },
+                )
+            } else {
+                emptyList()
+            }
+        adapter.updateDataSet(prefix + items)
     }
 
     fun scrollToTop() {

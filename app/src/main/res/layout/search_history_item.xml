@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/back_view"
+        style="@style/Widget.Tachiyomi.CardView.Container"
+        android:layout_height="@dimen/material_component_lists_two_line_height"
+        app:cardBackgroundColor="@color/md_red_500">
+
+        <ImageView
+            android:id="@+id/left_back_view"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_gravity="start|center_vertical"
+            android:layout_marginStart="21dp"
+            android:contentDescription="@string/remove"
+            android:src="@drawable/ic_delete_24dp"
+            app:tint="@color/md_white_1000" />
+
+        <ImageView
+            android:id="@+id/right_back_view"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_gravity="end|center_vertical"
+            android:layout_marginEnd="21dp"
+            android:contentDescription="@string/remove"
+            android:src="@drawable/ic_delete_24dp"
+            app:tint="@color/md_white_1000" />
+    </com.google.android.material.card.MaterialCardView>
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/history_card"
+        style="@style/Widget.Tachiyomi.CardView.Container">
+
+        <LinearLayout
+            android:id="@+id/front_view"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/material_component_lists_two_line_height"
+            android:background="@drawable/transparent_item_selector"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/history_icon"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginStart="14dp"
+                android:contentDescription="@string/history"
+                android:src="@drawable/ic_history_24dp"
+                app:tint="?attr/colorOnSurfaceVariant" />
+
+            <LinearLayout
+                android:id="@+id/text_layout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:paddingStart="14dp"
+                android:paddingEnd="8dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:textColor="?attr/colorOnBackground"
+                    tools:text="one piece" />
+                <TextView
+                    android:id="@+id/subtitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    android:textStyle="italic"
+                    tools:visibility="visible"
+                    android:ellipsize="middle"
+                    android:maxLines="1"
+                    android:textColor="?attr/colorOnSurfaceVariant"
+                    tools:text="filters" />
+            </LinearLayout>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/fill_button"
+                style="?materialIconButtonStyle"
+                android:layout_width="48dp"
+                android:layout_height="match_parent"
+                android:contentDescription="@string/edit_search"
+                app:icon="@drawable/ic_arrow_insert_24dp"
+                app:iconTint="?attr/colorOnSurfaceVariant" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/save_button"
+                style="?materialIconButtonStyle"
+                android:layout_width="48dp"
+                android:layout_height="match_parent"
+                android:contentDescription="@string/save"
+                app:icon="@drawable/ic_outline_save_24dp"
+                app:iconTint="?attr/colorOnSurfaceVariant" />
+
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+</FrameLayout>

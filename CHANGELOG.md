@@ -13,6 +13,7 @@ The format is simplified version of [Keep a Changelog](https://keepachangelog.co
 ### Additions
 - The manga details screen background can now pick up a subtle tint from the cover, extending the accent already used for the header/buttons through the rest of the screen (off by default, toggle separately under Settings > Appearance > Details page > Theme background based on cover)
 - Local source now reads Year, Month, and Day fields from a chapter's ComicInfo.xml to set its displayed date, and downloaded chapters now write these fields when generating ComicInfo.xml
+- Browse and Global Search now keep a recent search history and let you save searches (scoped to one source or all sources), with incognito-aware suggestions ([@Hiirbaf](https://github.com/Hiirbaf))
 
 ### Changes
 - An automatic backup that fails because its saved location is no longer accessible (folder deleted, permission revoked, storage removed) now shows a notification telling you to pick a new one, instead of failing silently

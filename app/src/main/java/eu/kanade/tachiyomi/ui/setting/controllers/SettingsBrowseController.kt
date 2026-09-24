@@ -28,6 +28,7 @@ import eu.kanade.tachiyomi.ui.setting.onClick
 import eu.kanade.tachiyomi.ui.setting.preference
 import eu.kanade.tachiyomi.ui.setting.preferenceCategory
 import eu.kanade.tachiyomi.ui.setting.switchPreference
+import eu.kanade.tachiyomi.ui.source.searchhistory.clearSearchHistory
 import eu.kanade.tachiyomi.util.view.setAction
 import eu.kanade.tachiyomi.util.view.snack
 import eu.kanade.tachiyomi.util.view.withFadeTransaction
@@ -137,6 +138,36 @@ class SettingsBrowseController : SettingsLegacyController() {
             switchPreference {
                 key = PreferenceKeys.onlySearchPinned
                 titleRes = MR.strings.only_search_pinned_when
+            }
+        }
+
+        preferenceCategory {
+            titleRes = MR.strings.search_history
+            switchPreference {
+                bindTo(preferences.showBrowseSearchHistory())
+                titleRes = MR.strings.show_recent_searches
+            }
+            preference {
+                key = "pref_clear_search_history"
+                titleRes = MR.strings.clear_history
+
+                preferences
+                    .browseSearchHistory()
+                    .changesIn(viewScope) { history ->
+                        isVisible = history.isNotEmpty()
+                    }
+
+                onClick {
+                    val oldHistory = preferences.browseSearchHistory().get()
+                    preferences.clearSearchHistory()
+                    (activity as? MainActivity)?.setUndoSnackBar(
+                        view?.snack(MR.strings.search_history_cleared) {
+                            setAction(MR.strings.undo) {
+                                preferences.browseSearchHistory().set(oldHistory)
+                            }
+                        },
+                    )
+                }
             }
         }
 

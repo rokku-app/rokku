@@ -46,6 +46,9 @@ import eu.kanade.tachiyomi.ui.main.SearchActivity
 import eu.kanade.tachiyomi.ui.manga.MangaDetailsController
 import eu.kanade.tachiyomi.ui.source.BrowseController
 import eu.kanade.tachiyomi.ui.source.globalsearch.GlobalSearchController
+import eu.kanade.tachiyomi.ui.source.searchhistory.SearchHistoryDelegate
+import eu.kanade.tachiyomi.ui.source.searchhistory.SearchHistoryView
+import eu.kanade.tachiyomi.ui.source.searchhistory.addToSearchHistory
 import eu.kanade.tachiyomi.ui.webview.WebViewActivity
 import eu.kanade.tachiyomi.util.addOrRemoveToFavorites
 import eu.kanade.tachiyomi.util.system.connectivityManager
@@ -145,6 +148,19 @@ open class BrowseSourceController(bundle: Bundle) :
      */
     private var recycler: RecyclerView? = null
 
+    // added last so it covers the floating popular/latest bar too
+    private val searchHistory =
+        SearchHistoryDelegate(
+            controller = this,
+            container = { binding.sourceLayout },
+            recycler = { recycler },
+            extraBottomPadding = {
+                val bar = binding.floatingBrowseBar
+                if (bar.isVisible) bar.height else 0
+            },
+            currentSourceId = { getIncognitoSourceId() },
+        )
+
     /**
      * Endless loading item.
      */
@@ -206,6 +222,7 @@ open class BrowseSourceController(bundle: Bundle) :
 
         adapter = FlexibleAdapter(null, this, false)
         setupRecycler(view)
+        searchHistory.setUp()
 
         if (presenter.sourceFilters.isEmpty() && !presenter.source.supportsLatest) {
             binding.floatingBrowseBar.isVisible = false
@@ -247,6 +264,7 @@ open class BrowseSourceController(bundle: Bundle) :
         adapter = null
         snack = null
         recycler = null
+        searchHistory.onDestroyView()
         super.onDestroyView(view)
     }
 
@@ -310,6 +328,7 @@ open class BrowseSourceController(bundle: Bundle) :
                     top = (bigToolbarHeight + insets.getInsets(systemBars()).top),
                     bottom = insets.getInsets(systemBars()).bottom,
                 )
+                searchHistory.updatePadding()
             },
         )
         binding.floatingBrowseBar.applyBottomAnimatedInsets(8.dpToPx)
@@ -342,8 +361,13 @@ open class BrowseSourceController(bundle: Bundle) :
             searchView?.setQuery("", true)
         }
 
-        setOnQueryTextChangeListener(searchView, onlyOnSubmit = true, hideKbOnSubmit = true) {
-            searchWithQuery(it ?: "")
+        setOnQueryTextChangeListener(
+            searchView,
+            onlyOnSubmit = true,
+            hideKbOnSubmit = true,
+            onTextChange = { searchHistory.setVisible(it.isNullOrBlank()) },
+        ) {
+            searchWithQuery(it ?: "", save = !searchHistory.consumeSuppressSave())
             true
         }
         // Show next display mode
@@ -361,11 +385,16 @@ open class BrowseSourceController(bundle: Bundle) :
         }
     }
 
+    // manually set its visibility as coming from global search shouldn't make this show
+    override fun onActionViewExpand(item: MenuItem?) = searchHistory.setVisible(presenter.query.isBlank())
+
     override fun onActionViewCollapse(item: MenuItem?) {
+        searchHistory.setVisible(false)
         if (isBehindGlobalSearch) {
             router.popController(this)
         } else {
-            searchWithQuery("")
+            // just closing the search bar, not actually submitting an empty search - don't save it
+            searchWithQuery("", save = false)
         }
     }
 
@@ -420,6 +449,9 @@ open class BrowseSourceController(bundle: Bundle) :
 
     private fun applyFilters() {
         val allDefault = presenter.filtersMatchDefault()
+        if (presenter.query.isBlank()) {
+            searchHistory.setVisible(false)
+        }
         showProgressBar()
         adapter?.clear()
         presenter.setSourceFilter(if (allDefault) FilterList() else presenter.sourceFilters)
@@ -504,8 +536,17 @@ open class BrowseSourceController(bundle: Bundle) :
                     .setNegativeButton(android.R.string.ok) { _, _ -> presenter.deleteSearch(searchId) }
                     .show()
             },
+            onSavedSearchesClicked = {
+                if (activityBinding?.searchToolbar?.isSearchExpanded != true) {
+                    activityBinding?.searchToolbar?.searchItem?.expandActionView()
+                }
+                searchHistory.setVisible(true)
+            },
         )
         filterSheet?.setFilters(presenter.filterItems)
+        filterSheet?.setSavedSearchesVisible(
+            SearchHistoryView.hasHistory(preferences, sourceId = presenter.source.id),
+        )
         presenter.filtersChanged = false
 
         filterSheet?.setOnCancelListener { filterSheet = null }
@@ -672,7 +713,15 @@ open class BrowseSourceController(bundle: Bundle) :
      *
      * @param newQuery the new query.
      */
-    private fun searchWithQuery(newQuery: String) {
+    private fun searchWithQuery(
+        newQuery: String,
+        save: Boolean = true,
+    ) {
+        if (save) {
+            // saved before the early return below, so re-searching the same thing still bumps it up
+            presenter.preferences.addToSearchHistory(newQuery, presenter.source.id)
+        }
+        searchHistory.setVisible(false)
         if (presenter.query == newQuery) {
             return
         }

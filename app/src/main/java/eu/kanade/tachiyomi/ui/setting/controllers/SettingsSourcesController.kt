@@ -226,6 +226,7 @@ class SettingsSourcesController : SettingsLegacyController(), FloatingSearchInte
     override fun showFloatingBar() = activityBinding?.appBar?.useLargeToolbar == true
 
     var expandActionViewFromInteraction = false
+
     private fun MenuItem.fixExpand(
         onExpand: ((MenuItem) -> Boolean)? = null,
         onCollapse: ((MenuItem) -> Boolean)? = null,

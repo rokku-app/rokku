@@ -9,10 +9,15 @@ import dev.icerock.moko.resources.compose.stringResource
 import eu.kanade.tachiyomi.R
 import eu.kanade.tachiyomi.data.preference.PreferencesHelper
 import eu.kanade.tachiyomi.data.preference.changesIn
+import eu.kanade.tachiyomi.source.isIncognitoModeForSource
+import eu.kanade.tachiyomi.ui.base.controller.currentIncognitoSourceId
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.merge
+import kotlinx.coroutines.flow.onEach
 import uy.kohesive.injekt.Injekt
 import uy.kohesive.injekt.api.get
 import yokai.i18n.MR
@@ -35,7 +40,7 @@ class TachiyomiTextInputEditText @JvmOverloads constructor(
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
         scope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
-        setIncognito(scope!!)
+        setIncognito(scope!!) { context.currentIncognitoSourceId() }
     }
 
     override fun onDetachedFromWindow() {
@@ -47,17 +52,29 @@ class TachiyomiTextInputEditText @JvmOverloads constructor(
     companion object {
         /**
          * Sets Flow to this [EditText] that sets [EditorInfoCompat.IME_FLAG_NO_PERSONALIZED_LEARNING] to imeOptions
-         * if [PreferencesHelper.incognitoMode] is true. Some IMEs may not respect this flag.
+         * if incognito mode is on - either the global toggle, or per-extension incognito for
+         * [sourceId]'s source, if one is given. Some IMEs may not respect this flag.
          */
-        fun EditText.setIncognito(viewScope: CoroutineScope) {
+        fun EditText.setIncognito(
+            viewScope: CoroutineScope,
+            sourceId: () -> Long? = { null },
+        ) {
             try {
-                Injekt.get<PreferencesHelper>().incognitoMode().changesIn(viewScope) {
-                    imeOptions = if (it) {
-                        imeOptions or EditorInfoCompat.IME_FLAG_NO_PERSONALIZED_LEARNING
-                    } else {
-                        imeOptions and EditorInfoCompat.IME_FLAG_NO_PERSONALIZED_LEARNING.inv()
-                    }
+                val preferences = Injekt.get<PreferencesHelper>()
+
+                fun applyIncognito(incognito: Boolean) {
+                    imeOptions =
+                        if (incognito) {
+                            imeOptions or EditorInfoCompat.IME_FLAG_NO_PERSONALIZED_LEARNING
+                        } else {
+                            imeOptions and EditorInfoCompat.IME_FLAG_NO_PERSONALIZED_LEARNING.inv()
+                        }
                 }
+
+                applyIncognito(isIncognitoModeForSource(sourceId(), preferences))
+                merge(preferences.incognitoMode().changes(), preferences.incognitoExtensions().changes())
+                    .onEach { applyIncognito(isIncognitoModeForSource(sourceId(), preferences)) }
+                    .launchIn(viewScope)
             } catch (_: Exception) {
             }
         }
