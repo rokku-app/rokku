@@ -362,7 +362,7 @@
     <string name="date_format">Formato de data</string>
     <string name="check_for_updates">Procurar por atualizações</string>
     <string name="secure_screen">Tela segura</string>
-    <string name="security">Segurança</string>
+    <string name="security">Segurança e Privacidade</string>
     <!-- Storage -->
     <string name="data_and_storage">Dados e armazenamento</string>
     <string name="storage_location">Local de armazenamento</string>
@@ -427,7 +427,7 @@
     <string name="source_repos">Repositórios de extensões</string>
     <string name="label_add_repo">Adicionar novo Repositório</string>
     <string name="action_add_repo">Adicionar</string>
-    <string name="invalid_repo_url">URL de Repositório inválida</string>
+    <string name="invalid_repo_url">URL de repositório inválida</string>
     <string name="repo_already_exists">Repositório já existente!</string>
     <string name="information_empty_repos">Você aidna não tem repositórios definidos.</string>
     <string name="confirm_delete_repo_title">Apagar repositório?</string>
@@ -738,7 +738,7 @@
     <string name="remove_crop">Remover corte</string>
     <string name="crop_borders_paged">Aparar páginas (Paginado)</string>
     <string name="invert_double_pages">Inverter páginas duplas</string>
-    <string name="amount_of_pages_to_preload">A quantidade de páginas que serão pré-carregadas enquanto se lê. Valores maiores resultarão em uma experiência de leitura melhor, ao custo de maior uso do cache e da rede.</string>
+    <string name="amount_of_pages_to_preload">A quantidade de páginas que serão pré-carregadas enquanto se lê. Valores maiores resultarão em uma experiência de leitura melhor, ao custo de maior uso do cache e da rede</string>
     <string name="page_preload_amount">Número de paginas para pré-carregar</string>
     <string name="save_combined_pages">Salvar páginas combinadas</string>
     <string name="share_combined_pages">Compartilhar páginas combinadas</string>
@@ -781,7 +781,7 @@
     <string name="automatic_removal">Remoção automática</string>
     <string name="show_on_long_press">Mostrar no toque longo</string>
     <string name="actions">Ações</string>
-    <string name="search_tips_show_periodically">Dicas de pesquisa aparecerão periodicamente. Pressione e segure para pesquisar.</string>
+    <string name="search_tips_show_periodically">Dicas de pesquisa aparecerão periodicamente. Pressione e segure para pesquisar</string>
     <string name="search_suggestions">Sugestões de pesquisa</string>
     <string name="release_page">Página de lançamento</string>
     <string name="mark_range_as_unread">Marcar um intervalo de capítulos como não lido</string>
@@ -1030,7 +1030,7 @@
     <string name="gray_background">Cinza</string>
     <string name="app_updates">atualizações do app</string>
     <string name="open">Abrir</string>
-    <string name="allow_notifications_recommended">Ativar as notificações é recomendado para manter sua biblioteca e aplicativo em dia.</string>
+    <string name="allow_notifications_recommended">Ativar as notificações é recomendado para manter sua biblioteca e aplicativo em dia</string>
     <string name="pref_remove_exclude_categories">Categorias ignoradas</string>
     <string name="ext_installer_pref">Instalador</string>
     <string name="library_entries">Itens da biblioteca</string>
@@ -1155,4 +1155,35 @@
     <string name="download_paused_low_space">Downloads pausados, pouco espaço de armazenamento disponível</string>
     <string name="pause_downloads_low_space">Pausa os downloads quando o espaço de armazenamento estiver baixo</string>
     <string name="custom">Customizado</string>
+    <string name="recent_searches">Buscas recentes</string>
+    <string name="only_x">Apenas %1$s</string>
+    <string name="clear_all">Limpar tudo</string>
+    <string name="edit_search">Editar busca</string>
+    <string name="duplicate_in_library">Duplicar</string>
+    <string name="track_login_expired">Sessão de Login expirada, por favor logue novamente no menu de Monitoramento</string>
+    <string name="theme_background_based_on_cover">Tema de fundo baseado na capa</string>
+    <string name="cover_theme_style">Estilo do tema da capa</string>
+    <string name="palette_style_tonal_spot">Tom Suave</string>
+    <string name="legacy_theme">Clássico</string>
+    <string name="palette_style_neutral">Neutro</string>
+    <string name="palette_style_vibrant">Vibrante</string>
+    <string name="palette_style_expressive">Expressivo</string>
+    <string name="palette_style_rainbow">Arco-íris</string>
+    <string name="palette_style_fruit_salad">Salada de Frutas</string>
+    <string name="palette_style_monochrome">Monocromático</string>
+    <string name="palette_style_fidelity">Fidelidade</string>
+    <string name="palette_style_content">Conteúdo</string>
+    <string name="backup_location_unavailable">O local de backup não está mais acessível. Escolha um novo em Configurações &gt; Dados e armazenamento.</string>
+    <string name="search_history">Histórico de buscas</string>
+    <string name="show_recent_searches">Mostrar buscas recentes</string>
+    <string name="search_history_cleared">Histórico de buscas limpo</string>
+    <string name="search_removed">Termo de busca removido</string>
+    <string name="show_duplicate_in_library_items">Mostrar selo Duplicado</string>
+    <string name="show_duplicate_in_library_items_summary">Exibe um selo Duplicado nos itens que já estão na biblioteca vindos de outra extensão. Obs.: alguns duplicados podem não ser detectados devido a diferenças nos nomes</string>
+    <string name="pref_expand_related_mangas">Carregar sugestões automaticamente</string>
+    <string name="pref_expand_related_mangas_summary">Busca os títulos sugeridos toda vez que um mangá é aberto. Desative para carregá-los apenas quando solicitado</string>
+    <string name="couldnt_create_download_dir">Não foi possível criar a pasta de download do capítulo</string>
+    <string name="has_results">Com resultados</string>
+    <string name="pinned_only">Somente fixadas</string>
+    <string name="show_on">Mostrar em</string>
 </resources>

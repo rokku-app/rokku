@@ -26,22 +26,14 @@
         <item quantity="other">e mais %1$d capítulos</item>
     </plurals>
     <plurals name="extension_updates_available">
-        <item quantity="one">Atualização de extensão disponível</item>
+        <item quantity="one">%d Atualização de extensão disponível</item>
         <item quantity="many">%d atualizações de extensão disponíveis</item>
         <item quantity="other">%d atualizações de extensão disponíveis</item>
     </plurals>
     <plurals name="deleted_chapters">
-        <item quantity="one">Um capítulo foi removido da fonte:
-\n%2$s
-\nExcluir seu download\?</item>
-        <item quantity="many">%1$s capítulos foram removidos da fonte:
-\n%2$s
-\n
-\nExcluir seus downloads\?</item>
-        <item quantity="other">%1$s capítulos foram removidos da fonte:
-\n%2$s
-\n
-\nExcluir seus downloads\?</item>
+        <item quantity="one">Um capítulo foi removido da fonte: \n%2$s \n\nExcluir seu download?</item>
+        <item quantity="many">%1$s capítulos foram removidos da fonte: \n%2$s \n\nExcluir seus downloads?</item>
+        <item quantity="other">%1$s capítulos foram removidos da fonte: \n%2$s \n\nExcluir seus downloads?</item>
     </plurals>
     <plurals name="migrate_manga">
         <item quantity="one">Migrar %1$d%2$s mangá\?</item>
@@ -89,7 +81,7 @@
         <item quantity="other">%d atualizações pendentes</item>
     </plurals>
     <plurals name="extensions_updated_plural">
-        <item quantity="one">Extensão atualizada</item>
+        <item quantity="one">%d Extensão atualizada</item>
         <item quantity="many">%d extensões atualizadas</item>
         <item quantity="other">%d extensões atualizadas</item>
     </plurals>
@@ -99,7 +91,7 @@
         <item quantity="other">Pulando %d capítulos, ou eles estão faltando na fonte, ou eles foram filtrados</item>
     </plurals>
     <plurals name="next_unread_chapters">
-        <item quantity="one">Próximo capítulo não lido</item>
+        <item quantity="one">%d Próximo capítulo não lido</item>
         <item quantity="many">Próximos %d capítulos não lidos</item>
         <item quantity="other">Próximos %d capítulos não lidos</item>
     </plurals>

@@ -1062,4 +1062,5 @@
     <string name="nsfw">NSFW</string>
     <string name="crash_screen_title">Terjadi Kesalahan Tak Terduga</string>
     <string name="crash_screen_description">%s mengalami kesalahan tak terduga. Kami menyarankan Anda mengambil tangkapan layar pesan ini, mengekspor log crash, lalu membagikannya ke Issue GitHub.</string>
+    <string name="no_categories">Kamu tidak memiliki kategori</string>
 </resources>
