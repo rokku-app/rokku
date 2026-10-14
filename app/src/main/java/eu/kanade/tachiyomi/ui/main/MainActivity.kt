@@ -36,6 +36,7 @@ import androidx.appcompat.view.menu.ActionMenuItemView
 import androidx.appcompat.view.menu.MenuItemImpl
 import androidx.appcompat.widget.ActionMenuView
 import androidx.appcompat.widget.Toolbar
+import androidx.compose.ui.platform.ComposeView
 import androidx.core.animation.doOnEnd
 import androidx.core.content.getSystemService
 import androidx.core.graphics.ColorUtils
@@ -141,8 +142,10 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 import uy.kohesive.injekt.injectLazy
 import yokai.core.migration.Migrator
+import yokai.domain.DialogHostState
 import yokai.domain.base.BasePreferences
 import yokai.domain.recents.interactor.GetRecents
 import yokai.i18n.MR
@@ -150,6 +153,9 @@ import yokai.presentation.core.Constants
 import yokai.presentation.extension.repo.ExtensionRepoController
 import yokai.presentation.libraryUpdateError.LibraryUpdateErrorController
 import yokai.presentation.onboarding.OnboardingController
+import yokai.presentation.settings.screen.about.NewUpdateData
+import yokai.presentation.settings.screen.about.awaitNewUpdateDialog
+import yokai.presentation.theme.YokaiTheme
 import yokai.util.lang.getString
 import kotlin.collections.set
 import kotlin.math.abs
@@ -1042,6 +1048,26 @@ open class MainActivity : BaseActivity<MainActivityBinding>() {
         MangaCoverMetadata.savePrefs()
     }
 
+    /**
+     * Hosts the Compose dialogs of this View based activity.
+     */
+    private val dialogHostState = DialogHostState()
+    private var isDialogHostAttached = false
+
+    private fun showNewUpdateDialog(data: NewUpdateData) {
+        // Compose is only set up once there is a dialog to show, to keep it out of the app's startup
+        if (!isDialogHostAttached) {
+            isDialogHostAttached = true
+            addContentView(
+                ComposeView(this).apply {
+                    setContent { YokaiTheme { dialogHostState.value?.invoke() } }
+                },
+                ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT),
+            )
+        }
+        lifecycleScope.launch { dialogHostState.awaitNewUpdateDialog(data) }
+    }
+
     private fun checkForAppUpdates() {
         if (isUpdaterEnabled && router.backstack.lastOrNull()?.controller !is AboutController) {
             lifecycleScope.launchIO {
@@ -1056,7 +1082,7 @@ open class MainActivity : BaseActivity<MainActivityBinding>() {
                         withUIContext {
                             showNotificationPermissionPrompt()
                             AppUpdateNotifier.releasePageUrl = result.release.releaseLink
-                            AboutController.NewUpdateDialogController(body, url, isBeta, result.release.version).showDialog(router)
+                            showNewUpdateDialog(NewUpdateData(body, url, isBeta, result.release.version))
                         }
                     }
                 } catch (error: Exception) {
@@ -1145,12 +1171,16 @@ open class MainActivity : BaseActivity<MainActivityBinding>() {
             SHORTCUT_UPDATE_NOTES -> {
                 val extras = intent.extras ?: return false
                 if (router.backstack.isEmpty()) nav.selectedItemId = R.id.nav_library
-                if (
-                    router.backstack.lastOrNull()?.controller !is AboutController.NewUpdateDialogController &&
-                    // FIXME: Show Compose version of NewUpdateDialog for AboutController
-                    router.backstack.lastOrNull()?.controller !is AboutController
-                ) {
-                    AboutController.NewUpdateDialogController(extras).showDialog(router)
+                // The About screen shows its own update dialog
+                if (router.backstack.lastOrNull()?.controller !is AboutController) {
+                    showNewUpdateDialog(
+                        NewUpdateData(
+                            body = extras.getString(NewUpdateData.BODY_KEY).orEmpty(),
+                            url = extras.getString(NewUpdateData.URL_KEY).orEmpty(),
+                            isBeta = extras.getBoolean(NewUpdateData.IS_BETA, false),
+                            version = extras.getString(NewUpdateData.VERSION_KEY),
+                        ),
+                    )
                 }
             }
 

@@ -1,7 +1,10 @@
 package yokai.presentation.settings.screen.about
 
 import android.os.Build
+import android.text.method.LinkMovementMethod
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.AlertDialog
@@ -11,22 +14,39 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import com.google.android.material.textview.MaterialTextView
 import dev.icerock.moko.resources.compose.stringResource
+import eu.kanade.tachiyomi.data.preference.PreferencesHelper
 import eu.kanade.tachiyomi.data.updater.AppDownloadInstallJob
 import eu.kanade.tachiyomi.ui.more.parseReleaseNotes
+import uy.kohesive.injekt.Injekt
+import uy.kohesive.injekt.api.get
 import yokai.domain.DialogHostState
 import yokai.i18n.MR
 import java.io.Serializable
 import kotlin.coroutines.resume
 import android.R as AR
 
+/**
+ * @property version the release's version, set when the dialog may offer to skip it
+ */
 data class NewUpdateData(
     val body: String,
     val url: String,
     val isBeta: Boolean?,
-) : Serializable
+    val version: String? = null,
+) : Serializable {
+
+    companion object {
+        // Also read from the intents of notifications posted by earlier versions
+        const val BODY_KEY = "NewUpdateDialogController.body"
+        const val URL_KEY = "NewUpdateDialogController.key"
+        const val VERSION_KEY = "NewUpdateDialogController.version"
+        const val IS_BETA = "NewUpdateDialogController.is_beta"
+    }
+}
 
 suspend fun DialogHostState.awaitNewUpdateDialog(
     data: NewUpdateData,
@@ -53,23 +73,37 @@ suspend fun DialogHostState.awaitNewUpdateDialog(
                 ),
             )
         },
+        // All buttons go in one slot so they share a single row, which the dialog would otherwise split in two
         confirmButton = {
-            TextButton(onClick = {
-                AppDownloadInstallJob.start(appContext, data.url, true)
-                onDismiss()
-                cont.cancel()
-            }) {
-                Text(text = stringResource(if (isOnA12) MR.strings.update else MR.strings.download))
-            }
-        },
-        dismissButton = {
-            TextButton(
-                onClick = {
-                    onDismiss()
-                    cont.cancel()
-                },
-            ) {
-                Text(text = stringResource(MR.strings.ignore))
+            Row(horizontalArrangement = Arrangement.spacedBy(4.dp)) {
+                if (data.version != null) {
+                    TextButton(
+                        onClick = {
+                            Injekt.get<PreferencesHelper>().skippedAppUpdate().set(data.version)
+                            onDismiss()
+                            cont.cancel()
+                        },
+                    ) {
+                        Text(text = stringResource(MR.strings.skip_this_version))
+                    }
+                }
+                TextButton(
+                    onClick = {
+                        onDismiss()
+                        cont.cancel()
+                    },
+                ) {
+                    Text(text = stringResource(MR.strings.ignore))
+                }
+                TextButton(
+                    onClick = {
+                        AppDownloadInstallJob.start(appContext, data.url, true)
+                        onDismiss()
+                        cont.cancel()
+                    },
+                ) {
+                    Text(text = stringResource(if (isOnA12) MR.strings.update else MR.strings.download))
+                }
             }
         },
         text = {
@@ -89,6 +123,7 @@ private fun MarkdownText(text: String) {
         },
         update = {
             it.text = context.parseReleaseNotes(text)
+            it.movementMethod = LinkMovementMethod.getInstance()
         },
     )
 }

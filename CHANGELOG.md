@@ -20,6 +20,7 @@ The format is simplified version of [Keep a Changelog](https://keepachangelog.co
 - Added a new Compose tracking settings screen that shows the logged-in account name under each tracker and a refresh button to re-fetch the profile and scoring type (the previous screen is still available by long-pressing Tracking in Settings). Kitsu now supports its simple, regular and advanced rating systems, tracker search results show the score, and Bangumi search now only lists manga ([@Sacha1016](https://github.com/Sacha1016))
 - Added a "Skip this version" button to the new app update dialog, so an update you don't want stops being offered at launch and in the background until a newer version comes out (checking manually from About still shows it)
 - Added a "Preload only on Wi-Fi" option in the reader settings that, on a metered connection such as mobile data, loads only the page you're reading instead of preloading the next pages (off by default)
+- Added a website button next to GitHub in the About screen
 
 ### Changes
 - The Doki, Dark (default) and Flat Lime themes now tint switch tracks and outlines with their own colors when "Tint switches and outlines" is on, instead of a generic gray

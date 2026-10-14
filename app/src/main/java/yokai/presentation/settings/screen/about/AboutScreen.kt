@@ -61,6 +61,7 @@ import yokai.presentation.core.components.LinkIcon
 import yokai.presentation.core.enterAlwaysCollapsedAppBarScrollBehavior
 import yokai.presentation.core.icons.CustomIcons
 import yokai.presentation.core.icons.Discord
+import yokai.presentation.core.icons.Earth
 import yokai.presentation.core.icons.GitHub
 import yokai.presentation.settings.SettingsScaffold
 import yokai.util.Screen
@@ -212,6 +213,11 @@ class AboutScreen : Screen() {
                             horizontalArrangement = Arrangement.Center,
                         ) {
                             LinkIcon(
+                                label = "Website",
+                                icon = CustomIcons.Earth,
+                                url = "https://rokku-app.github.io/",
+                            )
+                            LinkIcon(
                                 label = "GitHub",
                                 icon = CustomIcons.GitHub,
                                 url = "https://github.com/rokku-app/rokku",
@@ -259,9 +265,11 @@ class AboutScreen : Screen() {
         when (result) {
             is AppUpdateResult.NewUpdate -> {
                 val data = NewUpdateData(
-                    result.release.info,
-                    result.release.downloadLink,
-                    result.release.preRelease == true,
+                    body = result.release.info,
+                    url = result.release.downloadLink,
+                    isBeta = result.release.preRelease == true,
+                    // A manual check always offers the latest version, so there is nothing to skip
+                    version = result.release.version.takeIf { !isUserPrompt },
                 )
 
                 // Create confirmation window

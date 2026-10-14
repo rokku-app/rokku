@@ -20,7 +20,6 @@ import eu.kanade.tachiyomi.extension.ExtensionManager
 import eu.kanade.tachiyomi.extension.model.Extension
 import eu.kanade.tachiyomi.source.SourceManager
 import eu.kanade.tachiyomi.ui.main.MainActivity
-import eu.kanade.tachiyomi.ui.more.AboutController
 import eu.kanade.tachiyomi.ui.reader.ReaderActivity
 import eu.kanade.tachiyomi.util.chapter.updateTrackChapterMarkedAsRead
 import eu.kanade.tachiyomi.util.storage.DiskUtil
@@ -35,6 +34,7 @@ import yokai.domain.chapter.interactor.GetChapter
 import yokai.domain.chapter.interactor.UpdateChapter
 import yokai.domain.manga.interactor.GetManga
 import yokai.presentation.core.Constants
+import yokai.presentation.settings.screen.about.NewUpdateData
 import java.io.File
 import eu.kanade.tachiyomi.BuildConfig.APPLICATION_ID as ID
 
@@ -476,9 +476,9 @@ class NotificationReceiver : BroadcastReceiver() {
             val newIntent =
                 Intent(context, MainActivity::class.java).setPackage(context.packageName).setAction(MainActivity.SHORTCUT_UPDATE_NOTES)
                     .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP)
-                    .putExtra(AboutController.NewUpdateDialogController.BODY_KEY, notes)
-                    .putExtra(AboutController.NewUpdateDialogController.URL_KEY, downloadLink)
-                    .putExtra(AboutController.NewUpdateDialogController.VERSION_KEY, version)
+                    .putExtra(NewUpdateData.BODY_KEY, notes)
+                    .putExtra(NewUpdateData.URL_KEY, downloadLink)
+                    .putExtra(NewUpdateData.VERSION_KEY, version)
             return PendingIntent.getActivity(
                 context,
                 downloadLink.hashCode(),
