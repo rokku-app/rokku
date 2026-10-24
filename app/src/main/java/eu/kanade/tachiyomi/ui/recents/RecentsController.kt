@@ -34,6 +34,8 @@ import com.google.android.material.tabs.TabLayout
 import eu.davidea.flexibleadapter.FlexibleAdapter
 import eu.kanade.tachiyomi.R
 import eu.kanade.tachiyomi.data.backup.restore.BackupRestoreJob
+import eu.kanade.tachiyomi.data.connections.discord.DiscordRPCService
+import eu.kanade.tachiyomi.data.connections.discord.DiscordScreen
 import eu.kanade.tachiyomi.data.database.models.Chapter
 import eu.kanade.tachiyomi.data.database.models.ChapterHistory
 import eu.kanade.tachiyomi.data.database.models.History
@@ -163,6 +165,14 @@ class RecentsController(bundle: Bundle? = null) :
 
     override fun createBinding(inflater: LayoutInflater) =
         RecentsControllerBinding.inflate(inflater)
+
+    override fun onAttach(view: View) {
+        super.onAttach(view)
+        if (!isControllerVisible) return
+        viewScope.launch {
+            DiscordRPCService.setScreen(activity ?: return@launch, DiscordScreen.RECENTS)
+        }
+    }
 
     /**
      * Called when view is created

@@ -84,6 +84,8 @@ import eu.kanade.tachiyomi.BuildConfig
 import eu.kanade.tachiyomi.R
 import eu.kanade.tachiyomi.core.preference.toggle
 import eu.kanade.tachiyomi.data.coil.TachiyomiImageDecoder
+import eu.kanade.tachiyomi.data.connections.discord.DiscordRPCService
+import eu.kanade.tachiyomi.data.connections.discord.ReaderData
 import eu.kanade.tachiyomi.data.database.models.Chapter
 import eu.kanade.tachiyomi.data.database.models.orientationType
 import eu.kanade.tachiyomi.data.database.models.readingModeType
@@ -91,6 +93,7 @@ import eu.kanade.tachiyomi.data.preference.changesIn
 import eu.kanade.tachiyomi.data.track.TrackService
 import eu.kanade.tachiyomi.databinding.ReaderActivityBinding
 import eu.kanade.tachiyomi.domain.manga.models.Manga
+import eu.kanade.tachiyomi.source.isIncognitoModeForSource
 import eu.kanade.tachiyomi.source.model.Page
 import eu.kanade.tachiyomi.ui.base.MaterialMenuSheet
 import eu.kanade.tachiyomi.ui.base.activity.BaseActivity
@@ -166,6 +169,8 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import uy.kohesive.injekt.injectLazy
 import yokai.domain.base.BasePreferences
+import yokai.domain.connections.service.ConnectionsPreferences
+import yokai.domain.connections.service.DiscordProgressMode
 import yokai.domain.ui.settings.ReaderPreferences
 import yokai.domain.ui.settings.ReaderPreferences.LandscapeCutoutBehaviour
 import yokai.i18n.MR
@@ -262,6 +267,7 @@ class ReaderActivity : BaseActivity<ReaderActivityBinding>() {
     private val readerPreferences: ReaderPreferences by injectLazy()
     private val basePreferences: BasePreferences by injectLazy()
 
+    private val connectionsPreferences: ConnectionsPreferences by injectLazy()
     companion object {
 
         private const val PAGE_FLASH_WHITE = 1
@@ -409,6 +415,7 @@ class ReaderActivity : BaseActivity<ReaderActivityBinding>() {
         preferences.incognitoMode()
             .changesIn(lifecycleScope) {
                 SecureActivityDelegate.setSecure(this, viewModel.manga?.source)
+                viewModel.state.value.viewerChapters?.currChapter?.let { updateDiscordPresence(it, it.pages?.size ?: 0) }
             }
         reEnableBackPressedCallBack()
 
@@ -513,6 +520,47 @@ class ReaderActivity : BaseActivity<ReaderActivityBinding>() {
         bottomSheet = null
         snackbar?.dismiss()
         snackbar = null
+        lifecycleScope.launchIO {
+            DiscordRPCService.setScreen(this@ReaderActivity, DiscordRPCService.lastUsedScreen)
+        }
+    }
+
+    private fun updateDiscordPresence(readerChapter: ReaderChapter, totalPages: Int, currentPage: Int = 0) {
+        val manga = viewModel.manga ?: return
+        val chapter = readerChapter.chapter
+        val incognito = connectionsPreferences.discordRPCIncognito().get() ||
+            preferences.incognitoMode().get() ||
+            isIncognitoModeForSource(manga.source)
+
+        lifecycleScope.launchIO {
+            var chapterIndex = 0
+            var totalChapters = 0
+
+            if (connectionsPreferences.discordProgressMode().get() == DiscordProgressMode.CHAPTERS) {
+                val chapters = viewModel.getChapters()
+                val position = chapters.indexOfFirst { it.chapter.id == chapter.id }
+                if (position >= 0) {
+                    totalChapters = chapters.size
+                    chapterIndex = if (manga.sortDescending) chapters.size - position else position + 1
+                }
+            }
+
+            DiscordRPCService.updateReaderActivity(
+                context = this@ReaderActivity,
+                readerData = ReaderData(
+                    incognitoMode = incognito,
+                    mangaId = manga.id,
+                    mangaTitle = manga.title,
+                    chapterNumber = chapter.chapter_number,
+                    chapterProgress = Pair(currentPage, totalPages),
+                    chapterIndex = chapterIndex,
+                    totalChapters = totalChapters,
+                    chapterTitle = chapter.preferredChapterName(this@ReaderActivity, manga, preferences),
+                    thumbnailUrl = manga.thumbnail_url,
+                    sourceUrl = viewModel.getChapterUrl(),
+                ),
+            )
+        }
     }
 
     /**
@@ -1788,6 +1836,8 @@ class ReaderActivity : BaseActivity<ReaderActivityBinding>() {
         val progress = page.index + if (hasExtraPage) 1 else 0
         // For a double page, show the last 2 pages as if it was the final part of the seekbar
         binding.readerNav.pageSeekbar.value = (if (progress == pages.lastIndex) progress else page.index).toFloat()
+
+        updateDiscordPresence(page.chapter, pages.size, page.number)
     }
 
     /**
