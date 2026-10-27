@@ -35,6 +35,7 @@ The format is simplified version of [Keep a Changelog](https://keepachangelog.co
 - Aligned the accent and surface colors of the app themes with TachiyomiJ2K ([@Hiirbaf](https://github.com/Hiirbaf))
 
 ### Fixes
+- Fixed long-pressing an extension repository copying an incomplete URL that other apps such as Mihon rejected; it now copies the full index URL (for example the Keiyoushi `index.pb` link)
 - Fixed an installed private extension being deleted when updating it failed partway
 - Fixed the in-app browser closing unexpectedly when a source sets an Origin header, and stopped sending a source's headers to other websites opened from its pages
 - Made the status bar transparent instead of theme-colored, matching upstream (only visible on Android versions predating edge-to-edge enforcement)

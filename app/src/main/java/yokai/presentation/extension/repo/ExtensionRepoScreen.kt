@@ -124,11 +124,14 @@ class ExtensionRepoScreen(
                                 scope.launch { alertDialog.awaitExtensionRepoDeletePrompt(repoToDelete, screenModel) }
                             },
                             onEditClick = { oldUrl, newUrl -> screenModel.editRepo(oldUrl, newUrl) },
-                            onCopyUrl = { url ->
-                                val clipboard = context.getSystemService<ClipboardManager>()!!
-                                clipboard.setPrimaryClip(ClipData.newPlainText(repo.name, url))
-                                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
-                                    context.toast(context.getString(MR.strings._copied_to_clipboard, url))
+                            onCopyUrl = { baseUrl ->
+                                scope.launch {
+                                    val url = screenModel.resolveIndexUrl(baseUrl)
+                                    val clipboard = context.getSystemService<ClipboardManager>()!!
+                                    clipboard.setPrimaryClip(ClipData.newPlainText(repo.name, url))
+                                    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
+                                        context.toast(context.getString(MR.strings._copied_to_clipboard, url))
+                                    }
                                 }
                             },
                         )
