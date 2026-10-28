@@ -32,7 +32,7 @@ fun runCommand(command: String): String {
 @Suppress("PropertyName")
 // Overridden by CI via -PappVersionName=X.Y.Z when cutting an actual release/beta;
 // this fallback is only what local/nightly builds without that property use.
-val _versionName = (project.findProperty("appVersionName") as String?) ?: "1.7.1"
+val _versionName = (project.findProperty("appVersionName") as String?) ?: "1.8.0"
 val betaCount by lazy {
     val betaTags = runCommand("git tag -l --sort=refname v${_versionName}-b*")
 
@@ -55,7 +55,7 @@ val supportedAbis = setOf("armeabi-v7a", "arm64-v8a", "x86", "x86_64")
 android {
     defaultConfig {
         applicationId = "app.rokku"
-        versionCode = 160
+        versionCode = 161
         versionName = _versionName
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled = true

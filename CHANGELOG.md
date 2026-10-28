@@ -10,8 +10,13 @@ The format is simplified version of [Keep a Changelog](https://keepachangelog.co
 
 ## [Unreleased]
 
+## [1.8.0]
+
+> [!WARNING]
+> **Backup before updating is recommended.** This version changes the database schema. The change can't be undone, so older versions can't open the updated database. Create a backup in Settings > Data and storage before updating.
+
 ### Additions
-- The manga details screen background can now pick up a subtle tint from the cover, extending the accent already used for the header/buttons through the rest of the screen (off by default, toggle separately under Settings > Appearance > Details page > Theme background based on cover)
+- The manga details screen background can now pick up a subtle tint from the cover, extending the accent already used for the header/buttons through the rest of the screen (off by default, toggle separately under Settings > Appearance > Details page > Theme background based on cover) ([@Hiirbaf](https://github.com/Hiirbaf))
 - Local source now reads Year, Month, and Day fields from a chapter's ComicInfo.xml to set its displayed date, and downloaded chapters now write these fields when generating ComicInfo.xml
 - Browse and Global Search now keep a recent search history and let you save searches (scoped to one source or all sources), with incognito-aware suggestions ([@Hiirbaf](https://github.com/Hiirbaf))
 - Added an option to group the manga details chapter list into rounded cards like TachiyomiJ2K, tinted with the cover's color when the cover theme is on (off by default, under Settings > Appearance > Details page > Group chapters into cards) ([@Hiirbaf](https://github.com/Hiirbaf))
@@ -26,9 +31,10 @@ The format is simplified version of [Keep a Changelog](https://keepachangelog.co
 - Added the extension repository name under each extension in Browse > Extensions, and on the extension info screen
 - Added a website button next to GitHub in the About screen
 - Added an "Allowed content warnings" setting in Settings > Browse to choose which extensions are shown and loaded by their content warning (Safe, Mixed or 18+), replacing the "Show in sources and extensions lists" switch. Tapping the "Mixed" or "18+" label in an extension's details now explains what it means. If the old switch was off, only Safe and Mixed stay allowed ([@Hiirbaf](https://github.com/Hiirbaf))
+- Added support for new languages: Amharic, Assamese, Belarusian, Danish, Kannada, Kurdish (Kurmanji and Southern), Malayalam, Marathi, Sanskrit, Tamil, Uzbek and Yakut
 
 ### Changes
-- Updated the database schema (removed the unused `filtered_scanlators` column and added the release schedule of each series). This can't be undone and older versions can't open the updated database, so create a backup before updating
+- Updated the database schema (removed the unused `filtered_scanlators` column and added the release schedule of each series).
 - The Doki, Dark (default) and Flat Lime themes now tint switch tracks and outlines with their own colors when "Tint switches and outlines" is on, instead of a generic gray
 - Extensions marked "Mixed" by their repository now show a "Mixed" label instead of "18+", in the extension list and details, so only extensions that are mainly 18+ content get the "18+" label, and extensions installed privately now show a "Private" label
 - An automatic backup that fails because its saved location is no longer accessible (folder deleted, permission revoked, storage removed) now shows a notification telling you to pick a new one, instead of failing silently
@@ -38,20 +44,18 @@ The format is simplified version of [Keep a Changelog](https://keepachangelog.co
 - Fixed long-pressing an extension repository copying an incomplete URL that other apps such as Mihon rejected; it now copies the full index URL (for example the Keiyoushi `index.pb` link)
 - Fixed an installed private extension being deleted when updating it failed partway
 - Fixed the in-app browser closing unexpectedly when a source sets an Origin header, and stopped sending a source's headers to other websites opened from its pages
-- Made the status bar transparent instead of theme-colored, matching upstream (only visible on Android versions predating edge-to-edge enforcement)
 - Adjusted the accent color of the Tachiyomi, Flat Lime, Strawberries, and Yotsuba themes to match upstream
 - Fixed the Popular/Latest/Filter buttons in Browse rendering in the accent color instead of a neutral one
 - Fixed the switch thumb and checkmark being white in the Chocolate Strawberries theme instead of dark like the other dark themes
 - Fixed several dark themes showing white instead of black text/checkmarks on unread badges, checkboxes, filter chips, selected tabs, and default buttons, caused by using the accent color's own text color (`colorOnSecondary`) instead of the correctly calibrated `colorOnPrimary`
 - Fixed the manga details screen's unmarked "Add to Library"/"Tracking" buttons and the "More" fade-out keeping the plain theme background instead of the cover-based page tint, leaving a visible seam when "Theme background based on cover" was on
 - Fixed cool-hued covers (blue/cyan/green) barely tinting the manga details page compared to warm ones, caused by HSL's saturation not being perceptually uniform across hues; the cover-tint blend now uses HCT instead
-- Fixed extension loading failing when a repository published its lib version or content warning metadata as a numeric type instead of a string ([@pacoa-kdbg](https://github.com/pacoa-kdbg))
+- Fixed extension loading failing when a repository published its lib version or content warning metadata as a numeric type instead of a string
 - Fixed "Show content in cutout area" doing nothing on Android 15+ (content still drew into the camera cutout/notch when the option was turned off)
 - Fixed a crash when updating all extensions with many updates pending (the work request's input data exceeded its size limit)
 - Fixed a rare crash in Recents ("Two different ViewHolders have the same stable ID") caused by a section header's id colliding with a chapter row's
 - Fixed a page failing to render in the paged reader when a double-page spread couldn't be decoded for merging
 - Fixed the library update job silently failing (and spamming Crashlytics) when the OS refused to promote it to a foreground service
-- Stopped reporting an extension failing to decode a site's changed API response (missing JSON field) or failing to find its reader signer bindings to Crashlytics, since neither is actionable from the app
 - Fixed the app freezing (ANR) while installing an extension when the system download provider was slow to respond
 - Fixed a crash opening a chapter in the webtoon reader when its saved resume position was out of range
 - Fixed a crash sharing a reader page when its cached image had already been evicted from disk
@@ -70,7 +74,6 @@ The format is simplified version of [Keep a Changelog](https://keepachangelog.co
 - Fixed the about page's build time never actually showing a formatted date (the parser didn't match the timestamp format Rokku itself produces)
 - Fixed the date format preference not showing a live preview of each option, and some other list settings not refreshing their summary right after a change
 - Fixed the full-size cover viewer's replace button showing even for manga not in your library, where it can't actually be used
-- Added the app ID to the debug info included in crash log dumps
 - Fixed the library's app bar sometimes landing in the wrong position after returning to the Library tab when "show all categories" was off and the library wasn't scrolled to the top
 - Fixed the action mode toolbar (shown while selecting items) overlapping a display cutout/notch in landscape
 - Fixed a source showing without its language tag in lists/search results when that language was disabled in settings
@@ -81,11 +84,9 @@ The format is simplified version of [Keep a Changelog](https://keepachangelog.co
 - Fixed a crash on app startup when restoring a tracker login dialog that was still open on the back stack after the process was killed and that tracker was no longer available
 - Fixed a crash changing a manga's cover when the picked image's URI had expired or become inaccessible
 - Fixed the manga details screen occasionally freezing (ANR) when opening the favorite/categories popup, caused by a blocking database read on the main thread
-- Added a missing R8 keep rule for `JavaScriptEngine`, which could have its public API stripped in release/beta/nightly builds, breaking extensions that rely on it
 - Fixed the webtoon reader leaving a gap after zooming in once the window had been resized (split-screen, foldables), caused by only measuring its height once
 - Fixed Global Search (and the migration search) occasionally dropping a source's results from the list when several sources finished searching at nearly the same time
 - Fixed a download notification occasionally showing a leftover error's styling or category after a warning, pause, or new download, caused by all download notification states sharing one builder
-- Added missing R8 keep rules for the default methods of the source interfaces (`Source`, `CatalogueSource`, `ConfigurableSource`), which release builds could strip and crash extensions compiled the older way that call them
 - Fixed cancelling one extension install also cancelling the install of another extension that was in progress
 - Fixed pausing and resuming downloads quickly leaving duplicate page files ("(1)") and failed chapters, because the new download job started while the cancelled one was still writing pages
 - Fixed the app closing when a WebView's renderer process died, in the in-app WebView and during Cloudflare checks (now the page is closed with a message, or the check fails)
@@ -93,13 +94,18 @@ The format is simplified version of [Keep a Changelog](https://keepachangelog.co
 - Fixed the webtoon reader's zoom and panning counting the side padding as part of the page, which let the page be dragged too far or showed a gap
 - Fixed the Local source being left out of Global Search when its language ("Other") wasn't enabled
 - Fixed concurrent requests to a site behind a Cloudflare check each opening their own WebView, causing slowdowns and memory pressure; they now wait for a single check. Requests that aren't GET (such as logins) now solve the check on the site's root page
-- Cloudflare checks are now detected with Cloudflare's `cf-mitigated` response header instead of parsing the page
 - Fixed the app freezing when the reader showed the chapter transition page on slow storage, since the check for the next chapter being downloaded no longer runs on the main thread
 - Fixed the Statistics screen freezing the app while opening with a large library, since the numbers are now calculated in the background
 - Fixed the crash screen closing by itself when the crash was caused by the database, so the error can be read and reported
 - Fixed "Dump crash logs" not creating the file when the installed extensions couldn't be read because of a database error
 - Fixed the extension info screen showing the default icon instead of the extension's own icon for extensions installed privately
 - Fixed the app freezing on launch while extensions were still loading, since opening the main screen no longer waits for the extension list when no source is involved
+- Fixed a crash when editing a text setting in an extension's settings screen
+- Fixed scrolling getting stuck in settings screens while the app bar was collapsing, until the screen was reopened
+- Fixed the cache usage rows in Settings > Data and storage rescanning the disk every time the screen redrew
+- Fixed the hint shown when long-pressing Advanced in Settings not being translatable
+- Fixed a crash when the external cache folder was unavailable; the app now falls back to its internal cache
+- Fixed related manga suggestions searching with keywords shorter than 3 characters, which many sources reject
 
 ### Other
 - Migrated FlexibleAdapter from JitPack to its MavenCentral release, removing a source of transient CI build failures when JitPack was unavailable
@@ -111,6 +117,13 @@ The format is simplified version of [Keep a Changelog](https://keepachangelog.co
 - Reduced Crashlytics noise by no longer reporting a JSON parse failure caused by a source answering with an HTML page (Cloudflare interstitial or error page) instead of data
 - Reduced Crashlytics noise further: premium/encrypted source content, an unconfigured self-hosted bridge extension (e.g. Tachidesk), a malformed search query (HTTP 400), an extension's bundled search database missing an index, a `multisrc` theme DTO failing to decode after a site change, Hikka's OAuth preference round-tripping as a literal "null", and an extension's source class missing from its installed APK are no longer reported
 - Bumped compileSdk to 37.2
+- Migrated the Security and Privacy settings screen to Compose
+- Made the status bar transparent instead of theme-colored, matching upstream (only visible on Android versions predating edge-to-edge enforcement)
+- Stopped reporting an extension failing to decode a site's changed API response (missing JSON field) or failing to find its reader signer bindings to Crashlytics, since neither is actionable from the app
+- Added the app ID to the debug info included in crash log dumps
+- Added a missing R8 keep rule for `JavaScriptEngine`, which could have its public API stripped in release/beta/nightly builds, breaking extensions that rely on it
+- Added missing R8 keep rules for the default methods of the source interfaces (`Source`, `CatalogueSource`, `ConfigurableSource`), which release builds could strip and crash extensions compiled the older way that call them
+- Cloudflare checks are now detected with Cloudflare's `cf-mitigated` response header instead of parsing the page
 
 ## [1.7.1]
 
