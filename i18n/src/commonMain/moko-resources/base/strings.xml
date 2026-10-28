@@ -220,7 +220,9 @@
     <string name="pref_update_only_started">Skip unstarted entries</string>
     <string name="pref_library_update_smart_update">Smart update</string>
     <string name="manga_interval_expected_update">New chapters predicted to be released in around %1$s, checking around every %2$s.</string>
-    <string name="manga_interval_expected_update_null">This manga is either completed, or there is no predicted release date.</string>
+    <plurals name="manga_interval_expected_update_null">
+        <item quantity="one">This manga is either completed, or there is no predicted release date</item>
+    </plurals>
     <string name="pref_update_only_in_release_period">Predict next release time</string>
     <string name="pref_update_only_completely_read_summary">Only update series if there is no unread chapter (completely read)</string>
     <string name="library_update_restriction">Device restrictions</string>
