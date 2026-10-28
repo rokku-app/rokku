@@ -1015,7 +1015,7 @@ First release under the Rokku name. Everything below was inherited as broken fro
 - Fixed version checker for nightly against hotfix patch version
 - Fixed download cache causes the app to crash
 
-## [1.8.0]
+## [1.8.0-yokai]
 
 ### Additions
 - Added cutout support for some pre-Android P devices
