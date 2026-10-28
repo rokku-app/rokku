@@ -10,11 +10,11 @@
     <string name="onboarding_permission_type_required">Obrigatório</string>
     <string name="onboarding_permission_type_optional">Opcional, mas recomendado</string>
     <string name="onboarding_permission_install_apps">Permissão de instalação de aplicativos</string>
-    <string name="onboarding_permission_install_apps_description">Para instalar extensões e atualizações.</string>
+    <string name="onboarding_permission_install_apps_description">Para instalar extensões e atualizações</string>
     <string name="onboarding_permission_notifications">Permissão de notificação</string>
-    <string name="onboarding_permission_notifications_description">Seja notificado para atualizações de biblioteca e mais.</string>
+    <string name="onboarding_permission_notifications_description">Seja notificado para atualizações de biblioteca e mais</string>
     <string name="onboarding_permission_ignore_battery_opts">Uso de bateria em plano de fundo</string>
-    <string name="onboarding_permission_ignore_battery_opts_description">Evite interrupções para tarefas longas como atualizações da biblioteca, downloads e restauração de backups.</string>
+    <string name="onboarding_permission_ignore_battery_opts_description">Evite interrupções para tarefas longas como atualizações da biblioteca, downloads e restauração de backups</string>
     <string name="onboarding_permission_action_grant">Conceder</string>
     <string name="no_location_set">Local de armazenamento não definido</string>
     <string name="invalid_location">Local inválido: %s</string>
@@ -56,7 +56,7 @@
     <string name="marked_as_read">Marcado como lido</string>
     <string name="marked_as_unread">Marcado como não lido</string>
     <string name="removed_bookmark">Removido da Biblioteca</string>
-    <string name="chapters_removed">Capítulos removidos.</string>
+    <string name="chapters_removed">Capítulos removidos</string>
     <!-- Category -->
     <string name="category">Categoria</string>
     <string name="categories">Categorias</string>
@@ -66,7 +66,7 @@
     <string name="category_is_empty">A categoria está vazia</string>
     <string name="default_category">Categoria padrão</string>
     <string name="confirm_category_deletion">Excluir categoria?</string>
-    <string name="confirm_category_deletion_message">O mangá nesta categoria será movido à categoria padrão.</string>
+    <string name="confirm_category_deletion_message">O mangá nesta categoria será movido à categoria padrão</string>
     <string name="already_in_category">O mangá já está na categoria</string>
     <string name="edit_categories">Editar categorias</string>
     <string name="manage_category">Gerenciar categoria</string>
@@ -88,7 +88,7 @@
     <string name="selected_">Selecionado: %1$d</string>
     <string name="local">Local</string>
     <string name="library_search_hint">Pesquisar título, marcações, fonte</string>
-    <string name="library_is_empty_add_from_browse">Sua biblioteca está vazia, adicione séries à sua biblioteca na aba Navegar.</string>
+    <string name="library_is_empty_add_from_browse">Sua biblioteca está vazia, adicione séries à sua biblioteca na aba Navegar</string>
     <string name="no_matches_for_filters">Nenhum resultado corresponde aos seus filtros atuais</string>
     <string name="show_all_categories">Mostrar todas as categorias</string>
     <string name="always_show_current_category">Sempre mostrar a categoria atual</string>
@@ -183,7 +183,7 @@
     <string name="ext_installer_packageinstaller">Padrão</string>
     <string name="ext_installer_legacy">Legado</string>
     <string name="untrusted_extension">Extensão não confiável</string>
-    <string name="obsolete_extension_message">Esta extensão não está mais disponível.</string>
+    <string name="obsolete_extension_message">Esta extensão não está mais disponível</string>
     <string name="version_">Versão: %1$s</string>
     <string name="language_">Idioma: %1$s</string>
     <!-- Reader -->
@@ -329,7 +329,7 @@
     <string name="use_most_chapters">Usar fonte com mais capítulos (lento)</string>
     <string name="use_first_source">Usar primeira fonte com alternativa</string>
     <string name="skip_this_step_next_time">Pular esta etapa na próxima vez</string>
-    <string name="to_show_again_setting_sources">Para ver esta tela novamente, vá em Configurações -&gt; Fontes.</string>
+    <string name="to_show_again_setting_sources">Para ver esta tela novamente, vá em Configurações -&gt; Fontes</string>
     <string name="latest_">Último: %1$s</string>
     <string name="migrating_to">migrando para</string>
     <string name="dont_migrate">"Não migrar"</string>
@@ -428,7 +428,7 @@
     <string name="action_add_repo">Adicionar</string>
     <string name="invalid_repo_url">URL de repositório inválida</string>
     <string name="repo_already_exists">Repositório já existente!</string>
-    <string name="information_empty_repos">Você aidna não tem repositórios definidos.</string>
+    <string name="information_empty_repos">Você ainda não tem repositórios definidos</string>
     <string name="confirm_delete_repo_title">Apagar repositório?</string>
     <string name="confirm_delete_repo">Você tem certeza que deseja apagar o repositório \"%s\"?</string>
     <string name="action_replace_repo">Substituir</string>
@@ -612,7 +612,7 @@
     <string name="cover_saved">Capa salva</string>
     <string name="reset_tags">Redefinir tags</string>
     <string name="enable_zoom_out">Ativar zoom para fora</string>
-    <string name="unofficial_extension_message">Esta extensão não é da lista oficial de extensões do Tachiyomi.</string>
+    <string name="unofficial_extension_message">Esta extensão não é da lista oficial de extensões do Tachiyomi</string>
     <string name="nsfw_short">+18</string>
     <string name="unofficial">Não oficial</string>
     <string name="may_contain_nsfw">Pode haver conteúdo NSFW (+18)</string>
@@ -639,7 +639,7 @@
     <string name="invalid_backup_file">Arquivo de backup inválido</string>
     <string name="invalid_backup_file_type">Tipo de arquivo de backup inválido: %1$s
 \nO arquivo deve terminar com .proto.gz ou .json.</string>
-    <string name="backup_has_no_manga">O backup não possui nenhum mangá.</string>
+    <string name="backup_has_no_manga">O backup não possui nenhum mangá</string>
     <string name="restore_missing_sources">Fontes faltando:</string>
     <string name="restore_missing_trackers">Monitoradores sem login realizado:</string>
     <string name="restore_content_full">Os dados do arquivo de backup serão restaurados.\n\nVocê precisará instalar as extensões ausentes e fazer login nos serviços de monitoramento depois para utilizá-los</string>
@@ -799,7 +799,7 @@
     <string name="set_as_default">Definir como padrão</string>
     <string name="add_tag">Adicionar tag</string>
     <string name="updating_extensions">Atualizando extensões</string>
-    <string name="some_extensions_may_prompt">Algumas extensões podem solicitar sua confirmação para serem instaladas.</string>
+    <string name="some_extensions_may_prompt">Algumas extensões podem solicitar sua confirmação para serem instaladas</string>
     <string name="update_completed">Atualização completa</string>
     <string name="could_not_install_update">Não foi possível instalar atualização</string>
     <string name="by_update_date">Por data de upload</string>
@@ -834,7 +834,7 @@
     <string name="split_double_pages_portrait">Dividir página dupla em retrato</string>
     <string name="extensions_updated">Extensões atualizadas</string>
     <string name="update_all">Atualizar tudo</string>
-    <string name="extensions_miui_warning">Otimização MIUI precisa ser desativada para instalar as extensões.</string>
+    <string name="extensions_miui_warning">Otimização MIUI precisa ser desativada para instalar as extensões</string>
     <string name="installed_">Instalado %1$s</string>
     <string name="extension_updates_pending">Atualizações de extensão pendentes</string>
     <string name="restrictions_">Restrições: %1$s</string>
@@ -1190,7 +1190,7 @@
     <string name="skip_this_version">Pular esta versão</string>
     <string name="skipped_reason_not_in_release_period">Pulado porque nenhum lançamento era esperado hoje</string>
     <string name="pref_library_update_smart_update">Atualização inteligente</string>
-    <string name="manga_interval_expected_update">Novos capítulos com previsão de serem lançados em torno de %1$s, verificando em torno de cada %2$s.</string>
+    <string name="manga_interval_expected_update">Novos capítulos com previsão de serem lançados em torno de %1$s, verificando em torno de cada %2$s</string>
     <string name="manga_interval_expected_update_null">Esse mangá foi completado, ou não tem uma data de lançamento prevista</string>
     <string name="pref_update_only_in_release_period">Prever a data do próximo lançamento</string>
     <string name="fade">Esmaecer</string>
