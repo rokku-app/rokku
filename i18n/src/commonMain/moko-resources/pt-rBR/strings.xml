@@ -88,8 +88,7 @@
     <string name="selected_">Selecionado: %1$d</string>
     <string name="local">Local</string>
     <string name="library_search_hint">Pesquisar título, marcações, fonte</string>
-    <string name="library_is_empty_add_from_browse">Sua biblioteca está vazia, adicione séries 
-        à sua biblioteca na aba Navegar.</string>
+    <string name="library_is_empty_add_from_browse">Sua biblioteca está vazia, adicione séries à sua biblioteca na aba Navegar.</string>
     <string name="no_matches_for_filters">Nenhum resultado corresponde aos seus filtros atuais</string>
     <string name="show_all_categories">Mostrar todas as categorias</string>
     <string name="always_show_current_category">Sempre mostrar a categoria atual</string>
