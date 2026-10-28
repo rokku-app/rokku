@@ -15,11 +15,11 @@
     <string name="onboarding_permission_type_required">Required</string>
     <string name="onboarding_permission_type_optional">Optional but recommended</string>
     <string name="onboarding_permission_install_apps">Install apps permission</string>
-    <string name="onboarding_permission_install_apps_description">To install the app on updates.</string>
+    <string name="onboarding_permission_install_apps_description">To install the app on updates</string>
     <string name="onboarding_permission_notifications">Notification permission</string>
-    <string name="onboarding_permission_notifications_description">Get notified for library updates and more.</string>
+    <string name="onboarding_permission_notifications_description">Get notified for library updates and more</string>
     <string name="onboarding_permission_ignore_battery_opts">Background battery usage</string>
-    <string name="onboarding_permission_ignore_battery_opts_description">Avoid interruptions to long-running library updates, downloads, and backup restores.</string>
+    <string name="onboarding_permission_ignore_battery_opts_description">Avoid interruptions to long-running library updates, downloads, and backup restores</string>
     <string name="onboarding_permission_action_grant">Grant</string>
     <string name="no_location_set">No storage location set</string>
     <string name="invalid_location">Invalid location: %s</string>
@@ -70,7 +70,7 @@
     <string name="marked_as_read">Marked as read</string>
     <string name="marked_as_unread">Marked as unread</string>
     <string name="removed_bookmark">Removed bookmark</string>
-    <string name="chapters_removed">Chapters removed.</string>
+    <string name="chapters_removed">Chapters removed</string>
     <string name="chapter_not_found">Chapter not found</string>
     <string name="local_invalid_format">Invalid chapter format</string>
     <string name="order_by">Order by</string>
@@ -95,8 +95,8 @@
     <string name="no_matches_for_filters_short">No matches for your filters</string>
     <string name="default_category">Default category</string>
     <string name="confirm_category_deletion">Delete category?</string>
-    <string name="confirm_category_deletion_message">Entries in this category will moved into the
-        default category.</string>
+    <string name="confirm_category_deletion_message">Entries in this category will be moved into the
+        default category</string>
     <string name="already_in_category">Entry already in category</string>
     <string name="add_categories">Add categories</string>
     <string name="add_edit_categories">Add/Edit categories</string>
@@ -132,7 +132,7 @@
     <string name="local">Local</string>
     <string name="library_search_hint">Search title, tags, source</string>
     <string name="library_is_empty_add_from_browse">Your library is empty, add series to your
-        library from the browse tab.</string>
+        library from the browse tab</string>
     <string name="no_matches_for_filters">No matches found for your current filters</string>
     <string name="getting_started_guide">Getting started guide</string>
     <string name="show_all_categories">Show all categories</string>
@@ -219,8 +219,8 @@
     <string name="pref_update_only_cancelled">Skip entries with \"Cancelled\" status</string>
     <string name="pref_update_only_started">Skip unstarted entries</string>
     <string name="pref_library_update_smart_update">Smart update</string>
-    <string name="manga_interval_expected_update">New chapters predicted to be released in around %1$s, checking around every %2$s.</string>
-    <string name="manga_interval_expected_update_null">This manga is either completed, or there is no predicted release date.</string>
+    <string name="manga_interval_expected_update">New chapters predicted to be released in around %1$s, checking around every %2$s</string>
+    <string name="manga_interval_expected_update_null">This manga is either completed, or there is no predicted release date</string>
     <string name="pref_update_only_in_release_period">Predict next release time</string>
     <string name="pref_update_only_completely_read_summary">Only update series if there is no unread chapter (completely read)</string>
     <string name="library_update_restriction">Device restrictions</string>
@@ -352,8 +352,8 @@
     <string name="ext_installer_summary_legacy">Legacy installer is not yet implemented, currently falling back to PackageInstaller (Default)</string>
     <string name="untrusted_extension">Untrusted extension</string>
     <string name="untrusted_extension_message">Malicious extensions can read any stored login credentials or execute arbitrary code.\n\nBy trusting this extension you accept these risks.</string>
-    <string name="obsolete_extension_message">This extension is no longer available.</string>
-    <string name="unofficial_extension_message">This extension is not from the official Tachiyomi extensions list.</string>
+    <string name="obsolete_extension_message">This extension is no longer available</string>
+    <string name="unofficial_extension_message">This extension is not from the official Tachiyomi extensions list</string>
     <string name="version_">Version: %1$s</string>
     <string name="language_">Language: %1$s</string>
     <string name="pref_allowed_content_warnings">Allowed content warnings</string>
@@ -364,12 +364,12 @@
     <string name="ext_content_warning_nsfw_description">This extension includes sources with explicit adult content</string>
     <string name="installed_">Installed %1$s</string>
     <string name="unofficial">Unofficial</string>
-    <string name="extensions_miui_warning">MIUI Optimization must be disabled to install extensions.</string>
+    <string name="extensions_miui_warning">MIUI Optimization must be disabled to install extensions</string>
     <string name="app_info">App info</string>
     <string name="_must_be_enabled_first">%1$s must be enabled first</string>
     <string name="could_not_install_extension">Could not install extension</string>
     <string name="update_all">Update all</string>
-    <string name="some_extensions_may_prompt">Some extensions may still prompt to be installed first.</string>
+    <string name="some_extensions_may_prompt">Some extensions may still prompt to be installed first</string>
     <string name="updating_extensions">Updating extensions</string>
     <string name="extensions_updated">Extensions updated</string>
     <string name="action_revoke_all_extensions">Revoke all trusted extensions</string>
@@ -682,7 +682,7 @@
     <string name="use_first_source">Use first source with alternative</string>
     <string name="skip_this_step_next_time">Skip this step next time</string>
     <string name="to_show_again_setting_sources">To show this screen again, go to Settings -&gt;
-        Sources.</string>
+        Sources</string>
     <string name="latest_">Latest: %1$s</string>
     <string name="migrating_to">migrating to</string>
     <string name="dont_migrate">Don\'t migrate</string>
@@ -826,7 +826,7 @@
     <string name="max_auto_backups">Max automatic backups</string>
     <string name="invalid_backup_file">Invalid backup file</string>
     <string name="invalid_backup_file_type">Invalid backup file type: %1$s\nIt should end with ".proto.gz" or ".json".</string>
-    <string name="backup_has_no_manga">Backup does not contain any entries.</string>
+    <string name="backup_has_no_manga">Backup does not contain any entries</string>
     <string name="backup_failed">Backup failed</string>
     <string name="backup_location_unavailable">Backup location is no longer accessible. Pick a new one in Settings &gt; Data and storage.</string>
     <string name="empty_backup_error">No library entries to back up</string>
@@ -961,7 +961,7 @@
     <string name="action_add_repo">Add repo</string>
     <string name="invalid_repo_url">Invalid repo url</string>
     <string name="repo_already_exists">Repo already exists!</string>
-    <string name="information_empty_repos">You haven\'t added any repos yet.</string>
+    <string name="information_empty_repos">You haven\'t added any repos yet</string>
     <string name="confirm_delete_repo_title">Delete repo?</string>
     <string name="confirm_delete_repo">Are you sure you wish to delete the repo \"%s\"?</string>
     <string name="action_replace_repo">Replace</string>
