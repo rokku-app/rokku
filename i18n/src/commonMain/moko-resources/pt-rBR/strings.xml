@@ -1192,7 +1192,7 @@
     <string name="skipped_reason_not_in_release_period">Pulado porque nenhum lançamento era esperado hoje</string>
     <string name="pref_library_update_smart_update">Atualização inteligente</string>
     <string name="manga_interval_expected_update">Novos capítulos com previsão de serem lançados em torno de %1$s, verificando em torno de cada %2$s.</string>
-    <string name="manga_interval_expected_update_null">Esse mangá foi completado, ou não tem uma data de lançamento prevista.</string>
+    <string name="manga_interval_expected_update_null">Esse mangá foi completado, ou não tem uma data de lançamento prevista</string>
     <string name="pref_update_only_in_release_period">Prever a data do próximo lançamento</string>
     <string name="fade">Esmaecer</string>
     <string name="information_webview_crashed">WebView parou de funcionar e a página foi fechada</string>
