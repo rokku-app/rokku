@@ -121,8 +121,8 @@
         <item quantity="other">Faltando %1$d capítulos</item>
     </plurals>
     <plurals name="days_plural">
-        <item quantity="one">%d Um</item>
-        <item quantity="many">%d Muitos</item>
-        <item quantity="other">%d Outro</item>
+        <item quantity="one">%d Dia</item>
+        <item quantity="many">%d Dias</item>
+        <item quantity="other">%d Dias</item>
     </plurals>
 </resources>
