@@ -10,6 +10,9 @@ The format is simplified version of [Keep a Changelog](https://keepachangelog.co
 
 ## [Unreleased]
 
+### Fixes
+- Fixed a crash when scrolling the History tab of Recents, caused by two date headers sharing the same list ID
+
 ## [1.8.0]
 
 > **Backup before updating is recommended.** This version changes the database schema. The change can't be undone, so older versions can't open the updated database. Create a backup in Settings > Data and storage before updating.

@@ -70,6 +70,8 @@ class RecentMangaAdapter(val delegate: RecentsInterface) :
         return when (val item = getItem(position)) {
             is RecentMangaHeaderItem -> HEADER_ID_BASE - item.recentsType
 
+            is DateItem -> DATE_ID_BASE - item.date.time
+
             is RecentMangaItem ->
                 if (item.mch.manga.id == null) {
                     FOOTER_ID_BASE - ((item.header as? RecentMangaHeaderItem)?.recentsType ?: 0)
@@ -157,5 +159,6 @@ class RecentMangaAdapter(val delegate: RecentsInterface) :
         // clear of that range and of RecyclerView.NO_ID (-1).
         const val HEADER_ID_BASE = -1000L
         const val FOOTER_ID_BASE = -2000L
+        const val DATE_ID_BASE = -3000L
     }
 }
