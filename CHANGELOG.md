@@ -12,7 +12,6 @@ The format is simplified version of [Keep a Changelog](https://keepachangelog.co
 
 ## [1.8.0]
 
-> [!WARNING]
 > **Backup before updating is recommended.** This version changes the database schema. The change can't be undone, so older versions can't open the updated database. Create a backup in Settings > Data and storage before updating.
 
 ### Additions
