@@ -10,8 +10,15 @@ The format is simplified version of [Keep a Changelog](https://keepachangelog.co
 
 ## [Unreleased]
 
+## [1.8.1]
+
+> **Backup before updating is recommended if you are coming from 1.7.1 or older.** Since 1.8.0 the database schema is different. The change can't be undone, so older versions can't open the updated database. Create a backup in Settings > Data and storage before updating.
+
 ### Fixes
-- Fixed a crash when scrolling the History tab of Recents, caused by two date headers sharing the same list ID
+- Fixed a crash in the Recents Updates tab when returning to it (for example from Library), introduced in 1.8.0 and caused by two date headers sharing the same list ID
+
+### Other
+- Reduced Crashlytics noise by no longer reporting an expired Hikka or MangaBaka session, a source's missing page list, a damaged downloaded CBZ, a tall image the device can't split, or a source's Cloudflare challenge failing in a translated language as non-fatal errors
 
 ## [1.8.0]
 
