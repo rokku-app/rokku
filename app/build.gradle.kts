@@ -67,6 +67,7 @@ android {
         buildConfigField("Boolean", "INCLUDE_UPDATER", "false")
         buildConfigField("Boolean", "BETA", "false")
         buildConfigField("Boolean", "NIGHTLY", "false")
+        buildConfigField("long", "DISCORD_APP_ID", "1550230563879780442" + "L")
 
         ndk {
             // False positive, we have x86 abi support
@@ -124,6 +125,14 @@ android {
         aidl = true
         renderScript = false
         shaders = false
+        prefab = true
+    }
+
+    externalNativeBuild {
+        cmake {
+            path = file("src/main/cpp/CMakeLists.txt")
+            version = "3.22.1"
+        }
     }
 
     flavorDimensions.add("default")
@@ -269,6 +278,9 @@ dependencies {
     // REF: https://square.github.io/leakcanary/
     debugImplementation(libs.leakcanary.android)
     implementation(libs.leakcanary.plumber)
+
+    // Discord Partner SDK
+    implementation(files("libs/discord_partner_sdk.aar"))
 }
 
 tasks {

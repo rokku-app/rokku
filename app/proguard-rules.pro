@@ -118,6 +118,19 @@
 -keep class com.google.firebase.installations.** { *; }
 -keep interface com.google.firebase.installations.** { *; }
 
+# Discord Social SDK - JNI callbacks, invoked from discord_bridge.cpp
+-keep class eu.kanade.tachiyomi.data.connections.discord.DiscordRpcManager {
+    *;
+}
+
+-keep class eu.kanade.tachiyomi.data.connections.discord.DiscordNativeActivity {
+    *;
+}
+
+-keep class eu.kanade.tachiyomi.data.connections.discord.DiscordUser {
+    *;
+}
+
 # Methods called by Shizuku only
 -keepclassmembers class eu.kanade.tachiyomi.extension.installer.shizuku.ShellInterface {
     public <init>();
