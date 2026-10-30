@@ -194,6 +194,16 @@ class CrashlyticsLogWriterTest {
         ignored(Exception("WebView render process was killed")) shouldBe true
         ignored(ArchiveException("ZIP bad CRC: 0x7b114351 should be 0x3f25e0b2")) shouldBe true
         ignored(ArchiveException("Truncated ZIP file data")) shouldBe false
+        ignored(ArchiveException("Damaged Zip archive")) shouldBe true
+    }
+
+    @Test
+    fun `expired tracker sessions and a missing extension page list are ignored`() {
+        ignored(IOException("java.lang.Exception: MangaBaka: The token is expired", Exception("MangaBaka: The token is expired"))) shouldBe true
+        ignored(Exception("Hikka: The token is expired")) shouldBe true
+        ignored(Exception("Page list not found")) shouldBe true
+        ignored(Exception("Page list not found in chapter 12")) shouldBe false
+        ignored(Exception("MangaBaka: Not authenticated")) shouldBe false
     }
 
     @Test
@@ -232,8 +242,23 @@ class CrashlyticsLogWriterTest {
         ignored(Exception("Log in via WebView")) shouldBe false
     }
 
+    @Test
+    fun `an image format the platform cannot region-decode is ignored`() {
+        ignored(IOException("Image format not supported")) shouldBe true
+        ignored(IOException("Image format not supported by the codec")) shouldBe false
+    }
+
+    @Test
+    fun `a localized Cloudflare bypass failure is ignored through its cause`() {
+        ignored(IOException("Fallo al evitar Cloudflare", CloudflareBypassException())) shouldBe true
+        ignored(IOException("Fallo al evitar Cloudflare")) shouldBe false
+    }
+
     // Same simple name as libarchive's exception, which the filter matches by name.
     private class ArchiveException(message: String) : Exception(message)
+
+    // Same simple name as the private exception thrown by CloudflareInterceptor.
+    private class CloudflareBypassException : Exception()
 
     @Test
     fun `the whole cause chain is walked`() {
