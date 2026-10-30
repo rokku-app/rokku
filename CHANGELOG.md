@@ -477,34 +477,34 @@ First release under the Rokku name. Everything below was inherited as broken fro
 - Updated OkHttp, Kotlin, Compose, AndroidX, coroutines/serialization, and other core dependencies
 - Completed pt-BR translations
 
-## [1.9.7.5]
+## [1.9.7.5-yokai]
 
 ### Fixes
 - Add missing ProtoBuf singleton definition to the DI for extensions
 
-## [1.9.7.4]
+## [1.9.7.4-yokai]
 
 ### Other
 - Prioritize extension classpath over app
 - Update kotlin monorepo to v2.3.10
 - Update dependency gradle to v8.14.4
 
-## [1.9.7.3]
+## [1.9.7.3-yokai]
 
 ### Fixes
 - More `Comparison method violates its general contract!` crash prevention
 
-## [1.9.7.2]
+## [1.9.7.2-yokai]
 
 ### Fixes
 - Fix MyAnimeList timeout issue
 
-## [1.9.7.1]
+## [1.9.7.1-yokai]
 
 ### Fixes
 - Prevent `Comparison method violates its general contract!` crashes
 
-## [1.9.7]
+## [1.9.7-yokai]
 
 ### Changes
 - Adjust log file to only log important information by default
@@ -521,12 +521,12 @@ First release under the Rokku name. Everything below was inherited as broken fro
 ### Other
 - Update NDK to v27.2.12479018
 
-## [1.9.6]
+## [1.9.6-yokai]
 
 ### Fixes
 - Fix some crashes
 
-## [1.9.5]
+## [1.9.5-yokai]
 
 ### Changes
 - Entries from local source now behaves similar to entries from online sources
@@ -542,12 +542,12 @@ First release under the Rokku name. Everything below was inherited as broken fro
 - Update plugin gradle-versions to v0.51.0
 - Update kotlin monorepo to v2.1.0
 
-## [1.9.4]
+## [1.9.4-yokai]
 
 ### Fixes
 - Fix chapter date fetch always null causing it to not appear on Updates tab
 
-## [1.9.3]
+## [1.9.3-yokai]
 
 ### Fixes
 - Fix slow chapter load
@@ -558,7 +558,7 @@ First release under the Rokku name. Everything below was inherited as broken fro
   - Replace RxJava usage with Kotlin coroutines
   - Replace DownloadQueue with Flow to hopefully fix ConcurrentModificationException entirely
 
-## [1.9.2]
+## [1.9.2-yokai]
 
 ### Changes
 - Adjust chapter title-details contrast
@@ -567,7 +567,7 @@ First release under the Rokku name. Everything below was inherited as broken fro
 ### Fixes
 - Fix "Remove from read" not working properly
 
-## [1.9.1]
+## [1.9.1-yokai]
 
 ### Fixes
 - Fix chapters cannot be opened from `Recents > Grouped` and `Recents > All`
@@ -585,7 +585,7 @@ First release under the Rokku name. Everything below was inherited as broken fro
 - Update fast.adapter to v5.7.0
 - Downgrade dependency org.conscrypt:conscrypt-android to v2.5.2
 
-## [1.9.0]
+## [1.9.0-yokai]
 
 ### Additions
 - Sync DoH provider list with upstream (added Mullvad, Control D, Njalla, and Shecan)
@@ -664,48 +664,48 @@ First release under the Rokku name. Everything below was inherited as broken fro
 - Update dependency org.conscrypt:conscrypt-android to v2.5.3
 - Port upstream's download cache system
 
-## [1.8.5.13]
+## [1.8.5.13-yokai]
 
 ### Fixed
 - Fix version checker
 
-## [1.8.5.12]
+## [1.8.5.12-yokai]
 
 ### Fixed
 - Fixed scanlator data sometimes disappear
 
-## [1.8.5.11]
+## [1.8.5.11-yokai]
 
 ### Fixed
 - Fixed crashes caused by Bangumi invalid status
 
-## [1.8.5.10]
+## [1.8.5.10-yokai]
 
 ### Fixes
 - Fixed scanlator filter not working properly
 
-## [1.8.5.9]
+## [1.8.5.9-yokai]
 
 ### Changes
 - Revert create backup to use file picker
 
-## [1.8.5.8]
+## [1.8.5.8-yokai]
 
 ### Other
 - Separate backup error log when destination is null or not a file
 - Replace com.github.inorichi.injekt with com.github.null2264.injekt
 
-## [1.8.5.7]
+## [1.8.5.7-yokai]
 
 ### Fixes
 - Fixed more NPE crashes
 
-## [1.8.5.6]
+## [1.8.5.6-yokai]
 
 ### Fixes
 - Fixed NPE crash on tablets
 
-## [1.8.5.5]
+## [1.8.5.5-yokai]
 
 ### Fixes
 - Fixed crashes caused by certain extension implementation
@@ -720,12 +720,12 @@ First release under the Rokku name. Everything below was inherited as broken fro
 - Update aboutlibraries to v11.2.3
 - Remove dependency com.github.leandroBorgesFerreira:LoadingButtonAndroid
 
-## [1.8.5.4]
+## [1.8.5.4-yokai]
 
 ### Fixes
 - Fixed custom cover set from reader didn't show up on manga details
 
-## [1.8.5.3]
+## [1.8.5.3-yokai]
 
 ### Additions
 - Add toggle to enable/disable chapter swipe action(s)
@@ -747,7 +747,7 @@ First release under the Rokku name. Everything below was inherited as broken fro
 - Adjust manga cover cache key
 - Refactor manga cover fetcher (@ivaniskandar, @AntsyLich, @null2264)
 
-## [1.8.5.2]
+## [1.8.5.2-yokai]
 
 ### Fixes
 - Fixed some preference not being saved properly
@@ -756,12 +756,12 @@ First release under the Rokku name. Everything below was inherited as broken fro
 - Update dependency co.touchlab:kermit to v2.0.4
 - Update lifecycle to v2.8.4
 
-## [1.8.5.1]
+## [1.8.5.1-yokai]
 
 ### Fixes
 - Fixed library showing duplicate entry when using dynamic category
 
-## [1.8.5]
+## [1.8.5-yokai]
 
 ### Additions
 - Add missing "Max automatic backups" option on experimental Data and Storage setting menu
@@ -835,7 +835,7 @@ First release under the Rokku name. Everything below was inherited as broken fro
 - Update dependency androidx.work:work-runtime-ktx to v2.9.1
 - Update dependency androidx.annotation:annotation to v1.8.2
 
-## [1.8.4.6]
+## [1.8.4.6-yokai]
 
 ### Fixes
 - Fixed scanlator filter not working properly if it contains " & "
@@ -847,32 +847,32 @@ First release under the Rokku name. Everything below was inherited as broken fro
 - Replace dependency com.github.florent37:viewtooltip with
   com.github.CarlosEsco:ViewTooltip
 
-## [1.8.4.5]
+## [1.8.4.5-yokai]
 
 ### Fixes
 - Fixed incorrect library entry chapter count
 
-## [1.8.4.4]
+## [1.8.4.4-yokai]
 
 ### Fixes
 - Fixed incompatibility issue with J2K backup file
 
-## [1.8.4.3]
+## [1.8.4.3-yokai]
 
 ### Fixes
 - Fixed "Open source repo" icon's colour
 
-## [1.8.4.2]
+## [1.8.4.2-yokai]
 
 ### Changes
 - Changed "Open source repo" icon to prevent confusion
 
-## [1.8.4.1]
+## [1.8.4.1-yokai]
 
 ### Fixes
 - Fixed saving combined pages not doing anything
 
-## [1.8.4]
+## [1.8.4-yokai]
 
 ### Additions
 - Added option to change long tap browse and recents nav behaviour
@@ -914,7 +914,7 @@ First release under the Rokku name. Everything below was inherited as broken fro
   - Split it to several smaller classes
 - Update androidx.compose.material3:material3 to v1.3.0-beta02
 
-## [1.8.3.4]
+## [1.8.3.4-yokai]
 
 ### Fixes
 - Fixed crashes caused by invalid ComicInfo XML
@@ -923,7 +923,7 @@ First release under the Rokku name. Everything below was inherited as broken fro
 
 - Fixed crashes caused by the app trying to round NaN value
 
-## [1.8.3.3]
+## [1.8.3.3-yokai]
 
 ### Changes
 - Crash report can now actually be disabled
@@ -931,17 +931,17 @@ First release under the Rokku name. Everything below was inherited as broken fro
 ### Other
 - Loading GlobalExceptionHandler before Crashlytics
 
-## [1.8.3.2]
+## [1.8.3.2-yokai]
 
 ### Other
 - Some more NullPointerException prevention that I missed
 
-## [1.8.3.1]
+## [1.8.3.1-yokai]
 
 ### Other
 - A bunch of NullPointerException prevention
 
-## [1.8.3]
+## [1.8.3-yokai]
 
 ### Additions
 - Extensions now can be trusted by repo
@@ -953,7 +953,7 @@ First release under the Rokku name. Everything below was inherited as broken fro
 - Migrate to SQLDelight
 - Custom manga info is now stored in the database
 
-## [1.8.2]
+## [1.8.2-yokai]
 
 ### Additions
 - Downloaded chapters now include ComicInfo file
@@ -967,7 +967,7 @@ First release under the Rokku name. Everything below was inherited as broken fro
 ### Other
 - Re-route nightly to use its own repo, should fix "What's new" page
 
-## [1.8.1.2]
+## [1.8.1.2-yokai]
 
 ### Additions
 - Added a couple new tags to set entry as SFW (`sfw` and `non-erotic`)
@@ -978,12 +978,12 @@ First release under the Rokku name. Everything below was inherited as broken fro
 ### Other
 - Re-route nightly to use its own repo, should fix "What's new" page
 
-## [1.8.1.1]
+## [1.8.1.1-yokai]
 
 ### Fixes
 - Fixed crashes when user try to edit an entry
 
-## [1.8.1]
+## [1.8.1-yokai]
 
 ### Additions
 - (Experimental) Option to append chapter ID to download filename to avoid conflict
@@ -1002,13 +1002,13 @@ First release under the Rokku name. Everything below was inherited as broken fro
 - Wrap SplashState to singleton factory, might fix issue where splash screen shown multiple times
 - Use Okio instead of `java.io`, should improve reader stability (especially long strip)
 
-## [1.8.0.2]
+## [1.8.0.2-yokai]
 
 ### Fixes
 - Fixed app crashes when backup directory is null
 - Fixed app asking for All Files access permission when it's no longer needed
 
-## [1.8.0.1]
+## [1.8.0.1-yokai]
 
 ### Additions
 - Added CrashScreen
@@ -1079,7 +1079,7 @@ First release under the Rokku name. Everything below was inherited as broken fro
 - Resolved some compile warnings
 - Update dependency com.github.tachiyomiorg:unifile to 7c257e1c64
 
-## [1.7.14]
+## [1.7.14-yokai]
 
 ### Changes
 - Added splash to reader (in case it being opened from shortcut)
@@ -1092,7 +1092,7 @@ First release under the Rokku name. Everything below was inherited as broken fro
 ### Other
 - Move AppState from DI to Application class to reduce race condition
 
-## [1.7.13]
+## [1.7.13-yokai]
 
 ### Additions
 - Ported Tachi's cutout option
@@ -1114,7 +1114,7 @@ First release under the Rokku name. Everything below was inherited as broken fro
 - Migrate to using Android 12's SplashScreen API
 - Clean up unused variables from ExtensionInstaller
 
-## [1.7.12]
+## [1.7.12-yokai]
 
 ### Additions
 - Scanlator filter is now being backed up (@jobobby04)
@@ -1130,7 +1130,7 @@ First release under the Rokku name. Everything below was inherited as broken fro
 - Replace dependency com.github.jays2kings:subsampling-scale-image-view with com.github.null2264:subsampling-scale-image-view
 - Update dependency com.github.null2264:subsampling-scale-image-view to e3cffd59c5
 
-## [1.7.11]
+## [1.7.11-yokai]
 
 ### Fixes
 - Fixed MAL tracker issue (@AntsyLich)
@@ -1140,7 +1140,7 @@ First release under the Rokku name. Everything below was inherited as broken fro
 - Change Shikimori client from Tachi's to Yōkai's
 - Move TrackPreferences to PreferenceModule
 
-## [1.7.10]
+## [1.7.10-yokai]
 
 ### Addition
 - Content type filter to hide SFW/NSFW entries
@@ -1158,12 +1158,12 @@ First release under the Rokku name. Everything below was inherited as broken fro
 - Changed (most) trackers' client id and secret
 - Add or changed user-agent for trackers
 
-## [1.7.9]
+## [1.7.9-yokai]
 
 ### Other
 - Sync project with J2K [v1.7.4](https://github.com/Jays2Kings/tachiyomiJ2K/releases/tag/v1.7.4)
 
-## [1.7.8]
+## [1.7.8-yokai]
 
 ### Changes
 - Local source now try to find entries not only in `Yōkai/` but also in `Yokai/` and `TachiyomiJ2K/` for easier migration
@@ -1171,7 +1171,7 @@ First release under the Rokku name. Everything below was inherited as broken fro
 ### Other
 - Changed AniList and MAL clientId, you may need to logout and re-login
 
-## [1.7.7]
+## [1.7.7-yokai]
 
 ### Changes
 - Hopper icon now changes depending on currently active group type (J2K)
@@ -1179,7 +1179,7 @@ First release under the Rokku name. Everything below was inherited as broken fro
 ### Fixes
 - Fixed bookmarked entries not being detected as bookmarked on certain extensions
 
-## [1.7.6]
+## [1.7.6-yokai]
 
 ### Additions
 - Shortcut to Extension Repos from Browser -> Extensions page
@@ -1195,7 +1195,7 @@ First release under the Rokku name. Everything below was inherited as broken fro
 ### Other
 - Newly added strings from v1.7.5 is now translatable
 
-## [1.7.5]
+## [1.7.5-yokai]
 
 ### Additions
 - Ported custom extension repo from upstream
@@ -1209,7 +1209,7 @@ First release under the Rokku name. Everything below was inherited as broken fro
 ### Other
 - Start migrating to Compose
 
-## [1.7.4]
+## [1.7.4-yokai]
 
 ### Changes
 - Rename project to Yōkai (Z)
