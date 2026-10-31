@@ -206,6 +206,13 @@ class CrashlyticsLogWriter : LogWriter() {
      * NoPagesException), and libarchive reporting a damaged ZIP while reading a downloaded
      * CBZ ("Damaged Zip archive", same category as "ZIP bad CRC"), and BitmapRegionDecoder
      * rejecting a downloaded page's format while splitting a tall image (the page is kept unsplit).
+     *
+     * Also skips WorkManager refusing tryToSetForeground() because the worker already finished or
+     * was stopped before the foreground promotion completed ("Calls to setForegroundAsync() must
+     * complete before a ListenableWorker signals completion of work", same best-effort category as
+     * ForegroundServiceStartNotAllowedException), and an extension's own manifest request failing
+     * with the site's HTTP status ("Error: manifest 428", same category as "Chapter pages failed:
+     * HTTP 5xx").
      */
     internal fun Throwable.isIgnoredForCrashlytics(): Boolean {
         var current: Throwable? = this
@@ -266,14 +273,16 @@ class CrashlyticsLogWriter : LogWriter() {
                     current.message?.startsWith("Too many follow-up requests") == true ||
                     current.message?.startsWith("unexpected end of stream on ") == true ||
                     current.message?.matches(HTTP_STATUS_MESSAGE) == true ||
-                    current.message?.matches(EXTENSION_HTTP_HINT) == true
+                    current.message?.matches(EXTENSION_HTTP_HINT) == true ||
+                    current.message?.matches(EXTENSION_MANIFEST_ERROR) == true
                 ) {
                     return true
                 }
 
                 is IllegalStateException -> if (
                     current.message == "Invalid image" ||
-                    current.message == "No cover specified"
+                    current.message == "No cover specified" ||
+                    current.message?.startsWith("Calls to setForegroundAsync() must complete before") == true
                 ) {
                     return true
                 }
@@ -386,6 +395,9 @@ class CrashlyticsLogWriter : LogWriter() {
         /** Matches "Chapter page 2 failed: HTTP 521", raised by an extension for a single page request. */
         val EXTENSION_PAGE_HTTP_FAILURE = Regex("""Chapter page \d+ failed: HTTP \d{3}\b.*""")
         val EXTENSION_SERVER_ERROR = Regex("""HTTP error 5\d{2}""")
+
+        /** Matches "Error: manifest 428", an extension's IOException for a failed manifest request. */
+        val EXTENSION_MANIFEST_ERROR = Regex("""Error: manifest \d{3}""")
 
         /** Matches "HTTP error 404. Проверьте сайт. …", an extension's interceptor message for a failed request. */
         val EXTENSION_HTTP_HINT = Regex("""HTTP error \d{3}\. Проверьте сайт.*""")

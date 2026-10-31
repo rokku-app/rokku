@@ -267,6 +267,19 @@ class CrashlyticsLogWriterTest {
     }
 
     @Test
+    fun `late foreground promotion and extension manifest failures are ignored`() {
+        ignored(
+            IllegalStateException(
+                "Calls to setForegroundAsync() must complete before a ListenableWorker signals completion of work by returning an instance of Result.",
+            ),
+        ) shouldBe true
+        ignored(IllegalStateException("Calls to setForegroundAsync() failed")) shouldBe false
+        ignored(IOException("Error: manifest 428")) shouldBe true
+        ignored(IOException("Error: manifest")) shouldBe false
+        ignored(IOException("Error: manifest 428 in cache")) shouldBe false
+    }
+
+    @Test
     fun `real bugs are still reported`() {
         ignored(IOException("write failed: ENOSPC (No space left on device)")) shouldBe false
         ignored(IllegalStateException("ViewModel was cleared")) shouldBe false
