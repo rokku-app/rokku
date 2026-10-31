@@ -66,7 +66,7 @@ jobs:
           distro: temurin
 
       - name: Setup CHANGELOG parser
-        uses: taiki-e/install-action@597dd51f7afd142c62d1c302615f3cf549c46ee9 # parse-changelog
+        uses: taiki-e/install-action@b9aede692f5b10f7f0db2f34a2a1beb658435902 # parse-changelog
 
       - name: Copy CI gradle.properties
         run: |
@@ -177,7 +177,7 @@ jobs:
           path: app/build/outputs/mapping/standard*
 
       - name: Publish test report
-        uses: mikepenz/action-junit-report@6ef3fdcfcd5f0b5d14df3e659ef19b8c6820f93d # v6
+        uses: mikepenz/action-junit-report@8a133bfa3ecb0ea9024c1e2ae788b4c25f6cdb9d # v6
         if: success() || failure()
         with:
           include_passed: true
