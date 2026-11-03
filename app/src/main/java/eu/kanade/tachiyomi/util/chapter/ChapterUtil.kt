@@ -35,6 +35,9 @@ class ChapterUtil {
                 .apply { decimalSeparator = '.' },
         )
 
+        fun formatChapterNumber(chapterNumber: Double): String =
+            decimalFormat.format(chapterNumber)
+
         fun relativeDate(chapter: Chapter): String? {
             return when (chapter.date_upload > 0) {
                 true -> chapter.date_upload.timeSpanFromNow
@@ -180,7 +183,7 @@ class ChapterUtil {
 
         fun Chapter.preferredChapterName(context: Context, manga: Manga, preferences: PreferencesHelper): String {
             return if (manga.hideChapterTitle(preferences) && isRecognizedNumber) {
-                val number = decimalFormat.format(chapter_number.toDouble())
+                val number = formatChapterNumber(chapter_number.toDouble())
                 context.getString(MR.strings.chapter_, number)
             } else {
                 name

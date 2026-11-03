@@ -26,6 +26,64 @@
     <string name="invalid_location_generic">Invalid location</string>
     <!--Models-->
 
+    <!-- Connections section -->
+    <string name="connections">Connections</string>
+    <string name="connections_discord">Discord</string>
+    <string name="connections_discord_info">Rokku connects to Discord using the official Discord Social SDK.\n\nYour account is authorized through the Discord app itself — Rokku never receives or stores your Discord password.</string>
+    <string name="discord_rpc">Discord Rich Presence</string>
+    <string name="enable_discord_rpc">Enable Discord Rich Presence</string>
+    <string name="discord_privacy">Privacy</string>
+    <string name="discord_status">Discord Status</string>
+    <string name="discord_dnd">⛔ Do Not Disturb</string>
+    <string name="discord_idle">🌙 Idle</string>
+    <string name="discord_online">🟢 Online</string>
+    <string name="category_discord_incognito">RPC Incognito</string>
+    <string name="discord_incognito">Discord Incognito mode</string>
+    <string name="discord_incognito_summary">Overridden when Incognito Mode is enabled</string>
+    <string name="discord_incognito_categories_details">Entries in included categories will not be displayed in Discord</string>
+    
+    <!-- Discord accounts -->
+    <string name="discord_accounts">Discord Accounts</string>
+    <string name="active_account">Active Account</string>
+    <string name="switch_account">Switch account</string>
+    <string name="switch_account_confirmation">Switch to %1$s?</string>
+    <string name="delete_account">Delete account</string>
+    <string name="delete_account_confirmation">Are you sure you want to delete the account %1$s?</string>
+    <string name="connected">Connected</string>
+    <string name="connecting">Connecting...</string>
+    
+    <!-- Discord section -->
+    <string name="browsing">Browsing</string>
+    <string name="scrolling">Scrolling through</string>
+    <string name="messing">Messing around with</string>
+
+    <string name="download_app">Download App</string>
+    <string name="read_chapter_button">Read Chapter</string>
+    <string name="view_series">View %1$s</string>
+    <string name="chapter_progress">Ch. %1$s of %2$s</string>
+    <string name="page_count">Page %1$s/%2$s</string>
+    
+    <!-- Discord RPC Customization -->
+    <string name="pref_buttons_selected">Selected: %s</string>
+    <string name="pref_category_discord_buttons">Buttons</string>
+    <string name="pref_category_discord_customization">Customization</string>
+    <string name="pref_discord_show_app_icon">Show Rokku Icon</string>
+    <string name="pref_discord_show_app_icon_summary">Show Small Rokku Icon on the RPC</string>
+    <string name="pref_discord_custom_title">Custom Title</string>
+    <string name="pref_discord_custom_title_summary">Custom title that will be displayed on Discord</string>
+    <string name="pref_discord_upload_local_covers">Upload local/custom covers</string>
+    <string name="pref_discord_upload_local_covers_summary">Mangas with local/custom covers, upload the image to an external host so it can be shown on Discord.</string>
+    <string name="show_chapters_titles_title">Show Chapters Titles</string>
+    <string name="show_chapters_titles_subtitle">Show the title of the chapter you are reading</string>
+    <string name="pref_discord_show_progress">Show Progress</string>
+    <string name="pref_discord_show_progress_summary">Display the current chapter progress</string>
+    <string name="pref_discord_progress_off">Off</string>
+    <string name="pref_discord_progress_pages">Chapter page progress</string>
+    <string name="pref_discord_progress_chapters">Current chapter and total</string>
+    <string name="pref_discord_buttons">RPC Buttons</string>
+    <string name="pref_discord_buttons_summary">The buttons to show on the RPC.</string>
+    <string name="pref_discord_button_manga">View Manga/Chapter</string>
+
     <!-- Manga Type -->
     <string name="manga">Manga</string>
     <string name="manhwa">Manhwa</string>

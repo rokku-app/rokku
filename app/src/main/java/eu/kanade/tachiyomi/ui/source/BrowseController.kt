@@ -26,6 +26,8 @@ import com.google.android.material.snackbar.Snackbar
 import eu.davidea.flexibleadapter.FlexibleAdapter
 import eu.davidea.flexibleadapter.items.IFlexible
 import eu.kanade.tachiyomi.R
+import eu.kanade.tachiyomi.data.connections.discord.DiscordRPCService
+import eu.kanade.tachiyomi.data.connections.discord.DiscordScreen
 import eu.kanade.tachiyomi.data.preference.PreferenceValues
 import eu.kanade.tachiyomi.data.preference.PreferencesHelper
 import eu.kanade.tachiyomi.databinding.BrowseControllerBinding
@@ -70,6 +72,7 @@ import eu.kanade.tachiyomi.widget.LinearLayoutManagerAccurateOffset
 import kotlinx.coroutines.flow.drop
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 import kotlinx.parcelize.Parcelize
 import uy.kohesive.injekt.injectLazy
 import yokai.domain.base.BasePreferences
@@ -143,6 +146,14 @@ class BrowseController :
     val presenter = SourcePresenter(this)
 
     override fun createBinding(inflater: LayoutInflater) = BrowseControllerBinding.inflate(inflater)
+
+    override fun onAttach(view: View) {
+        super.onAttach(view)
+        if (!isControllerVisible) return
+        viewScope.launch {
+            DiscordRPCService.setScreen(activity ?: return@launch, DiscordScreen.BROWSE)
+        }
+    }
 
     override fun onViewCreated(view: View) {
         super.onViewCreated(view)

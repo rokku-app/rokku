@@ -70,6 +70,9 @@ import eu.davidea.flexibleadapter.FlexibleAdapter
 import eu.davidea.flexibleadapter.SelectableAdapter
 import eu.kanade.tachiyomi.R
 import eu.kanade.tachiyomi.data.coil.getBestColor
+import eu.kanade.tachiyomi.data.connections.discord.DiscordRPCService
+import eu.kanade.tachiyomi.data.connections.discord.DiscordScreen
+import eu.kanade.tachiyomi.data.connections.discord.ReaderData
 import eu.kanade.tachiyomi.data.database.models.Category
 import eu.kanade.tachiyomi.data.database.models.Chapter
 import eu.kanade.tachiyomi.data.database.models.seriesType
@@ -77,6 +80,7 @@ import eu.kanade.tachiyomi.data.database.models.vibrantCoverColor
 import eu.kanade.tachiyomi.data.download.DownloadJob
 import eu.kanade.tachiyomi.data.download.model.Download
 import eu.kanade.tachiyomi.data.notification.NotificationReceiver
+import eu.kanade.tachiyomi.data.preference.PreferencesHelper
 import eu.kanade.tachiyomi.data.track.model.TrackSearch
 import eu.kanade.tachiyomi.databinding.MangaDetailsControllerBinding
 import eu.kanade.tachiyomi.domain.manga.models.Manga
@@ -84,6 +88,7 @@ import eu.kanade.tachiyomi.network.HttpException
 import eu.kanade.tachiyomi.network.isAuthError
 import eu.kanade.tachiyomi.source.CatalogueSource
 import eu.kanade.tachiyomi.source.icon
+import eu.kanade.tachiyomi.source.isIncognitoModeForSource
 import eu.kanade.tachiyomi.source.model.SManga
 import eu.kanade.tachiyomi.source.online.HttpSource
 import eu.kanade.tachiyomi.ui.base.MaterialMenuSheet
@@ -158,11 +163,13 @@ import eu.kanade.tachiyomi.util.view.snack
 import eu.kanade.tachiyomi.util.view.toolbarHeight
 import eu.kanade.tachiyomi.util.view.withFadeTransaction
 import eu.kanade.tachiyomi.widget.LinearLayoutManagerAccurateOffset
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withTimeoutOrNull
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.daysUntil
 import kotlinx.datetime.toLocalDateTime
+import uy.kohesive.injekt.injectLazy
 import yokai.domain.manga.models.cover
 import yokai.i18n.MR
 import yokai.presentation.core.Constants
@@ -261,6 +268,8 @@ class MangaDetailsController :
     private var fullCoverActive = false
     var returningFromReader = false
     private var floatingActionMode: android.view.ActionMode? = null
+
+    private val preferences: PreferencesHelper by injectLazy()
 
     override fun getTitle(): String? {
         return manga?.title
@@ -890,11 +899,42 @@ class MangaDetailsController :
             adapter?.notifyDataSetChanged()
         }
         presenter.refreshRelatedMangaFavorites()
+
+        manga?.let { m ->
+            viewScope.launch {
+                val ctx = activity ?: return@launch
+                val sourceUrl = (presenter.source as? HttpSource)?.let { source ->
+                    try {
+                        source.getMangaUrl(presenter.manga)
+                    } catch (e: Exception) {
+                        null
+                    }
+                }
+                val incognito = preferences.incognitoMode().get() ||
+                    isIncognitoModeForSource(m.source)
+
+                DiscordRPCService.setReaderActivity(
+                    ctx,
+                    ReaderData(
+                        incognitoMode = incognito,
+                        mangaId = m.id,
+                        mangaTitle = m.title,
+                        thumbnailUrl = m.thumbnail_url,
+                        browsingOnly = true,
+                        sourceUrl = sourceUrl,
+                        seriesType = m.seriesType(ctx).replaceFirstChar { it.titlecase() },
+                    ),
+                )
+            }
+        }
+
         if (!returningFromReader) return
         returningFromReader = false
+
         runBlocking {
             val itemAnimator = binding.recycler.itemAnimator
             val chapters = withTimeoutOrNull(1000) { presenter.getChaptersNow() } ?: return@runBlocking
+
             binding.recycler.itemAnimator = null
             tabletAdapter?.notifyItemChanged(0)
             adapter?.setChapters(chapters)
@@ -921,6 +961,17 @@ class MangaDetailsController :
         } else {
             if (router.backstack.lastOrNull()?.controller is DialogController) {
                 return
+            }
+
+            if (type == ControllerChangeType.POP_EXIT &&
+                router.backstack.lastOrNull()?.controller !is MangaDetailsController
+            ) {
+                val ctx = activity
+                if (ctx != null) {
+                    viewScope.launch {
+                        DiscordRPCService.setScreen(ctx, DiscordRPCService.lastUsedScreen)
+                    }
+                }
             }
             colorAnimator?.cancel()
 
