@@ -66,7 +66,7 @@ jobs:
           distro: temurin
 
       - name: Setup CHANGELOG parser
-        uses: taiki-e/install-action@c94f85f261f06557b505fffe32e2a30f19e80b81 # parse-changelog
+        uses: taiki-e/install-action@597dd51f7afd142c62d1c302615f3cf549c46ee9 # parse-changelog
 
       - name: Copy CI gradle.properties
         run: |

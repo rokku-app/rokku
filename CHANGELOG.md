@@ -10,106 +10,129 @@ The format is simplified version of [Keep a Changelog](https://keepachangelog.co
 
 ## [Unreleased]
 
+## [1.8.1]
+
+> **Backup before updating is recommended if you are coming from 1.7.1 or older.** Since 1.8.0 the database schema is different. The change can't be undone, so older versions can't open the updated database. Create a backup in Settings > Data and storage before updating.
+
+### Fixes
+- Fixed a crash in the Recents Updates tab when returning to it (for example from Library), introduced in 1.8.0 and caused by two date headers sharing the same list ID
+
+### Other
+- Reduced Crashlytics noise by no longer reporting an expired Hikka or MangaBaka session, a source's missing page list, a damaged downloaded CBZ, a tall image the device can't split, or a source's Cloudflare challenge failing in a translated language as non-fatal errors
+
+## [1.8.0]
+
+> **Backup before updating is recommended.** This version changes the database schema. The change can't be undone, so older versions can't open the updated database. Create a backup in Settings > Data and storage before updating.
+
 ### Additions
-- The manga details screen background can now pick up a subtle tint from the cover, extending the accent already used for the header/buttons through the rest of the screen (off by default, toggle separately under Settings > Appearance > Details page > Theme background based on cover)
-- Local source now reads Year, Month, and Day fields from a chapter's ComicInfo.xml to set its displayed date, and downloaded chapters now write these fields when generating ComicInfo.xml
-- Browse and Global Search now keep a recent search history and let you save searches (scoped to one source or all sources), with incognito-aware suggestions ([@Hiirbaf](https://github.com/Hiirbaf))
-- Added an option to group the manga details chapter list into rounded cards like TachiyomiJ2K, tinted with the cover's color when the cover theme is on (off by default, under Settings > Appearance > Details page > Group chapters into cards) ([@Hiirbaf](https://github.com/Hiirbaf))
-- Added an option to tint switch tracks and outlines with each theme's color instead of a neutral gray (off by default, under Settings > Appearance > Tint switches and outlines with theme color) ([@Hiirbaf](https://github.com/Hiirbaf))
-- Added a page transition effect (Slide, Fade, Depth, Zoom out) and speed for the paged reader, in the reader settings next to Animate page transitions
-- Added a new Compose tracking settings screen that shows the logged-in account name under each tracker and a refresh button to re-fetch the profile and scoring type (the previous screen is still available by long-pressing Tracking in Settings). Kitsu now supports its simple, regular and advanced rating systems, tracker search results show the score, and Bangumi search now only lists manga ([@Sacha1016](https://github.com/Sacha1016))
-- Added a "Skip this version" button to the new app update dialog, so an update you don't want stops being offered at launch and in the background until a newer version comes out (checking manually from About still shows it)
-- Added a "Preload only on Wi-Fi" option in the reader settings that, on a metered connection such as mobile data, loads only the page you're reading instead of preloading the next pages (off by default)
-- Added a "Predict next release time" option to Settings > Library > Smart update (renamed from "Skip updating titles", with its options reworded to match Mihon), which predicts when each series gets its next chapter from its past release dates and skips it in automatic library updates until then (off by default, manual updates always check). A new hourglass button on the manga details screen, available for every series in the library, shows the prediction
+- The manga details screen background can now be tinted by the cover (off by default, Settings > Appearance > Details page > Theme background based on cover) ([@Hiirbaf](https://github.com/Hiirbaf))
+- Local source now reads Year, Month and Day from a chapter's ComicInfo.xml for its date, and downloaded chapters write them
+- Added recent search history and saved searches to Browse and Global Search ([@Hiirbaf](https://github.com/Hiirbaf))
+- Added an option to group the chapter list into rounded cards like TachiyomiJ2K (off by default, Settings > Appearance > Details page > Group chapters into cards) ([@Hiirbaf](https://github.com/Hiirbaf))
+- Added an option to tint switches and outlines with the theme color (off by default, Settings > Appearance > Tint switches and outlines with theme color) ([@Hiirbaf](https://github.com/Hiirbaf))
+- Added a page transition effect (Slide, Fade, Depth, Zoom out) and speed for the paged reader
+- Added a new tracking settings screen showing the logged-in account with a refresh button (the old one is still available by long-pressing Tracking). Kitsu now supports its rating systems, and search results show the score ([@Sacha1016](https://github.com/Sacha1016))
+- Added a "Skip this version" button to the app update dialog
+- Added a "Preload only on Wi-Fi" reader option, to load only the current page on a metered connection (off by default)
+- Added "Predict next release time" (Settings > Library > Smart update, off by default) to skip series in automatic updates until their next expected chapter, with a button on the details screen showing the prediction
 - Added a copy button and text selection to the crash screen, so the error can be pasted into a report
-- Added an app icon color picker (beta) under Settings > Appearance > App icon, with a preview, ten predefined colors and an option to make the icon follow the selected app theme. The old Blue and Gray icons were removed
+- Added an app icon color picker (beta) under Settings > Appearance > App icon, replacing the Blue and Gray icons
 - Added the extension repository name under each extension in Browse > Extensions, and on the extension info screen
 - Added a website button next to GitHub in the About screen
-- Added an "Allowed content warnings" setting in Settings > Browse to choose which extensions are shown and loaded by their content warning (Safe, Mixed or 18+), replacing the "Show in sources and extensions lists" switch. Tapping the "Mixed" or "18+" label in an extension's details now explains what it means. If the old switch was off, only Safe and Mixed stay allowed ([@Hiirbaf](https://github.com/Hiirbaf))
+- Added an "Allowed content warnings" setting in Settings > Browse to choose which extensions are shown by content warning (Safe, Mixed or 18+), replacing the "Show in sources and extensions lists" switch ([@Hiirbaf](https://github.com/Hiirbaf))
+- Added support for new languages: Amharic, Assamese, Belarusian, Danish, Kannada, Kurdish, Malayalam, Marathi, Sanskrit, Tamil, Uzbek and Yakut
 
 ### Changes
-- Updated the database schema (removed the unused `filtered_scanlators` column and added the release schedule of each series). This can't be undone and older versions can't open the updated database, so create a backup before updating
-- The Doki, Dark (default) and Flat Lime themes now tint switch tracks and outlines with their own colors when "Tint switches and outlines" is on, instead of a generic gray
-- Extensions marked "Mixed" by their repository now show a "Mixed" label instead of "18+", in the extension list and details, so only extensions that are mainly 18+ content get the "18+" label, and extensions installed privately now show a "Private" label
-- An automatic backup that fails because its saved location is no longer accessible (folder deleted, permission revoked, storage removed) now shows a notification telling you to pick a new one, instead of failing silently
+- Updated the database schema (removed the unused `filtered_scanlators` column and added each series' release schedule)
+- The Doki, Dark (default) and Flat Lime themes now tint switches with their own colors when "Tint switches and outlines" is on
+- Extensions marked "Mixed" by their repository now show a "Mixed" label instead of "18+", and private extensions show a "Private" label
+- A failed automatic backup caused by an inaccessible location now shows a notification asking you to pick a new one
 - Aligned the accent and surface colors of the app themes with TachiyomiJ2K ([@Hiirbaf](https://github.com/Hiirbaf))
 
 ### Fixes
+- Fixed long-pressing an extension repository copying an incomplete URL that other apps such as Mihon rejected; it now copies the full index URL (for example the Keiyoushi `index.pb` link)
 - Fixed an installed private extension being deleted when updating it failed partway
 - Fixed the in-app browser closing unexpectedly when a source sets an Origin header, and stopped sending a source's headers to other websites opened from its pages
-- Made the status bar transparent instead of theme-colored, matching upstream (only visible on Android versions predating edge-to-edge enforcement)
 - Adjusted the accent color of the Tachiyomi, Flat Lime, Strawberries, and Yotsuba themes to match upstream
 - Fixed the Popular/Latest/Filter buttons in Browse rendering in the accent color instead of a neutral one
 - Fixed the switch thumb and checkmark being white in the Chocolate Strawberries theme instead of dark like the other dark themes
-- Fixed several dark themes showing white instead of black text/checkmarks on unread badges, checkboxes, filter chips, selected tabs, and default buttons, caused by using the accent color's own text color (`colorOnSecondary`) instead of the correctly calibrated `colorOnPrimary`
-- Fixed the manga details screen's unmarked "Add to Library"/"Tracking" buttons and the "More" fade-out keeping the plain theme background instead of the cover-based page tint, leaving a visible seam when "Theme background based on cover" was on
-- Fixed cool-hued covers (blue/cyan/green) barely tinting the manga details page compared to warm ones, caused by HSL's saturation not being perceptually uniform across hues; the cover-tint blend now uses HCT instead
-- Fixed extension loading failing when a repository published its lib version or content warning metadata as a numeric type instead of a string ([@pacoa-kdbg](https://github.com/pacoa-kdbg))
+- Fixed several dark themes showing white instead of black text/checkmarks on unread badges, checkboxes, filter chips, selected tabs and default buttons
+- Fixed a visible seam on the manga details screen between the cover-based page tint and the unmarked buttons and "More" fade-out
+- Fixed cool-hued covers (blue/cyan/green) barely tinting the manga details page; the tint blend now uses HCT
+- Fixed extension loading failing when a repository published its lib version or content warning metadata as a numeric type instead of a string
 - Fixed "Show content in cutout area" doing nothing on Android 15+ (content still drew into the camera cutout/notch when the option was turned off)
 - Fixed a crash when updating all extensions with many updates pending (the work request's input data exceeded its size limit)
 - Fixed a rare crash in Recents ("Two different ViewHolders have the same stable ID") caused by a section header's id colliding with a chapter row's
 - Fixed a page failing to render in the paged reader when a double-page spread couldn't be decoded for merging
 - Fixed the library update job silently failing (and spamming Crashlytics) when the OS refused to promote it to a foreground service
-- Stopped reporting an extension failing to decode a site's changed API response (missing JSON field) or failing to find its reader signer bindings to Crashlytics, since neither is actionable from the app
 - Fixed the app freezing (ANR) while installing an extension when the system download provider was slow to respond
 - Fixed a crash opening a chapter in the webtoon reader when its saved resume position was out of range
 - Fixed a crash sharing a reader page when its cached image had already been evicted from disk
 - Fixed a crash when saving reading history for a chapter that was removed from the library in the meantime (chapter list refreshed, manga removed)
 - Fixed an extension install wrongly reporting a failure (and never installing) when Android's DownloadManager returned no content URI for a download that actually completed
-- Fixed the app being killed while in the background after a while on newer Android versions (the file logger kept an open handle to the storage provider, so the app died whenever the system reclaimed it)
+- Fixed the app being killed in the background after a while on newer Android versions (the file logger kept the storage provider open)
 - Fixed a crash when range-selecting chapters to download/read/mark on the manga details screen (the selection could run past the end of the chapter list)
 - Fixed a crash while browsing a source whose filter list threw an error as it loaded in the background
 - Fixed a rare non-fatal error when cancelling an extension download after the app's process had been recreated
 - Fixed extension updates getting stuck showing "Downloading" forever when Android's DownloadManager silently failed a download or stalled without ever reaching a terminal state
 - Fixed a crash copying a manga cover to the clipboard (a raw `file://` URI was exposed outside the app instead of a `content://` one)
-- Fixed a source's text filters swapping or losing their typed values when scrolling the filter list, caused by recycled rows accumulating listeners from earlier filters ([@Hiirbaf](https://github.com/Hiirbaf))
+- Fixed a source's text filters swapping or losing typed values when scrolling the filter list ([@Hiirbaf](https://github.com/Hiirbaf))
 - Fixed saving a reader page (or a merged double-page spread) to storage failing with a confusing error when the destination file couldn't be created
 - Fixed the backup restore file picker relying on an outdated file selection API that could fail to open correctly on some devices
 - Fixed reading history occasionally double-counting a session's read time when a chapter was saved while another save for the same chapter was still in flight
 - Fixed the about page's build time never actually showing a formatted date (the parser didn't match the timestamp format Rokku itself produces)
 - Fixed the date format preference not showing a live preview of each option, and some other list settings not refreshing their summary right after a change
 - Fixed the full-size cover viewer's replace button showing even for manga not in your library, where it can't actually be used
-- Added the app ID to the debug info included in crash log dumps
 - Fixed the library's app bar sometimes landing in the wrong position after returning to the Library tab when "show all categories" was off and the library wasn't scrolled to the top
 - Fixed the action mode toolbar (shown while selecting items) overlapping a display cutout/notch in landscape
 - Fixed a source showing without its language tag in lists/search results when that language was disabled in settings
 - Fixed a rare crash installing an extension (`HttpException.getCode()`) caused by a missing proguard keep rule for this extensions-lib API class
-- Fixed extension installation getting stuck on "Installing" when using the Shizuku installer, including in release builds where R8 stripped the methods Shizuku calls externally (ported from Mihon [#3630](https://github.com/mihonapp/mihon/pull/3630) and [#3676](https://github.com/mihonapp/mihon/pull/3676))
-- Fixed Shizuku forks that use a different package name (e.g. a "hidden" build) being reported as "Shizuku is not running"; Shizuku is now detected by its API permission instead of its package name, following Mihon [#3565](https://github.com/mihonapp/mihon/pull/3565)
+- Fixed extension installation getting stuck on "Installing" with the Shizuku installer, including in release builds (ported from Mihon [#3630](https://github.com/mihonapp/mihon/pull/3630) and [#3676](https://github.com/mihonapp/mihon/pull/3676))
+- Fixed Shizuku forks with a different package name being reported as "Shizuku is not running", following Mihon [#3565](https://github.com/mihonapp/mihon/pull/3565)
 - Fixed a crash installing an extension on devices whose DownloadManager doesn't expose a working `content://downloads` provider
 - Fixed a crash on app startup when restoring a tracker login dialog that was still open on the back stack after the process was killed and that tracker was no longer available
 - Fixed a crash changing a manga's cover when the picked image's URI had expired or become inaccessible
 - Fixed the manga details screen occasionally freezing (ANR) when opening the favorite/categories popup, caused by a blocking database read on the main thread
-- Added a missing R8 keep rule for `JavaScriptEngine`, which could have its public API stripped in release/beta/nightly builds, breaking extensions that rely on it
 - Fixed the webtoon reader leaving a gap after zooming in once the window had been resized (split-screen, foldables), caused by only measuring its height once
 - Fixed Global Search (and the migration search) occasionally dropping a source's results from the list when several sources finished searching at nearly the same time
 - Fixed a download notification occasionally showing a leftover error's styling or category after a warning, pause, or new download, caused by all download notification states sharing one builder
-- Added missing R8 keep rules for the default methods of the source interfaces (`Source`, `CatalogueSource`, `ConfigurableSource`), which release builds could strip and crash extensions compiled the older way that call them
 - Fixed cancelling one extension install also cancelling the install of another extension that was in progress
 - Fixed pausing and resuming downloads quickly leaving duplicate page files ("(1)") and failed chapters, because the new download job started while the cancelled one was still writing pages
 - Fixed the app closing when a WebView's renderer process died, in the in-app WebView and during Cloudflare checks (now the page is closed with a message, or the check fails)
 - Fixed the paged reader ignoring the next tap after a press on a reader button was cancelled (for example when it turned into a scroll)
 - Fixed the webtoon reader's zoom and panning counting the side padding as part of the page, which let the page be dragged too far or showed a gap
 - Fixed the Local source being left out of Global Search when its language ("Other") wasn't enabled
-- Fixed concurrent requests to a site behind a Cloudflare check each opening their own WebView, causing slowdowns and memory pressure; they now wait for a single check. Requests that aren't GET (such as logins) now solve the check on the site's root page
-- Cloudflare checks are now detected with Cloudflare's `cf-mitigated` response header instead of parsing the page
+- Fixed concurrent requests to a Cloudflare-protected site each opening their own WebView; they now wait for a single check, and non-GET requests (such as logins) solve it on the site's root page
 - Fixed the app freezing when the reader showed the chapter transition page on slow storage, since the check for the next chapter being downloaded no longer runs on the main thread
 - Fixed the Statistics screen freezing the app while opening with a large library, since the numbers are now calculated in the background
 - Fixed the crash screen closing by itself when the crash was caused by the database, so the error can be read and reported
 - Fixed "Dump crash logs" not creating the file when the installed extensions couldn't be read because of a database error
 - Fixed the extension info screen showing the default icon instead of the extension's own icon for extensions installed privately
 - Fixed the app freezing on launch while extensions were still loading, since opening the main screen no longer waits for the extension list when no source is involved
+- Fixed a crash when editing a text setting in an extension's settings screen
+- Fixed scrolling getting stuck in settings screens while the app bar was collapsing, until the screen was reopened
+- Fixed the cache usage rows in Settings > Data and storage rescanning the disk every time the screen redrew
+- Fixed the hint shown when long-pressing Advanced in Settings not being translatable
+- Fixed a crash when the external cache folder was unavailable; the app now falls back to its internal cache
+- Fixed related manga suggestions searching with keywords shorter than 3 characters, which many sources reject
 
 ### Other
 - Migrated FlexibleAdapter from JitPack to its MavenCentral release, removing a source of transient CI build failures when JitPack was unavailable
-- `HttpSource`'s template methods (`popularMangaRequest`/`Parse`, `searchMangaRequest`/`Parse`, `latestUpdatesRequest`/`Parse`, `mangaDetailsParse`, `chapterListParse`, `chapterPageParse`, `pageListParse`, `imageUrlParse`) are no longer required to be implemented by extensions, and a new `getHomeUrl()` lets a source report a home page different from its `baseUrl` for "Open in WebView"
+- `HttpSource`'s template methods are no longer required to be implemented by extensions, and a new `getHomeUrl()` lets a source report a home page different from its `baseUrl`
 - Reduced Crashlytics noise by no longer reporting a dead or misconfigured extension repo (HTTP 404 on its `repo.json` or index) as a non-fatal error
 - Reduced Crashlytics noise by no longer reporting the extension repo/store being rate-limited (HTTP 429) as a non-fatal error (it already falls back to the legacy index)
 - Reduced Crashlytics noise by no longer reporting cover-loading, reader, browse, and backup failures that only reflect a source, the network, or the device misbehaving rather than a Rokku bug
-- Reduced Crashlytics noise further: handled extension-repo fetch failures, call timeouts/cancellations, dropped connections, unresolved WebView challenges, and broken local-library folders are no longer reported
+- Reduced Crashlytics noise further by no longer reporting handled extension-repo fetch failures, timeouts, dropped connections, unresolved WebView challenges and broken local-library folders
 - Reduced Crashlytics noise by no longer reporting a JSON parse failure caused by a source answering with an HTML page (Cloudflare interstitial or error page) instead of data
-- Reduced Crashlytics noise further: premium/encrypted source content, an unconfigured self-hosted bridge extension (e.g. Tachidesk), a malformed search query (HTTP 400), an extension's bundled search database missing an index, a `multisrc` theme DTO failing to decode after a site change, Hikka's OAuth preference round-tripping as a literal "null", and an extension's source class missing from its installed APK are no longer reported
+- Reduced Crashlytics noise further by no longer reporting more non-actionable source and extension errors (premium content, unconfigured self-hosted bridges, malformed queries, site changes)
 - Bumped compileSdk to 37.2
+- Migrated the Security and Privacy settings screen to Compose
+- Made the status bar transparent instead of theme-colored, matching upstream (only visible on Android versions predating edge-to-edge enforcement)
+- Stopped reporting an extension failing to decode a site's changed API response or to find its reader signer bindings to Crashlytics
+- Added the app ID to the debug info included in crash log dumps
+- Added a missing R8 keep rule for `JavaScriptEngine`, which could have its public API stripped in release/beta/nightly builds, breaking extensions that rely on it
+- Added missing R8 keep rules for the default methods of the source interfaces (`Source`, `CatalogueSource`, `ConfigurableSource`), which release builds could strip
+- Cloudflare checks are now detected with Cloudflare's `cf-mitigated` response header instead of parsing the page
 
 ## [1.7.1]
 
@@ -461,34 +484,34 @@ First release under the Rokku name. Everything below was inherited as broken fro
 - Updated OkHttp, Kotlin, Compose, AndroidX, coroutines/serialization, and other core dependencies
 - Completed pt-BR translations
 
-## [1.9.7.5]
+## [1.9.7.5-yokai]
 
 ### Fixes
 - Add missing ProtoBuf singleton definition to the DI for extensions
 
-## [1.9.7.4]
+## [1.9.7.4-yokai]
 
 ### Other
 - Prioritize extension classpath over app
 - Update kotlin monorepo to v2.3.10
 - Update dependency gradle to v8.14.4
 
-## [1.9.7.3]
+## [1.9.7.3-yokai]
 
 ### Fixes
 - More `Comparison method violates its general contract!` crash prevention
 
-## [1.9.7.2]
+## [1.9.7.2-yokai]
 
 ### Fixes
 - Fix MyAnimeList timeout issue
 
-## [1.9.7.1]
+## [1.9.7.1-yokai]
 
 ### Fixes
 - Prevent `Comparison method violates its general contract!` crashes
 
-## [1.9.7]
+## [1.9.7-yokai]
 
 ### Changes
 - Adjust log file to only log important information by default
@@ -505,12 +528,12 @@ First release under the Rokku name. Everything below was inherited as broken fro
 ### Other
 - Update NDK to v27.2.12479018
 
-## [1.9.6]
+## [1.9.6-yokai]
 
 ### Fixes
 - Fix some crashes
 
-## [1.9.5]
+## [1.9.5-yokai]
 
 ### Changes
 - Entries from local source now behaves similar to entries from online sources
@@ -526,12 +549,12 @@ First release under the Rokku name. Everything below was inherited as broken fro
 - Update plugin gradle-versions to v0.51.0
 - Update kotlin monorepo to v2.1.0
 
-## [1.9.4]
+## [1.9.4-yokai]
 
 ### Fixes
 - Fix chapter date fetch always null causing it to not appear on Updates tab
 
-## [1.9.3]
+## [1.9.3-yokai]
 
 ### Fixes
 - Fix slow chapter load
@@ -542,7 +565,7 @@ First release under the Rokku name. Everything below was inherited as broken fro
   - Replace RxJava usage with Kotlin coroutines
   - Replace DownloadQueue with Flow to hopefully fix ConcurrentModificationException entirely
 
-## [1.9.2]
+## [1.9.2-yokai]
 
 ### Changes
 - Adjust chapter title-details contrast
@@ -551,7 +574,7 @@ First release under the Rokku name. Everything below was inherited as broken fro
 ### Fixes
 - Fix "Remove from read" not working properly
 
-## [1.9.1]
+## [1.9.1-yokai]
 
 ### Fixes
 - Fix chapters cannot be opened from `Recents > Grouped` and `Recents > All`
@@ -569,7 +592,7 @@ First release under the Rokku name. Everything below was inherited as broken fro
 - Update fast.adapter to v5.7.0
 - Downgrade dependency org.conscrypt:conscrypt-android to v2.5.2
 
-## [1.9.0]
+## [1.9.0-yokai]
 
 ### Additions
 - Sync DoH provider list with upstream (added Mullvad, Control D, Njalla, and Shecan)
@@ -648,48 +671,48 @@ First release under the Rokku name. Everything below was inherited as broken fro
 - Update dependency org.conscrypt:conscrypt-android to v2.5.3
 - Port upstream's download cache system
 
-## [1.8.5.13]
+## [1.8.5.13-yokai]
 
 ### Fixed
 - Fix version checker
 
-## [1.8.5.12]
+## [1.8.5.12-yokai]
 
 ### Fixed
 - Fixed scanlator data sometimes disappear
 
-## [1.8.5.11]
+## [1.8.5.11-yokai]
 
 ### Fixed
 - Fixed crashes caused by Bangumi invalid status
 
-## [1.8.5.10]
+## [1.8.5.10-yokai]
 
 ### Fixes
 - Fixed scanlator filter not working properly
 
-## [1.8.5.9]
+## [1.8.5.9-yokai]
 
 ### Changes
 - Revert create backup to use file picker
 
-## [1.8.5.8]
+## [1.8.5.8-yokai]
 
 ### Other
 - Separate backup error log when destination is null or not a file
 - Replace com.github.inorichi.injekt with com.github.null2264.injekt
 
-## [1.8.5.7]
+## [1.8.5.7-yokai]
 
 ### Fixes
 - Fixed more NPE crashes
 
-## [1.8.5.6]
+## [1.8.5.6-yokai]
 
 ### Fixes
 - Fixed NPE crash on tablets
 
-## [1.8.5.5]
+## [1.8.5.5-yokai]
 
 ### Fixes
 - Fixed crashes caused by certain extension implementation
@@ -704,12 +727,12 @@ First release under the Rokku name. Everything below was inherited as broken fro
 - Update aboutlibraries to v11.2.3
 - Remove dependency com.github.leandroBorgesFerreira:LoadingButtonAndroid
 
-## [1.8.5.4]
+## [1.8.5.4-yokai]
 
 ### Fixes
 - Fixed custom cover set from reader didn't show up on manga details
 
-## [1.8.5.3]
+## [1.8.5.3-yokai]
 
 ### Additions
 - Add toggle to enable/disable chapter swipe action(s)
@@ -731,7 +754,7 @@ First release under the Rokku name. Everything below was inherited as broken fro
 - Adjust manga cover cache key
 - Refactor manga cover fetcher (@ivaniskandar, @AntsyLich, @null2264)
 
-## [1.8.5.2]
+## [1.8.5.2-yokai]
 
 ### Fixes
 - Fixed some preference not being saved properly
@@ -740,12 +763,12 @@ First release under the Rokku name. Everything below was inherited as broken fro
 - Update dependency co.touchlab:kermit to v2.0.4
 - Update lifecycle to v2.8.4
 
-## [1.8.5.1]
+## [1.8.5.1-yokai]
 
 ### Fixes
 - Fixed library showing duplicate entry when using dynamic category
 
-## [1.8.5]
+## [1.8.5-yokai]
 
 ### Additions
 - Add missing "Max automatic backups" option on experimental Data and Storage setting menu
@@ -819,7 +842,7 @@ First release under the Rokku name. Everything below was inherited as broken fro
 - Update dependency androidx.work:work-runtime-ktx to v2.9.1
 - Update dependency androidx.annotation:annotation to v1.8.2
 
-## [1.8.4.6]
+## [1.8.4.6-yokai]
 
 ### Fixes
 - Fixed scanlator filter not working properly if it contains " & "
@@ -831,32 +854,32 @@ First release under the Rokku name. Everything below was inherited as broken fro
 - Replace dependency com.github.florent37:viewtooltip with
   com.github.CarlosEsco:ViewTooltip
 
-## [1.8.4.5]
+## [1.8.4.5-yokai]
 
 ### Fixes
 - Fixed incorrect library entry chapter count
 
-## [1.8.4.4]
+## [1.8.4.4-yokai]
 
 ### Fixes
 - Fixed incompatibility issue with J2K backup file
 
-## [1.8.4.3]
+## [1.8.4.3-yokai]
 
 ### Fixes
 - Fixed "Open source repo" icon's colour
 
-## [1.8.4.2]
+## [1.8.4.2-yokai]
 
 ### Changes
 - Changed "Open source repo" icon to prevent confusion
 
-## [1.8.4.1]
+## [1.8.4.1-yokai]
 
 ### Fixes
 - Fixed saving combined pages not doing anything
 
-## [1.8.4]
+## [1.8.4-yokai]
 
 ### Additions
 - Added option to change long tap browse and recents nav behaviour
@@ -898,7 +921,7 @@ First release under the Rokku name. Everything below was inherited as broken fro
   - Split it to several smaller classes
 - Update androidx.compose.material3:material3 to v1.3.0-beta02
 
-## [1.8.3.4]
+## [1.8.3.4-yokai]
 
 ### Fixes
 - Fixed crashes caused by invalid ComicInfo XML
@@ -907,7 +930,7 @@ First release under the Rokku name. Everything below was inherited as broken fro
 
 - Fixed crashes caused by the app trying to round NaN value
 
-## [1.8.3.3]
+## [1.8.3.3-yokai]
 
 ### Changes
 - Crash report can now actually be disabled
@@ -915,17 +938,17 @@ First release under the Rokku name. Everything below was inherited as broken fro
 ### Other
 - Loading GlobalExceptionHandler before Crashlytics
 
-## [1.8.3.2]
+## [1.8.3.2-yokai]
 
 ### Other
 - Some more NullPointerException prevention that I missed
 
-## [1.8.3.1]
+## [1.8.3.1-yokai]
 
 ### Other
 - A bunch of NullPointerException prevention
 
-## [1.8.3]
+## [1.8.3-yokai]
 
 ### Additions
 - Extensions now can be trusted by repo
@@ -937,7 +960,7 @@ First release under the Rokku name. Everything below was inherited as broken fro
 - Migrate to SQLDelight
 - Custom manga info is now stored in the database
 
-## [1.8.2]
+## [1.8.2-yokai]
 
 ### Additions
 - Downloaded chapters now include ComicInfo file
@@ -951,7 +974,7 @@ First release under the Rokku name. Everything below was inherited as broken fro
 ### Other
 - Re-route nightly to use its own repo, should fix "What's new" page
 
-## [1.8.1.2]
+## [1.8.1.2-yokai]
 
 ### Additions
 - Added a couple new tags to set entry as SFW (`sfw` and `non-erotic`)
@@ -962,12 +985,12 @@ First release under the Rokku name. Everything below was inherited as broken fro
 ### Other
 - Re-route nightly to use its own repo, should fix "What's new" page
 
-## [1.8.1.1]
+## [1.8.1.1-yokai]
 
 ### Fixes
 - Fixed crashes when user try to edit an entry
 
-## [1.8.1]
+## [1.8.1-yokai]
 
 ### Additions
 - (Experimental) Option to append chapter ID to download filename to avoid conflict
@@ -986,13 +1009,13 @@ First release under the Rokku name. Everything below was inherited as broken fro
 - Wrap SplashState to singleton factory, might fix issue where splash screen shown multiple times
 - Use Okio instead of `java.io`, should improve reader stability (especially long strip)
 
-## [1.8.0.2]
+## [1.8.0.2-yokai]
 
 ### Fixes
 - Fixed app crashes when backup directory is null
 - Fixed app asking for All Files access permission when it's no longer needed
 
-## [1.8.0.1]
+## [1.8.0.1-yokai]
 
 ### Additions
 - Added CrashScreen
@@ -1001,7 +1024,7 @@ First release under the Rokku name. Everything below was inherited as broken fro
 - Fixed version checker for nightly against hotfix patch version
 - Fixed download cache causes the app to crash
 
-## [1.8.0]
+## [1.8.0-yokai]
 
 ### Additions
 - Added cutout support for some pre-Android P devices
@@ -1063,7 +1086,7 @@ First release under the Rokku name. Everything below was inherited as broken fro
 - Resolved some compile warnings
 - Update dependency com.github.tachiyomiorg:unifile to 7c257e1c64
 
-## [1.7.14]
+## [1.7.14-yokai]
 
 ### Changes
 - Added splash to reader (in case it being opened from shortcut)
@@ -1076,7 +1099,7 @@ First release under the Rokku name. Everything below was inherited as broken fro
 ### Other
 - Move AppState from DI to Application class to reduce race condition
 
-## [1.7.13]
+## [1.7.13-yokai]
 
 ### Additions
 - Ported Tachi's cutout option
@@ -1098,7 +1121,7 @@ First release under the Rokku name. Everything below was inherited as broken fro
 - Migrate to using Android 12's SplashScreen API
 - Clean up unused variables from ExtensionInstaller
 
-## [1.7.12]
+## [1.7.12-yokai]
 
 ### Additions
 - Scanlator filter is now being backed up (@jobobby04)
@@ -1114,7 +1137,7 @@ First release under the Rokku name. Everything below was inherited as broken fro
 - Replace dependency com.github.jays2kings:subsampling-scale-image-view with com.github.null2264:subsampling-scale-image-view
 - Update dependency com.github.null2264:subsampling-scale-image-view to e3cffd59c5
 
-## [1.7.11]
+## [1.7.11-yokai]
 
 ### Fixes
 - Fixed MAL tracker issue (@AntsyLich)
@@ -1124,7 +1147,7 @@ First release under the Rokku name. Everything below was inherited as broken fro
 - Change Shikimori client from Tachi's to Yōkai's
 - Move TrackPreferences to PreferenceModule
 
-## [1.7.10]
+## [1.7.10-yokai]
 
 ### Addition
 - Content type filter to hide SFW/NSFW entries
@@ -1142,12 +1165,12 @@ First release under the Rokku name. Everything below was inherited as broken fro
 - Changed (most) trackers' client id and secret
 - Add or changed user-agent for trackers
 
-## [1.7.9]
+## [1.7.9-yokai]
 
 ### Other
 - Sync project with J2K [v1.7.4](https://github.com/Jays2Kings/tachiyomiJ2K/releases/tag/v1.7.4)
 
-## [1.7.8]
+## [1.7.8-yokai]
 
 ### Changes
 - Local source now try to find entries not only in `Yōkai/` but also in `Yokai/` and `TachiyomiJ2K/` for easier migration
@@ -1155,7 +1178,7 @@ First release under the Rokku name. Everything below was inherited as broken fro
 ### Other
 - Changed AniList and MAL clientId, you may need to logout and re-login
 
-## [1.7.7]
+## [1.7.7-yokai]
 
 ### Changes
 - Hopper icon now changes depending on currently active group type (J2K)
@@ -1163,7 +1186,7 @@ First release under the Rokku name. Everything below was inherited as broken fro
 ### Fixes
 - Fixed bookmarked entries not being detected as bookmarked on certain extensions
 
-## [1.7.6]
+## [1.7.6-yokai]
 
 ### Additions
 - Shortcut to Extension Repos from Browser -> Extensions page
@@ -1179,7 +1202,7 @@ First release under the Rokku name. Everything below was inherited as broken fro
 ### Other
 - Newly added strings from v1.7.5 is now translatable
 
-## [1.7.5]
+## [1.7.5-yokai]
 
 ### Additions
 - Ported custom extension repo from upstream
@@ -1193,7 +1216,7 @@ First release under the Rokku name. Everything below was inherited as broken fro
 ### Other
 - Start migrating to Compose
 
-## [1.7.4]
+## [1.7.4-yokai]
 
 ### Changes
 - Rename project to Yōkai (Z)

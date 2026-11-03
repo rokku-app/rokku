@@ -127,6 +127,7 @@ class ExtensionHolder(view: View, val adapter: ExtensionAdapter) :
                 add(context.getString(MR.strings.ext_installer_private) to secondaryColor)
             }
         }
+        binding.warning.isVisible = warnings.isNotEmpty()
         binding.warning.text = buildSpannedString {
             warnings.forEachIndexed { index, (text, textColor) ->
                 if (index > 0) append(" - ")

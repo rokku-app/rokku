@@ -179,6 +179,7 @@
         <item name="colorSurfaceContainerLowest">@color/surfaceContainerLowestLime</item>
         <item name="colorSurfaceDim">@color/surfaceDimLime</item>
         <item name="colorSurfaceBright">@color/surfaceBrightLime</item>
+        <item name="materialAlertDialogTheme">@style/Theme.Widget.Yokai.AlertDialog.Lime</item>
     </style>
 
     <style name="Theme.Tachiyomi.MidnightDusk">

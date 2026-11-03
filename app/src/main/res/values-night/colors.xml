@@ -100,7 +100,7 @@
     <color name="backgroundLime">#202125</color>
     <color name="secondaryVariantLime">#cbffe0</color>
     <color name="downloadBadgeLime">#304E51</color>
-    <color name="onSurfaceVariantLime">@color/m3_sys_color_dark_on_surface_variant</color>
+    <color name="onSurfaceVariantLime">#C8C8C8</color>
     <color name="surfaceContainerHighLime">@color/m3_sys_color_dark_surface_container_high</color>
     <color name="surfaceContainerHighestLime">#37473D</color>
     <color name="outlineLime">#8C9A90</color>
@@ -115,6 +115,7 @@
     <color name="secondaryContainerLime">#334AF88A</color>
     <color name="surfaceDimLime">@color/m3_sys_color_dark_surface_dim</color>
     <color name="surfaceBrightLime">@color/m3_sys_color_dark_surface_bright</color>
+    <color name="elevationOverlayLime">@color/md_white_1000</color>
 
     <!-- Tako Theme -->
     <color name="primaryTako">#F3B375</color>

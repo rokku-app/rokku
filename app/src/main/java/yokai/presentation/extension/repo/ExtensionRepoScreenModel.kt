@@ -5,6 +5,7 @@ import cafe.adriel.voyager.core.model.StateScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
 import dev.icerock.moko.resources.StringResource
 import eu.kanade.tachiyomi.extension.ExtensionManager
+import eu.kanade.tachiyomi.network.NetworkHelper
 import eu.kanade.tachiyomi.util.system.launchIO
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
@@ -20,11 +21,14 @@ import yokai.domain.extension.repo.interactor.GetExtensionRepo
 import yokai.domain.extension.repo.interactor.ReplaceExtensionRepo
 import yokai.domain.extension.repo.interactor.UpdateExtensionRepo
 import yokai.domain.extension.repo.model.ExtensionRepo
+import yokai.domain.extension.repo.service.ExtensionRepoService
 import yokai.i18n.MR
 
 class ExtensionRepoScreenModel : StateScreenModel<ExtensionRepoScreenModel.State>(State.Loading) {
 
     private val extensionManager: ExtensionManager by injectLazy()
+    private val networkService: NetworkHelper by injectLazy()
+    private val extensionRepoService by lazy { ExtensionRepoService(networkService.client) }
 
     private val getExtensionRepo: GetExtensionRepo by injectLazy()
     private val createExtensionRepo: CreateExtensionRepo by injectLazy()
@@ -98,6 +102,9 @@ class ExtensionRepoScreenModel : StateScreenModel<ExtensionRepoScreenModel.State
             }
         }
     }
+
+    suspend fun resolveIndexUrl(baseUrl: String): String =
+        extensionRepoService.fetchIndexV2Url(baseUrl) ?: "$baseUrl/index.min.json"
 
     fun refreshRepos() {
         val status = state.value

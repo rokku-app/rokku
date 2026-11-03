@@ -199,6 +199,20 @@ class CrashlyticsLogWriter : LogWriter() {
      * server address was never filled in ("Set Address in Settings", same category as "Set
      * Tachidesk server url in extension settings"), and an extension asking the user to log in
      * through the WebView and subscribe to the site's service.
+     *
+     * Also skips a tracker session expiring (Hikka/MangaBaka interceptors log the user out and
+     * the tracking sheet toasts the message, same category as MALTokenExpired), an extension
+     * not finding a chapter's page list on its site ("Page list not found", same category as
+     * NoPagesException), and libarchive reporting a damaged ZIP while reading a downloaded
+     * CBZ ("Damaged Zip archive", same category as "ZIP bad CRC"), and BitmapRegionDecoder
+     * rejecting a downloaded page's format while splitting a tall image (the page is kept unsplit).
+     *
+     * Also skips WorkManager refusing tryToSetForeground() because the worker already finished or
+     * was stopped before the foreground promotion completed ("Calls to setForegroundAsync() must
+     * complete before a ListenableWorker signals completion of work", same best-effort category as
+     * ForegroundServiceStartNotAllowedException), and an extension's own manifest request failing
+     * with the site's HTTP status ("Error: manifest 428", same category as "Chapter pages failed:
+     * HTTP 5xx").
      */
     internal fun Throwable.isIgnoredForCrashlytics(): Boolean {
         var current: Throwable? = this
@@ -250,6 +264,7 @@ class CrashlyticsLogWriter : LogWriter() {
                     current.message == "Chapter locked" ||
                     current.message == "Can't open InputStream" ||
                     current.message == "Failed to bypass Cloudflare" ||
+                    current.message == "Image format not supported" ||
                     current.message == "Missing username or password" ||
                     current.message == "Open webview to refresh token" ||
                     current.message == "Premium chapter. Not available." ||
@@ -258,14 +273,16 @@ class CrashlyticsLogWriter : LogWriter() {
                     current.message?.startsWith("Too many follow-up requests") == true ||
                     current.message?.startsWith("unexpected end of stream on ") == true ||
                     current.message?.matches(HTTP_STATUS_MESSAGE) == true ||
-                    current.message?.matches(EXTENSION_HTTP_HINT) == true
+                    current.message?.matches(EXTENSION_HTTP_HINT) == true ||
+                    current.message?.matches(EXTENSION_MANIFEST_ERROR) == true
                 ) {
                     return true
                 }
 
                 is IllegalStateException -> if (
                     current.message == "Invalid image" ||
-                    current.message == "No cover specified"
+                    current.message == "No cover specified" ||
+                    current.message?.startsWith("Calls to setForegroundAsync() must complete before") == true
                 ) {
                     return true
                 }
@@ -317,6 +334,9 @@ class CrashlyticsLogWriter : LogWriter() {
                 current.message == "Set Address in Settings" ||
                 current.message == "Log in via WebView and subscribe to the website's service." ||
                 current.message == "Hikka: You are not authorized" ||
+                current.message == "Hikka: The token is expired" ||
+                current.message == "MangaBaka: The token is expired" ||
+                current.message == "Page list not found" ||
                 current.message == "Could not load images. Open in WebView and try again." ||
                 current.message == "Manga catalog not found" ||
                 // The full message is "<prefix>: <raw SQL query> - Can't find FULLTEXT index ...".
@@ -347,7 +367,12 @@ class CrashlyticsLogWriter : LogWriter() {
             if (current.message?.startsWith("Username or password cannot be empty") == true) return true
             if (current.message?.startsWith("Open in WebView to set necessary cookies") == true) return true
             if (current.message?.startsWith("WebView render process was killed") == true) return true
-            if (current.javaClass.simpleName == "ArchiveException" && current.message?.startsWith("ZIP bad CRC") == true) return true
+            if (
+                current.javaClass.simpleName == "ArchiveException" &&
+                (current.message?.startsWith("ZIP bad CRC") == true || current.message == "Damaged Zip archive")
+            ) {
+                return true
+            }
             if (current.message?.endsWith("is not a valid directory") == true) return true
             if (current.message == "Unrecognized archive format") return true
             if (current.javaClass.simpleName == "ForegroundServiceStartNotAllowedException") return true
@@ -355,6 +380,8 @@ class CrashlyticsLogWriter : LogWriter() {
             // startForegroundService) getting the same OS-imposed background-start limit.
             if (current.javaClass.simpleName == "BackgroundServiceStartNotAllowedException") return true
             if (current.javaClass.simpleName == "ConnectionShutdownException") return true
+            // The wrapping IOException's message is localized, so only the private cause class is stable.
+            if (current.javaClass.simpleName == "CloudflareBypassException") return true
 
             current = current.cause?.takeIf { it !== current }
         }
@@ -368,6 +395,9 @@ class CrashlyticsLogWriter : LogWriter() {
         /** Matches "Chapter page 2 failed: HTTP 521", raised by an extension for a single page request. */
         val EXTENSION_PAGE_HTTP_FAILURE = Regex("""Chapter page \d+ failed: HTTP \d{3}\b.*""")
         val EXTENSION_SERVER_ERROR = Regex("""HTTP error 5\d{2}""")
+
+        /** Matches "Error: manifest 428", an extension's IOException for a failed manifest request. */
+        val EXTENSION_MANIFEST_ERROR = Regex("""Error: manifest \d{3}""")
 
         /** Matches "HTTP error 404. Проверьте сайт. …", an extension's interceptor message for a failed request. */
         val EXTENSION_HTTP_HINT = Regex("""HTTP error \d{3}\. Проверьте сайт.*""")

@@ -213,6 +213,10 @@
         <item name="elevationOverlayColor">?colorSecondary</item>
     </style>
 
+    <style name="Theme.Widget.Yokai.AlertDialog.Lime">
+        <item name="elevationOverlayColor">@color/elevationOverlayLime</item>
+    </style>
+
     <style name="Widget.Yokai.AlertDialog" parent="MaterialAlertDialog.Material3">
         <item name="backgroundTint">?attr/colorSurface</item>
     </style>

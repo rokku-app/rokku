@@ -8,7 +8,8 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/card"
         android:layout_width="match_parent"
-        android:layout_height="72dp"
+        android:layout_height="wrap_content"
+        android:minHeight="72dp"
         android:background="@drawable/list_item_selector">
 
         <com.google.android.material.progressindicator.LinearProgressIndicator
@@ -29,11 +30,10 @@
 
         <ImageView
             android:id="@+id/source_image"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
+            android:layout_width="72dp"
+            android:layout_height="72dp"
             android:padding="12dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintDimensionRatio="h,1:1"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:src="@mipmap/ic_launcher_round" />
@@ -42,6 +42,7 @@
             android:id="@+id/ext_title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
             android:layout_marginEnd="4dp"
             android:ellipsize="end"
             android:maxLines="1"
@@ -79,24 +80,43 @@
             android:maxLines="1"
             android:ellipsize="middle"
             app:layout_constraintTop_toBottomOf="@+id/ext_title"
-            app:layout_constraintBottom_toTopOf="@id/repo_name"
+            app:layout_constraintBottom_toTopOf="@id/line3"
             app:layout_constraintStart_toEndOf="@id/lang"
             app:layout_constraintEnd_toStartOf="@id/date"
             tools:text="Version • " />
 
-        <TextView
-            android:id="@+id/repo_name"
-            style="?textAppearanceBodySmall"
+        <LinearLayout
+            android:id="@+id/line3"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
             android:layout_marginEnd="4dp"
-            android:ellipsize="end"
-            android:maxLines="1"
+            android:orientation="vertical"
             app:layout_constraintTop_toBottomOf="@id/version"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@id/source_image"
-            app:layout_constraintEnd_toStartOf="@id/button_layout"
-            tools:text="Keiyoushi" />
+            app:layout_constraintEnd_toStartOf="@id/button_layout">
+
+            <TextView
+                android:id="@+id/warning"
+                style="?textAppearanceBodySmall"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:textColor="?attr/colorError"
+                android:textSize="12sp"
+                tools:text="Warning" />
+
+            <TextView
+                android:id="@+id/repo_name"
+                style="?textAppearanceBodySmall"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="1"
+                tools:text="Keiyoushi" />
+        </LinearLayout>
 
         <TextView
             android:id="@+id/date"
@@ -108,24 +128,8 @@
             app:layout_constrainedWidth="true"
             app:layout_constraintTop_toBottomOf="@+id/ext_title"
             app:layout_constraintStart_toEndOf="@id/version"
-            app:layout_constraintEnd_toStartOf="@id/warning"
-            tools:text="Updated 5 days ago" />
-
-        <TextView
-            android:id="@+id/warning"
-            style="?textAppearanceBodySmall"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
-            android:maxLines="1"
-            android:textColor="?attr/colorError"
-            android:textSize="12sp"
-            android:layout_marginEnd="6dp"
             app:layout_constraintEnd_toStartOf="@id/button_layout"
-            app:layout_constraintTop_toBottomOf="@+id/ext_title"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toEndOf="@id/date"
-            tools:text="Warning" />
+            tools:text="Updated 5 days ago" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/button_layout"
