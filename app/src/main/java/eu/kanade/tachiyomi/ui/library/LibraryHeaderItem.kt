@@ -46,7 +46,7 @@ class LibraryHeaderItem(
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (other is LibraryHeaderItem) {
-            return category.id == other.category.id
+            return catId == other.catId
         }
         return false
     }
@@ -60,6 +60,6 @@ class LibraryHeaderItem(
     }
 
     override fun hashCode(): Int {
-        return (category.id ?: 0L).hashCode()
+        return catId.hashCode()
     }
 }

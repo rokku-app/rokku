@@ -10,6 +10,10 @@ The format is simplified version of [Keep a Changelog](https://keepachangelog.co
 
 ## [Unreleased]
 
+### Fixes
+- Fixed a crash when a MangaBaka entry with no saved status was synced after reading a chapter, which now picks up the status already on MangaBaka
+- Fixed the library freezing (and sometimes showing an app-not-responding dialog) when dragging the fast scroller or opening a large library grouped by tags
+
 ## [1.8.1]
 
 > **Backup before updating is recommended if you are coming from 1.7.1 or older.** Since 1.8.0 the database schema is different. The change can't be undone, so older versions can't open the updated database. Create a backup in Settings > Data and storage before updating.

@@ -118,6 +118,12 @@ class MangaBaka(private val context: Context, id: Long) : TrackService(id) {
     }
 
     override suspend fun update(track: Track, setToRead: Boolean): Track {
+        if (track.status !in getStatusList()) {
+            val localProgress = track.last_chapter_read
+            api.findLibManga(track)?.let { track.copyPersonalFrom(it) }
+            track.last_chapter_read = maxOf(localProgress, track.last_chapter_read)
+            if (track.status !in getStatusList()) track.status = DEFAULT_STATUS
+        }
         updateTrackStatus(track, setToRead, setToComplete = true, mustReadToComplete = false)
         return api.updateLibManga(track)
     }
