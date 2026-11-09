@@ -20,6 +20,7 @@ import eu.kanade.tachiyomi.ui.reader.loader.SourceNotInstalledException
 import eu.kanade.tachiyomi.ui.source.browse.NoResultsException
 import kotlinx.coroutines.CancellationException
 import kotlinx.serialization.SerializationException
+import nl.adaptivity.xmlutil.serialization.XmlParsingException
 import org.jsoup.HttpStatusException
 import java.io.FileNotFoundException
 import java.io.IOException
@@ -232,11 +233,13 @@ class CrashlyticsLogWriter : LogWriter() {
                 is MALTokenExpired,
                 is NoResultsException,
                 is NoPagesException,
+                // A malformed ComicInfo.xml in the user's own local-library folder; LocalSource already logs and skips it.
+                is XmlParsingException,
                 -> return true
 
                 is HttpException -> if (
                     current.isAuthError || current.isServerError ||
-                    current.code == 400 || current.code == 404 || current.code == 410 || current.code == 429 ||
+                    current.code == 400 || current.code == 404 || current.code == 405 || current.code == 410 || current.code == 429 ||
                     current.code == 451
                 ) {
                     return true
@@ -252,7 +255,10 @@ class CrashlyticsLogWriter : LogWriter() {
 
                 is FileNotFoundException -> if (
                     current.message?.contains("chapter_disk_cache") == true ||
-                    current.message?.contains("files/covers") == true
+                    current.message?.contains("files/covers") == true ||
+                    // A downloaded extension APK removed before the Shizuku installer opened it
+                    // (handled by ShizukuInstaller, which just moves on to the next entry).
+                    current.message == "open failed: ENOENT (No such file or directory)"
                 ) {
                     return true
                 }
@@ -261,6 +267,10 @@ class CrashlyticsLogWriter : LogWriter() {
                     current.message?.contains("SETTINGS preface") == true ||
                     current.message == "Unauthorized" ||
                     current.message == "Canceled" ||
+                    current.message == "unexpected end of stream" ||
+                    current.message?.startsWith(
+                        "java.lang.IllegalStateException: cannot make a new request because the previous response is still open",
+                    ) == true ||
                     current.message == "Chapter locked" ||
                     current.message == "Can't open InputStream" ||
                     current.message == "Failed to bypass Cloudflare" ||
@@ -268,6 +278,7 @@ class CrashlyticsLogWriter : LogWriter() {
                     current.message == "Missing username or password" ||
                     current.message == "Open webview to refresh token" ||
                     current.message == "Premium chapter. Not available." ||
+                    current.message == "Error: Reader module not found" ||
                     current.message == "Reader signer bindings not found" ||
                     current.message?.startsWith("stream was reset: ") == true ||
                     current.message?.startsWith("Too many follow-up requests") == true ||
@@ -282,6 +293,8 @@ class CrashlyticsLogWriter : LogWriter() {
                 is IllegalStateException -> if (
                     current.message == "Invalid image" ||
                     current.message == "No cover specified" ||
+                    current.message == "Failed to read the page list" ||
+                    current.message == "getMangaUpdate must not be called concurrently for same manga" ||
                     current.message?.startsWith("Calls to setForegroundAsync() must complete before") == true
                 ) {
                     return true
@@ -337,6 +350,10 @@ class CrashlyticsLogWriter : LogWriter() {
                 current.message == "Hikka: The token is expired" ||
                 current.message == "MangaBaka: The token is expired" ||
                 current.message == "Page list not found" ||
+                current.message == "Failed to pass browser check" ||
+                current.message == "Missing Madara post ID from redirection" ||
+                current.message == "The reader didn't load any pages" ||
+                current.message == "Could not create split image file" ||
                 current.message == "Could not load images. Open in WebView and try again." ||
                 current.message == "Manga catalog not found" ||
                 // The full message is "<prefix>: <raw SQL query> - Can't find FULLTEXT index ...".
@@ -353,6 +370,7 @@ class CrashlyticsLogWriter : LogWriter() {
             // folder that was renamed/deleted or has a non-archive file in it - not a Rokku bug.
             if (current.message?.startsWith("Timed out waiting for WebView") == true) return true
             if (current.message?.startsWith("Nothing read from ") == true) return true
+            if (current.message?.startsWith("Migrate this entry from ") == true) return true
             if (current.message?.startsWith("Chapter pages failed: HTTP ") == true) return true
             if (current.message?.startsWith("Reader pages HTTP ") == true) return true
             if (current.message?.startsWith("Locked chapter, unlock in WebView") == true) return true
@@ -362,7 +380,8 @@ class CrashlyticsLogWriter : LogWriter() {
             if (current.message?.startsWith("Captcha Failed! Challenge failed in this browser") == true) return true
             if (current.message == "Captcha needs interaction, but the app isn't in the foreground") return true
             if (current.message?.matches(EXTENSION_PAGE_HTTP_FAILURE) == true) return true
-            if (current.message?.matches(EXTENSION_SERVER_ERROR) == true) return true
+            if (current.message?.matches(EXTENSION_HTTP_ERROR) == true) return true
+            if (current.message?.matches(CHAPTER_NOT_IN_LIST) == true) return true
             if (current.message?.startsWith("User does not have the license of requested content") == true) return true
             if (current.message?.startsWith("Username or password cannot be empty") == true) return true
             if (current.message?.startsWith("Open in WebView to set necessary cookies") == true) return true
@@ -394,7 +413,8 @@ class CrashlyticsLogWriter : LogWriter() {
 
         /** Matches "Chapter page 2 failed: HTTP 521", raised by an extension for a single page request. */
         val EXTENSION_PAGE_HTTP_FAILURE = Regex("""Chapter page \d+ failed: HTTP \d{3}\b.*""")
-        val EXTENSION_SERVER_ERROR = Regex("""HTTP error 5\d{2}""")
+        val EXTENSION_HTTP_ERROR = Regex("""HTTP error (5\d{2}|40[01345]|410|429|451)""")
+        val CHAPTER_NOT_IN_LIST = Regex("""Requested chapter of id \d+ not found in chapter list""")
 
         /** Matches "Error: manifest 428", an extension's IOException for a failed manifest request. */
         val EXTENSION_MANIFEST_ERROR = Regex("""Error: manifest \d{3}""")

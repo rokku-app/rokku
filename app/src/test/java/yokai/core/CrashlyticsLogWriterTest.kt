@@ -6,6 +6,7 @@ import eu.kanade.tachiyomi.source.SourceNotFoundException
 import eu.kanade.tachiyomi.ui.source.browse.NoResultsException
 import io.kotest.matchers.shouldBe
 import kotlinx.serialization.SerializationException
+import nl.adaptivity.xmlutil.serialization.XmlParsingException
 import org.junit.jupiter.api.Test
 import java.io.FileNotFoundException
 import java.io.IOException
@@ -277,6 +278,40 @@ class CrashlyticsLogWriterTest {
         ignored(IOException("Error: manifest 428")) shouldBe true
         ignored(IOException("Error: manifest")) shouldBe false
         ignored(IOException("Error: manifest 428 in cache")) shouldBe false
+    }
+
+    @Test
+    fun `extension page and migration failures and malformed comic info are ignored`() {
+        ignored(IOException("Error: Reader module not found")) shouldBe true
+        ignored(IOException("Reader module not found")) shouldBe false
+        ignored(IllegalStateException("Failed to read the page list")) shouldBe true
+        ignored(IllegalStateException("Failed to read the page list: boom")) shouldBe false
+        ignored(IllegalStateException("getMangaUpdate must not be called concurrently for same manga")) shouldBe true
+        ignored(Exception("Migrate this entry from \"Mangabat\" to \"Mangabat\" to continue reading")) shouldBe true
+        ignored(Exception("Migrate the library")) shouldBe false
+        ignored(HttpException(405)) shouldBe true
+        ignored(HttpException(418)) shouldBe false
+    }
+
+    @Test
+    fun `extension and storage failures seen in the November batch are ignored`() {
+        ignored(IOException("Failed to pass browser check")) shouldBe true
+        ignored(IOException("HTTP error 403")) shouldBe true
+        ignored(IOException("HTTP error 418")) shouldBe false
+        ignored(IllegalStateException("Missing Madara post ID from redirection")) shouldBe true
+        ignored(Exception("The reader didn't load any pages")) shouldBe true
+        ignored(Exception("Could not create split image file")) shouldBe true
+        ignored(Exception("Could not create split image file for page 3")) shouldBe false
+        ignored(java.net.ProtocolException("unexpected end of stream")) shouldBe true
+        ignored(
+            IOException(
+                "java.lang.IllegalStateException: cannot make a new request because the previous response is still open: please call response.close()",
+            ),
+        ) shouldBe true
+        ignored(FileNotFoundException("open failed: ENOENT (No such file or directory)")) shouldBe true
+        ignored(FileNotFoundException("/data/user/0/app.rokku/files/x.db: open failed: ENOENT (No such file or directory)")) shouldBe false
+        ignored(IllegalStateException("Requested chapter of id 337121 not found in chapter list")) shouldBe true
+        ignored(IllegalStateException("Requested chapter of id abc not found in chapter list")) shouldBe false
     }
 
     @Test
