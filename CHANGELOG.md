@@ -11,6 +11,7 @@ The format is simplified version of [Keep a Changelog](https://keepachangelog.co
 ## [Unreleased]
 
 ### Fixes
+- Fixed Suggestions always being empty for entries from sources with "hentai" or "adult" in their name, such as NHentai
 - Fixed a crash when a MangaBaka entry with no saved status was synced after reading a chapter, which now picks up the status already on MangaBaka
 - Fixed the library freezing (and sometimes showing an app-not-responding dialog) when dragging the fast scroller or opening a large library grouped by tags
 
