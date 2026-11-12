@@ -35,7 +35,7 @@ directionalviewpager = { module = "com.github.tachiyomiorg:DirectionalViewPager"
 disklrucache = { module = "com.jakewharton:disklrucache", version = "2.0.2" }
 fastadapter-extensions-binding = { module = "com.mikepenz:fastadapter-extensions-binding", version.ref = "fast_adapter" }
 fastadapter = { module = "com.mikepenz:fastadapter", version.ref = "fast_adapter" }
-firebase = { module = "com.google.firebase:firebase-bom", version = "35.1.0" }
+firebase = { module = "com.google.firebase:firebase-bom", version = "35.2.0" }
 firebase-analytics = { module = "com.google.firebase:firebase-analytics" }
 firebase-crashlytics = { module = "com.google.firebase:firebase-crashlytics" }
 flexbox = { module = "com.google.android.flexbox:flexbox", version = "3.0.0" }
@@ -49,7 +49,7 @@ koin-bom = { module = "io.insert-koin:koin-bom", version.ref = "koin" }
 koin-core = { module = "io.insert-koin:koin-core" }
 koin-injekt = { module = "com.github.null2264:injekt-koin", version = "aad18b6148" }
 
-kotest-assertions = { module = "io.kotest:kotest-assertions-core", version = "6.2.6" }
+kotest-assertions = { module = "io.kotest:kotest-assertions-core", version = "6.2.7" }
 
 leakcanary-android = { module = "com.squareup.leakcanary:leakcanary-android", version.ref = "leakcanary" }
 leakcanary-plumber = { module = "com.squareup.leakcanary:plumber-android", version.ref = "leakcanary" }
@@ -114,7 +114,7 @@ voyager-screenmodel = { module = "cafe.adriel.voyager:voyager-screenmodel", vers
 aboutlibraries = { id = "com.mikepenz.aboutlibraries.plugin", version.ref = "aboutlibraries" }
 aboutlibraries-android = { id = "com.mikepenz.aboutlibraries.plugin.android", version.ref = "aboutlibraries" }
 firebase-crashlytics = { id = "com.google.firebase.crashlytics", version = "3.0.8" }
-google-services = { id = "com.google.gms.google-services", version = "4.5.0" }
+google-services = { id = "com.google.gms.google-services", version = "4.6.0" }
 gradle-versions = { id = "com.github.ben-manes.versions", version = "0.67.0" }
 kotlinter = { id = "org.jmailen.kotlinter", version = "5.7.0" }
 moko = { id = "dev.icerock.mobile.multiplatform-resources", version.ref = "moko" }
