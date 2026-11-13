@@ -4,12 +4,18 @@ import android.app.ActivityManager
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
+import android.view.View
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Link
 import androidx.core.content.getSystemService
 import androidx.preference.PreferenceScreen
 import com.bluelinelabs.conductor.Controller
 import com.bluelinelabs.conductor.RouterTransaction
 import com.bluelinelabs.conductor.changehandler.SimpleSwapChangeHandler
+import dev.icerock.moko.resources.compose.stringResource
 import eu.kanade.tachiyomi.R
+import eu.kanade.tachiyomi.data.connections.discord.DiscordRPCService
+import eu.kanade.tachiyomi.data.connections.discord.DiscordScreen
 import eu.kanade.tachiyomi.ui.main.FloatingSearchInterface
 import eu.kanade.tachiyomi.ui.more.AboutController
 import eu.kanade.tachiyomi.ui.setting.SettingsLegacyController
@@ -28,7 +34,9 @@ import eu.kanade.tachiyomi.util.view.activityBinding
 import eu.kanade.tachiyomi.util.view.fadeTransactionHandler
 import eu.kanade.tachiyomi.util.view.openInBrowser
 import eu.kanade.tachiyomi.util.view.withFadeTransaction
+import kotlinx.coroutines.launch
 import yokai.i18n.MR
+import yokai.presentation.settings.ComposableSettings
 import yokai.util.lang.getString
 import eu.kanade.tachiyomi.ui.setting.titleMRes as titleRes
 
@@ -90,6 +98,12 @@ class SettingsMainController : SettingsLegacyController(), FloatingSearchInterfa
             }
         }
         preference {
+            iconRes = R.drawable.ic_link_24dp
+            iconTint = tintColor
+            titleRes = MR.strings.connections
+            onClick { navigateTo(SettingsConnectionsController()) }
+        }
+        preference {
             iconRes = R.drawable.ic_storage_24dp
             iconTint = tintColor
             titleRes = MR.strings.data_and_storage
@@ -119,6 +133,14 @@ class SettingsMainController : SettingsLegacyController(), FloatingSearchInterfa
         }
         this
     }
+
+    override fun onAttach(view: View) {
+        super.onAttach(view)
+        viewScope.launch {
+            DiscordRPCService.setScreen(activity ?: return@launch, DiscordScreen.MORE)
+        }
+    }
+
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.settings_main, menu)
         // Change hint to show global search.

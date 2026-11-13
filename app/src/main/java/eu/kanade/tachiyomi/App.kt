@@ -46,6 +46,7 @@ import eu.kanade.tachiyomi.data.coil.MangaCoverFetcher
 import eu.kanade.tachiyomi.data.coil.MangaCoverKeyer
 import eu.kanade.tachiyomi.data.coil.MangaKeyer
 import eu.kanade.tachiyomi.data.coil.TachiyomiImageDecoder
+import eu.kanade.tachiyomi.data.connections.discord.DiscordRPCService
 import eu.kanade.tachiyomi.data.download.DownloadJob
 import eu.kanade.tachiyomi.data.notification.Notifications
 import eu.kanade.tachiyomi.data.preference.PreferencesHelper
@@ -223,6 +224,14 @@ open class App : Application(), DefaultLifecycleObserver, SingletonImageLoader.F
                 preference.set(BuildConfig.VERSION_CODE)
             },
         )
+    }
+
+    override fun onStart(owner: LifecycleOwner) {
+        DiscordRPCService.start(applicationContext)
+    }
+
+    override fun onStop(owner: LifecycleOwner) {
+        DiscordRPCService.stop(applicationContext)
     }
 
     override fun onPause(owner: LifecycleOwner) {
