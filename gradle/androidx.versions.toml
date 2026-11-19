@@ -1,7 +1,7 @@
 [versions]
 activity = "1.13.0"
 agp = "9.5.1"
-lifecycle = "2.11.0"
+lifecycle = "2.11.1"
 
 [libraries]
 gradle = { module = "com.android.tools.build:gradle", version.ref = "agp" }
